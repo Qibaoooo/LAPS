@@ -20,8 +20,6 @@ class LapsApplicationTests {
 		Staff staff1 = new Staff("admin1", "123", 0);
 		
 		
-		
-		
 		repo.save(admin1);
 		repo.save(manager1);
 		repo.save(staff1);
