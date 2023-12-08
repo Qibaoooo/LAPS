@@ -15,13 +15,7 @@ class LapsApplicationTests {
 	
 	@Test
 	void contextLoads() {
-		Admin admin1 = new Admin("admin1", "123");
-		Manager manager1 = new Manager("admin1", "123", null);
-		Staff staff1 = new Staff("admin1", "123", null, 0);
 		
-		repo.save(admin1);
-		repo.save(manager1);
-		repo.save(staff1);
 	}
 
 }
