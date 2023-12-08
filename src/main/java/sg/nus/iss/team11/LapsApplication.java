@@ -45,7 +45,7 @@ public class LapsApplication {
 			User user4 = userRepo.save(new User("user4", "password", staffRole));
 			User user5 = userRepo.save(new User("user5", "password", staffRole));
 			
-			LeaveApplication la1 = new LeaveApplication(user3, "comment 1", LeaveApplicationStatusEnum.SUBMITTED,
+			LeaveApplication la1 = new LeaveApplication(user3, "comment 1", LeaveApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
 			
 			leaveRepo.save(la1);
