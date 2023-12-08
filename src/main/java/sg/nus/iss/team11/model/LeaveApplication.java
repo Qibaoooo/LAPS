@@ -21,11 +21,14 @@ public class LeaveApplication {
 	
 	@ManyToOne()
 	private User user;
+	
+	// comment is for manager to input
+	private String comment;	
+	
+	// description is for staff to input
+	private String description;
 
-	@Column(name = "comment")
-	private String comment;
-
-	@Column(name = "status", columnDefinition = "ENUM('SUBMITTED', 'APPROVED', 'WITHDRAWN', 'UPDATED', 'REJECTED')")
+	@Column(name = "status", columnDefinition = "ENUM('APPLIED', 'UPDATED', 'REJECTED', 'APPROVED', 'CANCELLED', 'DELETED')")
 	@Enumerated(EnumType.STRING)
 	private LeaveApplicationStatusEnum status;
 	
@@ -41,11 +44,11 @@ public class LeaveApplication {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate toDate;
 
-	public LeaveApplication(User user, String comment, LeaveApplicationStatusEnum status,
+	public LeaveApplication(User user, String description, LeaveApplicationStatusEnum status,
 			LeaveApplicationTypeEnum type, LocalDate fromDate, LocalDate toDate) {
 		super();
 		this.user = user;
-		this.comment = comment;
+		this.description = description;
 		this.status = status;
 		this.type = type;
 		this.fromDate = fromDate;
@@ -110,6 +113,14 @@ public class LeaveApplication {
 
 	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	
