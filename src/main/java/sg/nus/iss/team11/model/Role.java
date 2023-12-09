@@ -5,7 +5,6 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Role {
@@ -16,8 +15,7 @@ public class Role {
 	private String name;
 
 	private String description;
-	
-	
+
 	@OneToMany(mappedBy = "role")
 	private List<User> users;
 

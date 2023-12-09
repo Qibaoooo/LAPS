@@ -9,13 +9,13 @@ import sg.nus.iss.team11.repository.UserRepository;
 
 @SpringBootTest
 class LapsApplicationTests {
-	
+
 	@Autowired
 	UserRepository repo;
-	
+
 	@Test
 	void contextLoads() {
-		
+
 	}
 
 }
