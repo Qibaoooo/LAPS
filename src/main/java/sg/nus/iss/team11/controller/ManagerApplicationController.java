@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,14 +43,25 @@ public class ManagerApplicationController {
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
 		for (User u : subordinates) {
-			List<LeaveApplication> userLAList = leaveApplicationService
-					.findLeaveApplicationsByUserId(u.getUserId());
+			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsByUserId(u.getUserId());
 			subordinate2LAs.put(u, userLAList);
 		}
 
 		model.addAttribute("viewApplications", subordinate2LAs);
 
 		return "manager-view-applications";
+	}
+
+	// ------------------------------------------------------//
+	// 1.Find the respective application, bind to model
+	// 2.Create a html page, showing id, name, description,
+	// from date, end date, type, status, maybe entitlementleft?
+	// ------------------------------------------------------//
+	@RequestMapping(value = "/process/{id}")
+	public String viewApplicationById(@PathVariable int id, Model model) {
+		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
+		model.addAttribute("application", application);
+		return "manager-application-details";
 	}
 
 }

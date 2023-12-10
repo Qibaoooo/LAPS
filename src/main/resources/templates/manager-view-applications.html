@@ -15,19 +15,25 @@
 	<div th:if="${not #lists.isEmpty(viewApplications)}">
 		<table style=" border: 1;">
 			<tr class="listHeading">
+				<th><span th:text="#{fieldLabel.leaveApplicationId}"></span></th>
 				<th><span th:text="#{fieldLabel.user}"></span></th>
+				<th><span th:text="#{fieldLabel.type}"></span></th>
 				<th><span th:text="#{fieldLabel.description}"></span></th>
 				<th><span th:text="#{fieldLabel.startDate}"></span></th>
 				<th><span th:text="#{fieldLabel.endDate}"></span></th>
 				<th><span th:text="#{fieldLabel.status}"></span></th>
-				<th><span th:text="#{fieldLabel.details}"></span></th>
+				<th><span th:text="#{title.applicationDetails}"></span></th>
 			</tr>
 			<tr th:each="la: ${viewApplications}" class="listRecord">
-				<td align="left" th:text="${la.user.username}">username</td>
-				<td align="left" th:text="${la.description}">description</td>
-				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}">From</td>
-				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}">To</td>
-				<td align="left" th:text="${la.status}">Status</td>
+				<td align="left" th:text="${la.Id}"></td>
+				<td align="left" th:text="${la.user.username}"></td>
+				<td align="left" th:text="${la.type}"></td>
+				<td align="left" th:text="${la.description}">No Description</td>
+				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
+				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
+				<td align="left" th:text="${la.status}"></td>
+				<td><a th:href="@{/manager/process}+${la.Id}" class="btn btn-default">
+					<span th:text="#{caption.detail}"></span></a></td>
 			</tr>
 		</table>
 	</div>
