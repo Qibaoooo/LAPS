@@ -17,6 +17,7 @@
 			<tr class="listHeading">
 				<th><span th:text="#{fieldLabel.leaveApplicationId}"></span></th>
 				<th><span th:text="#{fieldLabel.user}"></span></th>
+				<th><span th:text="#{fieldLabel.type}"></span></th>
 				<th><span th:text="#{fieldLabel.description}"></span></th>
 				<th><span th:text="#{fieldLabel.startDate}"></span></th>
 				<th><span th:text="#{fieldLabel.endDate}"></span></th>
@@ -26,6 +27,7 @@
 			<tr th:each="la: ${viewApplications}" class="listRecord">
 				<td align="left" th:text="${la.Id}"></td>
 				<td align="left" th:text="${la.user.username}"></td>
+				<td align="left" th:text="${la.type}"></td>
 				<td align="left" th:text="${la.description}">No Description</td>
 				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
 				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
