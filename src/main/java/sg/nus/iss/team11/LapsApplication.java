@@ -35,13 +35,13 @@ public class LapsApplication {
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			User user1 = userRepo.save(new User("user1", "password", adminRole));
-			User user2 = userRepo.save(new User("user2", "password", managerRole));
-			User user3 = userRepo.save(new User("user3", "password", staffRole));
-			User user4 = userRepo.save(new User("user4", "password", staffRole));
-			User user5 = userRepo.save(new User("user5", "password", staffRole));
+			User user1 = userRepo.save(new User("adminUser", "password", adminRole));
+			User user2 = userRepo.save(new User("esther", "password", managerRole));
+			User user3 = userRepo.save(new User("tin", "password", staffRole));
+			User user4 = userRepo.save(new User("cherwah", "password", staffRole));
+			User user5 = userRepo.save(new User("yuenkwan", "password", staffRole));
 
-			LeaveApplication la1 = new LeaveApplication(user3, "comment 1", LeaveApplicationStatusEnum.APPLIED,
+			LeaveApplication la1 = new LeaveApplication(user3, "annual leave for tin", LeaveApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
 
 			leaveRepo.save(la1);
