@@ -20,8 +20,13 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	}
 
 	@Override
-	public LeaveApplication findLeaveApplication(Integer id) {
+	public LeaveApplication findLeaveApplicationById(Integer id) {
 		return leaveRepo.findById(id).orElse(null);
+	}
+	
+	@Override
+	public List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId){
+		return leaveRepo.findLeaveApplicationsByUserId(userId);
 	}
 
 	@Override

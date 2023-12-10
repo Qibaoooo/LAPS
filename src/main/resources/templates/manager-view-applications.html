@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout.html :: html_head" />
+
+<body>
+	<div th:replace="layout.html :: menu" />
+	<div th:replace="layout.html :: header" />
+	<h2>View Subordinates' Leave Applications</h2>
+
+	<div th:if="${#lists.isEmpty(viewApplications)}">
+		<p>No Leave Applications to view.</p>
+	</div>
+
+	<div th:if="${not #lists.isEmpty(viewApplications)}">
+		<table style=" border: 1;">
+			<tr class="listHeading">
+				<th><span th:text="#{fieldLabel.user}"></span></th>
+				<th><span th:text="#{fieldLabel.description}"></span></th>
+				<th><span th:text="#{fieldLabel.startDate}"></span></th>
+				<th><span th:text="#{fieldLabel.endDate}"></span></th>
+				<th><span th:text="#{fieldLabel.status}"></span></th>
+				<th><span th:text="#{fieldLabel.details}"></span></th>
+			</tr>
+			<tr th:each="la: ${viewApplications}" class="listRecord">
+				<td align="left" th:text="${la.user.username}">username</td>
+				<td align="left" th:text="${la.description}">description</td>
+				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}">From</td>
+				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}">To</td>
+				<td align="left" th:text="${la.status}">Status</td>
+			</tr>
+		</table>
+	</div>
+</body>
+
+</html>
