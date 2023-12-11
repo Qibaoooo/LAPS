@@ -7,7 +7,11 @@ import sg.nus.iss.team11.model.LeaveApplication;
 public interface LeaveApplicationService {
 	  List<LeaveApplication> findAllLeaveApplications();
 
-	  LeaveApplication findLeaveApplication(Integer id);
+	  LeaveApplication findLeaveApplicationById(Integer id);
+	  
+	  List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId); 
+	  
+	  List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId);
 
 	  LeaveApplication createLeaveApplication(LeaveApplication leaveApplication);
 

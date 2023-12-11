@@ -11,22 +11,22 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
-	
+
 	private int managerId;
-	
+
 	private String username;
 	private String password;
-	
+
 	private int annualLeaveEntitlement;
 	private int medicalLeaveEntitlement;
 	private int compensationLeaveEntitlement;
-	
+
 	@ManyToOne
 	private Role role;
-	
+
 	@OneToMany(mappedBy = "user")
-	private List<LeaveApplication> leaveApplications; 
-	
+	private List<LeaveApplication> leaveApplications;
+
 	public User(String username, String password, int annualLeaveEntitlement, int medicalLeaveEntitlement,
 			int compensationLeaveEntitlement, Role role, ArrayList<LeaveApplication> leaveApplications) {
 		super();
@@ -126,7 +126,6 @@ public class User {
 
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
-	}	
-	
+	}
 
 }
