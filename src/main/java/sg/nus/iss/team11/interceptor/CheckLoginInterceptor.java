@@ -28,7 +28,9 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
 		
 		List<String> publicEndpoints = Arrays.asList(
 				"style.css", 
+				"about",
 				"login", 
+				"home",
 				"authenticate");
 		
 		if (publicEndpoints.contains(splitURI[splitURI.length - 1]))
