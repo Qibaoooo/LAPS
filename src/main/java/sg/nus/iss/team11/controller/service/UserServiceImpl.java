@@ -43,4 +43,10 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findUserByUsername(username);
 	}
 
+	@Override
+	public List<User> findSubordinates(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

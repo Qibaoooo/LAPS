@@ -76,7 +76,7 @@ public class LeaveApplicationController {
 
 	@GetMapping(value = "leave/edit/{id}")
 	public String editLeave(@PathVariable Integer id, Model model) {
-		LeaveApplication la = leaveApplicationService.findLeaveApplication(id);
+		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
 
 		model.addAttribute("leaveApplication", la);
 		model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
@@ -106,7 +106,7 @@ public class LeaveApplicationController {
 	
 	@RequestMapping(value = "leave/cancel/{id}")
 	public String cancelLeave(@PathVariable Integer id ) throws LeaveApplicationNotFound {
-		LeaveApplication leaveApplication = leaveApplicationService.findLeaveApplication(id);
+		LeaveApplication leaveApplication = leaveApplicationService.findLeaveApplicationById(id);
 		
 		leaveApplication.setStatus(LeaveApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
