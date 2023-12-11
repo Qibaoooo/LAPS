@@ -10,38 +10,37 @@ import sg.nus.iss.team11.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-
 	@Autowired
 	UserRepository userRepo;
-
+	
 	@Override
-	public List<User> findAllUsers(){
+	public List<User> findAllUsers() {
 		return userRepo.findAll();
 	}
 
 	@Override
-	public User findRole(int userId) {
+	public User findUser(Integer userId) {
 		return userRepo.findById(userId).orElse(null);
 	}
 
 	@Override
-	public User createRole(User user) {
+	public User createUser(User user) {
 		return userRepo.saveAndFlush(user);
 	}
 
 	@Override
-	public User updateRole(User user) {
+	public User updateUser(User user) {
 		return userRepo.saveAndFlush(user);
 	}
 
 	@Override
-	public void removeRole(User user) {
+	public void removeUser(User user) {
 		userRepo.delete(user);
 	}
-	
+
 	@Override
-	public List<User> findSubordinates(int managerId){
-		return userRepo.findSubordinates(managerId);
+	public User findUserByUsername(String username) {
+		return userRepo.findUserByUsername(username);
 	}
 
 }

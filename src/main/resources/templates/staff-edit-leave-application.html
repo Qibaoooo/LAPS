@@ -6,10 +6,28 @@
 <body>
 	<div th:replace="layout.html :: menu" />
 	<div th:replace="layout.html :: header" />
-	<h3>New Leave Application Page</h3>
-	<form action="#" th:action="@{/staff/leave/new}" th:object="${leaveApplication}" method="post">
+	<h3>Edit Leave Application Page</h3>
+	<form action="#" th:action="@{/staff/leave/edit/} + ${leaveApplication.id}" th:object="${leaveApplication}"
+		method="post">
 		<table>
 			<tbody>
+				<tr>
+					<td>
+						<input type="hidden" th:field="*{id}" />
+						<input type="hidden" th:field="*{user}" />
+						<input type="hidden" th:field="*{status}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span th:text="'ID: ' + ${leaveApplication.id.toString()}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span th:text="'User: ' + ${leaveApplication.user.username}" />
+					</td>
+				</tr>
 				<tr>
 					<td><span th:text="#{fieldLabel.type}"></span></td>
 					<td>
