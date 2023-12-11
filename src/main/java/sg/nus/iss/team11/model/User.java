@@ -20,9 +20,9 @@ public class User {
 	private int userId;
 
 	private int managerId;
-	@NotBlank(message = "Name is required")
+	@NotBlank(message = "Username is required")
 	private String username;
-	@NotBlank(message = "Name is required")
+	@NotBlank(message = "Password is required")
 	private String password;
 
 	private int annualLeaveEntitlement;

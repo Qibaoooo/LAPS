@@ -16,7 +16,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws IOException {
 		System.out.println("Intercepting: " + request.getRequestURI());
 		HttpSession session = request.getSession();
-		// check if the user already has set attribute userLogin
+		// Check if the user already has set attribute userLogin
 		if (session.getAttribute("username") != null)
 			return true;
 		String[] splitURI = request.getRequestURI().split("/");
