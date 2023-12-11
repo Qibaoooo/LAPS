@@ -67,7 +67,9 @@ public class LeaveApplicationController {
 
 	@PostMapping(value = "leave/new")
 	public String newLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
-			HttpSession session) {
+			HttpSession session, Model model) {
+
+		model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 
 		if (result.hasErrors()) {
 			return "staff-new-leave-application";
