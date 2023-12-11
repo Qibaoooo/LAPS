@@ -48,5 +48,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public User authenticateUser(String username, String password) {
+		return userRepo.findUserByNamePwd(username, password);
+	}
 
 }

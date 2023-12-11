@@ -14,4 +14,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("SELECT s FROM User s WHERE s.managerId = :managerId")
 	List<User> findSubordinates(@Param("managerId") Integer managerId);
+	
+	@Query("SELECT s From User s WHERE s.username = :username AND s.password = :password")
+	User findUserByNamePwd(@Param("username")String username, @Param("password")String password);
+	
 }

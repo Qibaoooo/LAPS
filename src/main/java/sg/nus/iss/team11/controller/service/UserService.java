@@ -20,5 +20,6 @@ public interface UserService {
 	void removeUser(User User);
 
 	List<User> findSubordinates(int userId);
-
+	
+	User authenticateUser(String username, String password);
 }

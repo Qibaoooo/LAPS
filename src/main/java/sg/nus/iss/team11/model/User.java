@@ -3,7 +3,14 @@ package sg.nus.iss.team11.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -13,8 +20,9 @@ public class User {
 	private int userId;
 
 	private int managerId;
-
+	@NotBlank(message = "Username is required")
 	private String username;
+	@NotBlank(message = "Password is required")
 	private String password;
 
 	private int annualLeaveEntitlement;
