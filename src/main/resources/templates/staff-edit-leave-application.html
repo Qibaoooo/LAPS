@@ -5,7 +5,6 @@
 
 <body>
 	<div th:replace="layout.html :: menu" />
-	<div th:replace="layout.html :: header" />
 	<h3>Edit Leave Application Page</h3>
 	<form action="#" th:action="@{/staff/leave/edit/} + ${leaveApplication.id}" th:object="${leaveApplication}"
 		method="post">
@@ -59,7 +58,7 @@
 				<tr>
 					<td></td>
 					<td>
-						<input type="submit" value="Create" class="blcass" />
+						<input type="submit" value="Update" class="blcass" />
 						<input type="reset" value="Reset" class="blcass" />
 					</td>
 				</tr>

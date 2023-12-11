@@ -22,6 +22,7 @@ import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.Role;
+import sg.nus.iss.team11.model.User;
 
 @Controller
 @RequestMapping(value = "/staff")
@@ -36,13 +37,11 @@ public class LeaveApplicationController {
 	UserService userService;
 
 	@RequestMapping(value = "leave/list")
-	public String staffLeaveApplicationList(Model model) {
+	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
-		// TODO: get user from UserSession later
-//	    UserSession usession = (UserSession) session.getAttribute("usession");
-//	    System.out.println(usession.getEmployee());
+	    User user = (User) session.getAttribute("user");
 
-		List<LeaveApplication> laList = leaveApplicationService.findAllLeaveApplications();
+		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
 
 		return "staff-leave-application-list";
@@ -64,10 +63,8 @@ public class LeaveApplicationController {
 			return "staff-new-leave-application";
 		}
 
-//		TODO: add User setting logic after user session is completed.
-//		leaveApplication.setUser(null);
-		leaveApplication.setUser(userService.findUserByUsername("tin"));
-		
+	    User user = (User) session.getAttribute("user");
+		leaveApplication.setUser(user);
 		leaveApplication.setStatus(LeaveApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
 
@@ -91,10 +88,6 @@ public class LeaveApplicationController {
 		if (result.hasErrors()) {
 			return "staff-edit-leave-application";
 		}
-		
-//		TODO: add User setting logic after user session is completed.
-//		UserSession usession = (UserSession) session.getAttribute("usession");
-//		leaveApplication.setUser(usession.getEmployee().getEmployeeId());
 		
 		leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
 
