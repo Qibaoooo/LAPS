@@ -29,6 +29,20 @@
 				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}">From</td>
 				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}">To</td>
 				<td align="left" th:text="${la.status}">Status</td>
+				<td>
+					<div th:switch="${la.status.toString()}">
+						<a th:case="'APPLIED'" th:href="@{/staff/leave/edit/}+${la.id}">Update</a>
+						<a th:case="'UPDATED'" th:href="@{/staff/leave/edit/}+${la.id}">Update</a>
+						<span th:case="*"> --- </span>
+					</div>
+				</td>
+				<td>
+					<div th:switch="${la.status.toString()}">
+						<a th:case="'APPLIED'" th:href="@{/staff/cancel/edit/}+${la.id}">Cancel</a>
+						<a th:case="'UPDATED'" th:href="@{/staff/cancel/edit/}+${la.id}">Cancel</a>
+						<span th:case="*"> --- </span>
+					</div>
+				</td>
 			</tr>
 		</table>
 	</div>

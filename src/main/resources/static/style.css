@@ -325,9 +325,7 @@ hr {
 .subnav-content {
   display: none;
   position: absolute;
-  left: 0;
   background-color: #333;
-  width: 100%;
   z-index: 1;
 }
 
@@ -343,6 +341,7 @@ hr {
 }
 
 .subnav:hover .subnav-content {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
