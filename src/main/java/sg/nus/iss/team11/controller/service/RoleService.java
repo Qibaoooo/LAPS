@@ -9,10 +9,10 @@ public interface RoleService {
 
 	  Role findRole(String roleId);
 
-	  Role createRole(Role Role);
+	  Role createRole(Role role);
 
-	  Role updateRole(Role Role);
+	  Role updateRole(Role role);
 
-	  void removeRole(Role Role);
+	  void removeRole(Role role);
 
 }
