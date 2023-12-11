@@ -1,6 +1,9 @@
 package sg.nus.iss.team11.interceptor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,10 +25,15 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
 			return true;
 		String[] splitURI = request.getRequestURI().split("/");
 		
-		if (splitURI[splitURI.length - 1].equals("login"))
+		
+		List<String> publicEndpoints = Arrays.asList(
+				"style.css", 
+				"login", 
+				"authenticate");
+		
+		if (publicEndpoints.contains(splitURI[splitURI.length - 1]))
 			return true;
-		if (splitURI[splitURI.length - 1].equals("authenticate"))
-			return true;
+		
 		
 		// If the user has not logged in, redirect her/him to login
 		response.sendRedirect("/login");
