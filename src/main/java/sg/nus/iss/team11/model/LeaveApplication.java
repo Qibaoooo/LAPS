@@ -71,7 +71,7 @@ public class LeaveApplication {
 		return user;
 	}
 
-	public void setEmployeeId(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

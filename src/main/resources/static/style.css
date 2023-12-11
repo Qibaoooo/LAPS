@@ -219,6 +219,7 @@ input[type="checkbox"]:focus {
     outline: thin solid #129FEA;
     outline: 1px auto #129FEA;
 }
+
 select {
     /* Normalizes the height; padding is not sufficient. */
     height: 2.25em;
