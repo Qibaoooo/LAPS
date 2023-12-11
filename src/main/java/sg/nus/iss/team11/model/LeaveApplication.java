@@ -18,24 +18,24 @@ public class LeaveApplication {
 	@Id
 	@GeneratedValue
 	private int id;
-	
+  
 	@ManyToOne()
 	private User user;
-	
+
 	// comment is for manager to input
-	private String comment;	
-	
+	private String comment;
+
 	// description is for staff to input
 	private String description;
 
 	@Column(name = "status", columnDefinition = "ENUM('APPLIED', 'UPDATED', 'REJECTED', 'APPROVED', 'CANCELLED', 'DELETED')")
 	@Enumerated(EnumType.STRING)
 	private LeaveApplicationStatusEnum status;
-	
+
 	@Column(name = "type", columnDefinition = "ENUM('MedicalLeave', 'AnnualLeave', 'CompensationLeave')")
 	@Enumerated(EnumType.STRING)
 	private LeaveApplicationTypeEnum type;
-	
+
 	@Column(name = "fromdate")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fromDate;
@@ -122,7 +122,5 @@ public class LeaveApplication {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
+
 }
