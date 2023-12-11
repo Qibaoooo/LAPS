@@ -28,6 +28,11 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	public List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId){
 		return leaveRepo.findLeaveApplicationsByUserId(userId);
 	}
+	
+	@Override
+	public List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId){
+		return leaveRepo.findLeaveApplicationsToProcess(userId);
+	}
 
 	@Override
 	public LeaveApplication createLeaveApplication(LeaveApplication leaveApplication) {

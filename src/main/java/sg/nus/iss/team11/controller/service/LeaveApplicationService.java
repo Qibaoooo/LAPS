@@ -10,6 +10,8 @@ public interface LeaveApplicationService {
 	  LeaveApplication findLeaveApplicationById(Integer id);
 	  
 	  List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId); 
+	  
+	  List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId);
 
 	  LeaveApplication createLeaveApplication(LeaveApplication leaveApplication);
 

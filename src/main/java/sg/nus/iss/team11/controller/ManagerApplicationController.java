@@ -36,15 +36,17 @@ public class ManagerApplicationController {
 	// 4.Show respective html page
 	// ------------------------------------------------------//
 	@RequestMapping(value = "/view")
-	public String viewApplications(HttpSession session, Model model) {
+	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
 		List<User> subordinates = (List<User>) session.getAttribute("subordinates");
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
 		for (User u : subordinates) {
-			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsByUserId(u.getUserId());
-			subordinate2LAs.put(u, userLAList);
+			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsToProcess(u.getUserId());
+			if (userLAList != null) {
+				subordinate2LAs.put(u, userLAList);
+			}
 		}
 
 		model.addAttribute("viewApplications", subordinate2LAs);
@@ -62,6 +64,28 @@ public class ManagerApplicationController {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		model.addAttribute("application", application);
 		return "manager-application-details";
+	}
+
+	// ------------------------------------------------------//
+	// 1.Find the respective application, bind to model
+	// 2.Create a html page, showing id, name, description,
+	// from date, end date, type, status, maybe entitlementleft?
+	// ------------------------------------------------------//
+	@RequestMapping(value = "/history")
+	public String viewApplicationsHistory(HttpSession session, Model model) {
+		// Need to add session-related codes, to retrieve subordinates
+		List<User> subordinates = (List<User>) session.getAttribute("subordinates");
+
+		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
+		for (User u : subordinates) {
+			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsByUserId(u.getUserId());
+			if (userLAList != null) {
+				subordinate2LAs.put(u, userLAList);
+			}
+		}
+
+		model.addAttribute("viewApplications", subordinate2LAs);
+		return "manager-application-history";
 	}
 
 }
