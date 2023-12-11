@@ -14,6 +14,13 @@
 			<a th:href="@{/about}">Leave Application Processing System - LAPS</a>
 			<a th:href="@{/home}">Home</a>
 			<a th:href="@{/about}">About</a>
+			<div class="subnav">
+				<button class="subnavbtn">Staff Menu <i class="fa fa-caret-down"></i></button>
+				<div class="subnav-content">
+					<a th:href="@{/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
+					<a th:href="@{/staff/leave/new}" th:utext="#{menu.applyNew}">ApplyNew</a>
+				</div>
+			</div>
 
 		</nav>
 	</div>

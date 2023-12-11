@@ -17,7 +17,7 @@ public class LeaveApplication {
 
 	@Id
 	@GeneratedValue
-	private int Id;
+	private int id;
 	
 	@ManyToOne()
 	private User user;
@@ -60,11 +60,11 @@ public class LeaveApplication {
 	}
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public User getUser() {
