@@ -1,3 +1,5 @@
+**/.DS_Store
+
 # Miscellaneous
 *.java.hsp
 *.sonarj
@@ -28,7 +30,7 @@ spring-test/test-output/
 
 # Maven artifacts
 pom.xml
-/target/
+/target
 
 # Eclipse artifacts, including WTP generated manifests
 bin
