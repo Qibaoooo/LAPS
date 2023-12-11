@@ -10,7 +10,7 @@ import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 
 @Service
 public class LeaveApplicationServiceImpl implements LeaveApplicationService {
-	
+
 	@Autowired
 	LeaveApplicationRepository leaveRepo;
 
@@ -22,16 +22,6 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	@Override
 	public LeaveApplication findLeaveApplicationById(Integer id) {
 		return leaveRepo.findById(id).orElse(null);
-	}
-	
-	@Override
-	public List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId){
-		return leaveRepo.findLeaveApplicationsByUserId(userId);
-	}
-	
-	@Override
-	public List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId){
-		return leaveRepo.findLeaveApplicationsToProcess(userId);
 	}
 
 	@Override
@@ -47,6 +37,16 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	@Override
 	public void removeLeaveApplication(LeaveApplication leaveApplication) {
 		leaveRepo.delete(leaveApplication);
+	}
+
+	@Override
+	public List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId) {
+		return leaveRepo.findLeaveApplicationsByUserId(userId);
+	}
+
+	@Override
+	public List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId) {
+		return leaveRepo.findLeaveApplicationsToProcess(userId);
 	}
 
 }
