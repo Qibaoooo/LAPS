@@ -35,6 +35,9 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<LeaveApplication> leaveApplications;
 
+	@OneToMany(mappedBy = "user")
+	private List<CompensationClaim> compensationClaim;
+	
 	public User(String username, String password, int annualLeaveEntitlement, int medicalLeaveEntitlement,
 			int compensationLeaveEntitlement, Role role, ArrayList<LeaveApplication> leaveApplications) {
 		super();
@@ -139,6 +142,14 @@ public class User {
 	public User setManager(User manager) {
 		this.managerId = manager.getUserId();
 		return this;
+	}
+
+	public List<CompensationClaim> getCompensationClaim() {
+		return compensationClaim;
+	}
+
+	public void setCompensationClaim(List<CompensationClaim> compensationClaim) {
+		this.compensationClaim = compensationClaim;
 	}
 
 }

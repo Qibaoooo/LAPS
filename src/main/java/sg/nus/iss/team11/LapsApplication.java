@@ -7,10 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.LeaveApplicationStatusEnum;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
+import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.Role;
 import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.repository.CompensationClaimRepository;
 import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 import sg.nus.iss.team11.repository.RoleRepository;
 import sg.nus.iss.team11.repository.UserRepository;
@@ -24,9 +27,11 @@ public class LapsApplication {
 	}
 
 	@Bean
-	CommandLineRunner loadData(UserRepository userRepo, LeaveApplicationRepository leaveRepo, RoleRepository roleRepo) {
+	CommandLineRunner loadData(UserRepository userRepo, LeaveApplicationRepository leaveRepo, RoleRepository roleRepo,
+			CompensationClaimRepository claimRepo) {
 		return (args) -> {
 			// clean start
+			claimRepo.deleteAll();
 			leaveRepo.deleteAll();
 			userRepo.deleteAll();
 			roleRepo.deleteAll();
@@ -40,30 +45,54 @@ public class LapsApplication {
 			User tin = userRepo.save(new User("tin", "password", staffRole));
 			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
 			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
+
 			userRepo.save(tin.setManager(esther));
 			userRepo.save(cherwah.setManager(esther));
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
 			
-			LeaveApplication la1 = new LeaveApplication(tin, "annual leave for tin", LeaveApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
-			LeaveApplication la2 = new LeaveApplication(esther, "annual leave for esther", LeaveApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
-			LeaveApplication la3 = new LeaveApplication(cherwah, "annual leave for cherwah", LeaveApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
-			LeaveApplication la4 = new LeaveApplication(cherwah, "Let me leave", LeaveApplicationStatusEnum.UPDATED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
-			LeaveApplication la5 = new LeaveApplication(esther, "Leave anytime I want", LeaveApplicationStatusEnum.APPROVED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
-			LeaveApplication la6 = new LeaveApplication(cherwah, "Why I can't leave", LeaveApplicationStatusEnum.REJECTED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
+			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", LeaveApplicationStatusEnum.UPDATED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", LeaveApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(cherwah, "Why I can't leave", LeaveApplicationStatusEnum.REJECTED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 
-			leaveRepo.save(la1);
-			leaveRepo.save(la2);
-			leaveRepo.save(la3);
-			leaveRepo.save(la4);
-			leaveRepo.save(la5);
-			leaveRepo.save(la6);
+			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(esther, "annual leave for esther", ApplicationStatusEnum.APPLIED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(cherwah, "annual leave for cherwah", ApplicationStatusEnum.APPLIED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(60),
+					LocalDate.now().minusDays(59)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(58),
+					LocalDate.now().minusDays(57)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(56),
+					LocalDate.now().minusDays(55)));
+
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(30),
+					LocalDate.now().minusDays(29)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(28),
+					LocalDate.now().minusDays(27)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(26),
+					LocalDate.now().minusDays(25)));
+
+			claimRepo.save(new CompensationClaim(tin, "cc for tin AM", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(tin, "cc for tin PM", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+
+
 		};
 	}
 
