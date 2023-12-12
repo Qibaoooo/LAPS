@@ -45,6 +45,11 @@ public class LapsApplication {
 			User tin = userRepo.save(new User("tin", "password", staffRole));
 			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
 			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
+			
+			tin.setAnnualLeaveEntitlement(14);
+			cherwah.setAnnualLeaveEntitlement(14);
+			yuenkwan.setAnnualLeaveEntitlement(14);
+			userRepo.flush();
 
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
