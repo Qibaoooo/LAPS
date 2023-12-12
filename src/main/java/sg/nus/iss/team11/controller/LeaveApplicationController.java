@@ -21,7 +21,7 @@ import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.LeaveApplicationStatusEnum;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.User;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
@@ -42,7 +42,7 @@ public class LeaveApplicationController {
 	private LeaveDateValidator leavedatevalidator;
 
 	@InitBinder
-	private void initCourseBinder(WebDataBinder binder) {
+	private void initValidators(WebDataBinder binder) {
 		binder.addValidators(leavedatevalidator);
 	}
 	
@@ -69,15 +69,14 @@ public class LeaveApplicationController {
 	public String newLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
 			HttpSession session, Model model) {
 
-		model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
-
 		if (result.hasErrors()) {
+			model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 			return "staff-new-leave-application";
 		}
 
 	    User user = (User) session.getAttribute("user");
 		leaveApplication.setUser(user);
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.APPLIED);
+		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
 
 		return "redirect:/staff/leave/list";
@@ -101,7 +100,7 @@ public class LeaveApplicationController {
 			return "staff-edit-leave-application";
 		}
 		
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
+		leaveApplication.setStatus(ApplicationStatusEnum.UPDATED);
 
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
@@ -113,7 +112,7 @@ public class LeaveApplicationController {
 	public String cancelLeave(@PathVariable Integer id ) throws LeaveApplicationNotFound {
 		LeaveApplication leaveApplication = leaveApplicationService.findLeaveApplicationById(id);
 		
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.CANCELLED);
+		leaveApplication.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
 		return "redirect:/staff/leave/list";
