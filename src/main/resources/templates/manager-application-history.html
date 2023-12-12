@@ -5,7 +5,6 @@
 
 <body>
 	<div th:replace="layout.html :: menu" />
-	<div th:replace="layout.html :: header" />
 	<h2>View Subordinates' Leave Applications</h2>
 
 	<div th:if="${#lists.isEmpty(viewApplications)}">

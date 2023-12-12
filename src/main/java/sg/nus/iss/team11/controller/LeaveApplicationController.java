@@ -1,27 +1,30 @@
 package sg.nus.iss.team11.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.exception.LeaveApplicationNotFound;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.LeaveApplicationStatusEnum;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.Role;
+import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @RequestMapping(value = "/staff")
@@ -34,15 +37,21 @@ public class LeaveApplicationController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	private LeaveDateValidator leavedatevalidator;
 
+	@InitBinder
+	private void initValidators(WebDataBinder binder) {
+		binder.addValidators(leavedatevalidator);
+	}
+	
 	@RequestMapping(value = "leave/list")
-	public String staffLeaveApplicationList(Model model) {
+	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
-		// TODO: get user from UserSession later
-//	    UserSession usession = (UserSession) session.getAttribute("usession");
-//	    System.out.println(usession.getEmployee());
+	    User user = (User) session.getAttribute("user");
 
-		List<LeaveApplication> laList = leaveApplicationService.findAllLeaveApplications();
+		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
 
 		return "staff-leave-application-list";
@@ -57,18 +66,17 @@ public class LeaveApplicationController {
 	}
 
 	@PostMapping(value = "leave/new")
-	public String newLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result,
-			HttpSession session) {
+	public String newLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
+			HttpSession session, Model model) {
 
 		if (result.hasErrors()) {
+			model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 			return "staff-new-leave-application";
 		}
 
-//		TODO: add User setting logic after user session is completed.
-//		leaveApplication.setUser(null);
-		leaveApplication.setUser(userService.findUserByUsername("tin"));
-		
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.APPLIED);
+	    User user = (User) session.getAttribute("user");
+		leaveApplication.setUser(user);
+		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
 
 		return "redirect:/staff/leave/list";
@@ -85,18 +93,14 @@ public class LeaveApplicationController {
 	}
 
 	@PostMapping(value = "leave/edit/{id}")
-	public String editLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result,
+	public String editLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
 			@PathVariable Integer id, HttpSession session) throws LeaveApplicationNotFound {
 		
 		if (result.hasErrors()) {
 			return "staff-edit-leave-application";
 		}
 		
-//		TODO: add User setting logic after user session is completed.
-//		UserSession usession = (UserSession) session.getAttribute("usession");
-//		leaveApplication.setUser(usession.getEmployee().getEmployeeId());
-		
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
+		leaveApplication.setStatus(ApplicationStatusEnum.UPDATED);
 
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
@@ -108,7 +112,7 @@ public class LeaveApplicationController {
 	public String cancelLeave(@PathVariable Integer id ) throws LeaveApplicationNotFound {
 		LeaveApplication leaveApplication = leaveApplicationService.findLeaveApplicationById(id);
 		
-		leaveApplication.setStatus(LeaveApplicationStatusEnum.CANCELLED);
+		leaveApplication.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
 		return "redirect:/staff/leave/list";

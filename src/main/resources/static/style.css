@@ -31,7 +31,6 @@ h1 {
     inset 0 0 0 1px rgba(53,86,129, 0.4), 
     inset 0 0 5px rgba(53,86,129, 0.5),
     inset -285px 0 35px white;
-  border-radius: 0 10px 0 10px;
   background: #fff;
 }
 
@@ -344,5 +343,9 @@ hr {
 .subnav:hover .subnav-content {
   display: flex;
   flex-direction: column;
+}
+
+#hiuser {
+	float: right;
 }
 

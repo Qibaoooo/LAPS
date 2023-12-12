@@ -8,26 +8,35 @@
 
 <body>
 	<div th:fragment="menu" id="menu">
-		
+
 		<!-- Navigation -->
 		<nav class="navbar">
 			<a th:href="@{/about}">Leave Application Processing System - LAPS</a>
 			<a th:href="@{/home}">Home</a>
 			<a th:href="@{/about}">About</a>
-			<div class="subnav">
-				<button class="subnavbtn">Staff Menu <i class="fa fa-caret-down"></i></button>
-				<div class="subnav-content">
-					<a th:href="@{/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
-					<a th:href="@{/staff/leave/new}" th:utext="#{menu.applyNew}">ApplyNew</a>
+			<div th:if="${session?.user?.username}">
+				<div class="subnav">
+					<button class="subnavbtn">Staff Menu <i class="fa fa-caret-down"></i></button>
+					<div class="subnav-content">
+						<a th:href="@{/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
+						<a th:href="@{/staff/leave/new}" th:utext="#{menu.applyNew}">ApplyNew</a>
+						<a th:href="@{/staff/claim/list}" th:utext="#{menu.claimList}">ClaimList</a>
+						<a th:href="@{/staff/claim/new}" th:utext="#{menu.claimNew}">ClaimNew</a>
+					</div>
 				</div>
 			</div>
-
+			<div th:if="${session?.user?.username}" id="hiuser">
+				<div class="subnav">
+					<button class="subnavbtn">
+						<i>
+							<u th:text="'Hi, '+${session?.user?.username}" />
+						</i>
+					</button>
+					<div class="subnav-content">
+						<a th:href="@{/logout}" th:utext="#{menu.logout}">logout</a>
+					</div>
+				</div>
+			</div>
 		</nav>
-	</div>
-
-	<div th:fragment="header" id="header">
-		<div th:if="${not #strings.isEmpty(usession)}">
-			<h2><em th:utext="'Hello ' + ${session.usession.user.name}"></em></h2>
-		</div>
 	</div>
 </body>
