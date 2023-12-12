@@ -51,11 +51,11 @@ public class LapsApplication {
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
 			
-			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", LeaveApplicationStatusEnum.UPDATED,
+			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
-			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", LeaveApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
-			leaveRepo.save(new LeaveApplication(cherwah, "Why I can't leave", LeaveApplicationStatusEnum.REJECTED,
+			leaveRepo.save(new LeaveApplication(cherwah, null, ApplicationStatusEnum.REJECTED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,

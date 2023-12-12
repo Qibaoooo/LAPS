@@ -14,7 +14,7 @@
 		<table>
 			<tr class="listHeading" th:each="entry, stat : ${viewApplications}">
 				<td>
-					<h4 th:text="${entry.key.username}">Name</h4>
+					<h4 th:text="${entry.key.username}"></h4>
 					<div th:if="${#lists.isEmpty(entry.value)}">
 						<p>No Leave Applications</p>
 					</div>
