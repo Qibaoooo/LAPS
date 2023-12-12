@@ -1,19 +1,21 @@
 package sg.nus.iss.team11.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.exception.LeaveApplicationNotFound;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
@@ -21,8 +23,8 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.Role;
 import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @RequestMapping(value = "/staff")
@@ -35,7 +37,15 @@ public class LeaveApplicationController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	private LeaveDateValidator leavedatevalidator;
 
+	@InitBinder
+	private void initCourseBinder(WebDataBinder binder) {
+		binder.addValidators(leavedatevalidator);
+	}
+	
 	@RequestMapping(value = "leave/list")
 	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
@@ -56,8 +66,10 @@ public class LeaveApplicationController {
 	}
 
 	@PostMapping(value = "leave/new")
-	public String newLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result,
-			HttpSession session) {
+	public String newLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
+			HttpSession session, Model model) {
+
+		model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 
 		if (result.hasErrors()) {
 			return "staff-new-leave-application";
@@ -82,7 +94,7 @@ public class LeaveApplicationController {
 	}
 
 	@PostMapping(value = "leave/edit/{id}")
-	public String editLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result,
+	public String editLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
 			@PathVariable Integer id, HttpSession session) throws LeaveApplicationNotFound {
 		
 		if (result.hasErrors()) {
