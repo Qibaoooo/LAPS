@@ -135,5 +135,10 @@ public class User {
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
 	}
+	
+	public User setManager(User manager) {
+		this.managerId = manager.getUserId();
+		return this;
+	}
 
 }

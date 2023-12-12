@@ -40,17 +40,30 @@ public class LapsApplication {
 			User tin = userRepo.save(new User("tin", "password", staffRole));
 			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
 			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
-
+			userRepo.save(tin.setManager(esther));
+			userRepo.save(cherwah.setManager(esther));
+			userRepo.save(yuenkwan.setManager(esther));
+			userRepo.save(esther.setManager(esther));
+			
 			LeaveApplication la1 = new LeaveApplication(tin, "annual leave for tin", LeaveApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
 			LeaveApplication la2 = new LeaveApplication(esther, "annual leave for esther", LeaveApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
 			LeaveApplication la3 = new LeaveApplication(cherwah, "annual leave for cherwah", LeaveApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
+			LeaveApplication la4 = new LeaveApplication(cherwah, "Let me leave", LeaveApplicationStatusEnum.UPDATED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
+			LeaveApplication la5 = new LeaveApplication(esther, "Leave anytime I want", LeaveApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
+			LeaveApplication la6 = new LeaveApplication(cherwah, "Why I can't leave", LeaveApplicationStatusEnum.REJECTED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3));
 
 			leaveRepo.save(la1);
 			leaveRepo.save(la2);
 			leaveRepo.save(la3);
+			leaveRepo.save(la4);
+			leaveRepo.save(la5);
+			leaveRepo.save(la6);
 		};
 	}
 
