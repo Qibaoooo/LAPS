@@ -45,8 +45,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findSubordinates(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepo.findSubordinates(userId);
 	}
 	
 	@Override

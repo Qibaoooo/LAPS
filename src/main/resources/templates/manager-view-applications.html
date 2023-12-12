@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="layout.html :: html_head" />
 
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h2>View Subordinates' Leave Applications</h2>
-
+	
 	<div th:if="${#lists.isEmpty(viewApplications)}">
 		<p>No Leave Applications to view.</p>
 	</div>
 
 	<div th:if="${not #lists.isEmpty(viewApplications)}">
-		<table style=" border: 1;">
-			<tr class="listHeading">
-				<th><span th:text="#{fieldLabel.leaveApplicationId}"></span></th>
-				<th><span th:text="#{fieldLabel.user}"></span></th>
-				<th><span th:text="#{fieldLabel.type}"></span></th>
-				<th><span th:text="#{fieldLabel.description}"></span></th>
-				<th><span th:text="#{fieldLabel.startDate}"></span></th>
-				<th><span th:text="#{fieldLabel.endDate}"></span></th>
-				<th><span th:text="#{fieldLabel.status}"></span></th>
-				<th><span th:text="#{title.applicationDetails}"></span></th>
-			</tr>
-			<tr th:each="la: ${viewApplications}" class="listRecord">
-				<td align="left" th:text="${la.Id}"></td>
-				<td align="left" th:text="${la.user.username}"></td>
-				<td align="left" th:text="${la.type}"></td>
-				<td align="left" th:text="${la.description}">No Description</td>
-				<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
-				<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
-				<td align="left" th:text="${la.status}"></td>
-				<td><a th:href="@{/manager/process}+${la.Id}" class="btn btn-default">
-					<span th:text="#{caption.detail}"></span></a></td>
+		<table>
+			<tr class="listHeading" th:each="entry, stat : ${viewApplications}">
+				<td>
+					<h4 th:text="${entry.key.username}">Name</h4>
+					<div th:if="${#lists.isEmpty(entry.value)}">
+						<p>No Leave Applications</p>
+					</div>
+					<div th:if="${not #lists.isEmpty(entry.value)}">
+						<table style="border: 1;">
+							<tr class="listHeading">
+								<th th:utext="#{fieldLabel.leaveApplicationId}"></th>
+								<th th:utext="#{fieldLabel.user}"></th>
+								<th th:utext="#{fieldLabel.type}"></th>
+								<th th:utext="#{fieldLabel.description}"></th>
+								<th th:utext="#{fieldLabel.startDate}"></th>
+								<th th:utext="#{fieldLabel.endDate}"></th>
+								<th th:utext="#{fieldLabel.status}"></th>
+								<th th:utext="#{title.applicationDetails}"></th>
+							</tr>
+							<tr class="listRecord" th:each="la : ${entry.value}">
+								<td align="left" th:text="${la.id}"></td>
+								<td align="left" th:text="${la.user.username}"></td>
+								<td align="left" th:text="${la.type}"></td>
+								<td align="left" th:text="${la.description}">No Description</td>
+								<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
+								<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
+								<td align="left" th:text="${la.status}"></td>
+								<td><a th:href="@{/manager/process}+${la.Id}" class="btn btn-default">
+										<span th:text="#{caption.detail}"></span></a></td>
+							</tr>
+						</table>
+					</div>
+				</td>
 			</tr>
 		</table>
 	</div>
