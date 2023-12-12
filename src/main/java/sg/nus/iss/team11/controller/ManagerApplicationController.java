@@ -44,7 +44,7 @@ public class ManagerApplicationController {
 	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("User");
+		User currentManager = (User) session.getAttribute("user");
 		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
@@ -84,7 +84,7 @@ public class ManagerApplicationController {
 	@RequestMapping(value = "/history")
 	public String viewApplicationsHistory(HttpSession session, Model model) {
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("User");
+		User currentManager = (User) session.getAttribute("user");
 		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
