@@ -23,6 +23,14 @@
 					</div>
 				</div>
 			</div>
+			<div th:if="${session?.user?.username}">
+				<div th:if="${session.user.role.roleId=='manager'}" class="subnav">
+					<button class="subnavbtn">Manager Menu <i class="fa fa-caret-down"></i></button>
+					<div class="subnav-content">
+						<a th:href="@{/manager/history}" th:utext="#{menu.leaveList}">Leave History</a>
+					</div>
+				</div>
+			</div>
 			<div th:if="${session?.user?.username}" id="hiuser">
 				<div class="subnav">
 					<button class="subnavbtn">
