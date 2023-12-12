@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout.html :: html_head" />
+
+<body>
+	<div th:replace="layout.html :: menu" />
+	<h3>New Compensation Claim Page</h3>
+	<form action="#" th:action="@{/staff/claim/new}" th:object="${claim}" method="post">
+		<table>
+			<tbody>
+				<tr>
+					<td><span th:text="#{fieldLabel.overtimeDate}"></span></td>
+					<td><input type="date" th:value="*{overTimeDate}" th:field="*{overTimeDate}" /></td>
+					<td th:if="${#fields.hasErrors('overTimeDate')}" th:errors="*{overTimeDate}"></td>
+				</tr>
+				<tr>
+					<td><span th:text="#{fieldLabel.overtimeTime}"></span></td>
+					<td>
+						<select name="overtimeTime">
+							<option th:each="choice : ${timeChoices}" th:text="${choice}">
+							</option>
+						</select>
+					</td>
+					<td th:if="${#fields.hasErrors('overtimeTime')}" th:errors="*{overtimeTime}"></td>
+				</tr>
+				<tr>
+					<td><span th:text="#{fieldLabel.description}"></span></td>
+					<td>
+						<textarea th:field="*{description}" rows="5" cols="30">
+    						description of the claim
+						</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="Create" class="blcass" />
+						<input type="reset" value="Reset" class="blcass" onclick="this.form.reset();"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</body>
+
+</html>
