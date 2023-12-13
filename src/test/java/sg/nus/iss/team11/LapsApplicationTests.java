@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import sg.nus.iss.team11.model.*;
 import sg.nus.iss.team11.repository.UserRepository;
 
 @SpringBootTest
@@ -15,5 +14,7 @@ class LapsApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
+	}
 
 }
