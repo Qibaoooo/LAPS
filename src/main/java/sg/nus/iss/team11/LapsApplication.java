@@ -46,6 +46,18 @@ public class LapsApplication {
 			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
 			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
 
+			userRepo.save(tin.setManager(esther));
+			userRepo.save(cherwah.setManager(esther));
+			userRepo.save(yuenkwan.setManager(esther));
+			userRepo.save(esther.setManager(esther));
+			
+			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(cherwah, null, ApplicationStatusEnum.REJECTED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(esther, "annual leave for esther", ApplicationStatusEnum.APPLIED,
@@ -79,6 +91,7 @@ public class LapsApplication {
 					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+
 
 		};
 	}
