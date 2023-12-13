@@ -16,6 +16,4 @@ class LapsApplicationTests {
 	@Test
 	void contextLoads() {
 
-	}
-
 }
