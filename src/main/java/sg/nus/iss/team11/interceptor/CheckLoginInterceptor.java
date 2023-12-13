@@ -30,6 +30,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
 				"style.css", 
 				"about",
 				"login", 
+				"logout", 
 				"home",
 				"authenticate");
 		
