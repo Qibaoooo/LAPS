@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(LAPSUser user) {
 		userRepo.delete(user);
 	}
-
+	
 	@Override
 	public LAPSUser findUserByUsername(String username) {
-		return userRepo.findLAPSUserByUsername(username);
+		return userRepo.findLAPSUserByUsername(username).orElseThrow();
 	}
 
 	@Override

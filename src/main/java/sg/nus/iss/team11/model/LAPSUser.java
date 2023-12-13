@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "users")
+@Table(name = "laps_users")
 public class LAPSUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,13 @@
 package sg.nus.iss.team11;
 
 import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
@@ -26,6 +29,9 @@ public class LapsApplication {
 		SpringApplication.run(LapsApplication.class, args);
 	}
 
+	@Autowired
+	PasswordEncoder encoder;
+
 	@Bean
 	CommandLineRunner loadData(UserRepository userRepo, LeaveApplicationRepository leaveRepo, RoleRepository roleRepo,
 			CompensationClaimRepository claimRepo) {
@@ -40,12 +46,12 @@ public class LapsApplication {
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", "password", adminRole));
-			LAPSUser esther = userRepo.save(new LAPSUser("esther", "password", managerRole));
-			LAPSUser tin = userRepo.save(new LAPSUser("tin", "password", staffRole));
-			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", "password", staffRole));
-			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", "password", staffRole));
-			
+			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", this.encoder.encode("password"), adminRole));
+			LAPSUser esther = userRepo.save(new LAPSUser("esther", this.encoder.encode("password"), managerRole));
+			LAPSUser tin = userRepo.save(new LAPSUser("tin", this.encoder.encode("password"), staffRole));
+			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", this.encoder.encode("password"), staffRole));
+			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", this.encoder.encode("password"), staffRole));
+
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);
 			yuenkwan.setAnnualLeaveEntitlement(14);
@@ -55,7 +61,7 @@ public class LapsApplication {
 			userRepo.save(cherwah.setManager(esther));
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
-			
+
 			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
@@ -96,7 +102,6 @@ public class LapsApplication {
 					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
-
 
 		};
 	}

@@ -1,16 +1,18 @@
 package sg.nus.iss.team11.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LAPSUser;
 
+@Repository
 public interface UserRepository extends JpaRepository<LAPSUser, Integer> {
-	LAPSUser findLAPSUserByUsername(String username);
+	Optional<LAPSUser> findLAPSUserByUsername(String username);
 
 	@Query("SELECT s FROM LAPSUser s WHERE s.managerId = :managerId")
 	List<LAPSUser> findSubordinates(@Param("managerId") Integer managerId);
@@ -19,3 +21,4 @@ public interface UserRepository extends JpaRepository<LAPSUser, Integer> {
 	LAPSUser findLAPSUserByNamePwd(@Param("username")String username, @Param("password")String password);
 	
 }
+	
