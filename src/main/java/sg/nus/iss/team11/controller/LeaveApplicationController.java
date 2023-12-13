@@ -116,6 +116,6 @@ public class LeaveApplicationController {
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
 		return "redirect:/staff/leave/list";
-	}
+	}	
 
 }
