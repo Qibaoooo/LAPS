@@ -34,11 +34,11 @@
 								<td align="left" th:text="${la.id}"></td>
 								<td align="left" th:text="${la.user.username}"></td>
 								<td align="left" th:text="${la.type}"></td>
-								<td align="left" th:text="${la.description}">No Description</td>
+								<td align="left" th:text="${la.description} ? ${la.description} : 'No Description'"></td>
 								<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
 								<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
 								<td align="left" th:text="${la.status}"></td>
-								<td><a th:href="@{/manager/process}+${la.Id}" class="btn btn-default">
+								<td><a th:href="@{/manager/process/}+${la.id}" th:method="get" class="btn btn-default">
 										<span th:text="#{caption.detail}"></span></a></td>
 							</tr>
 						</table>
