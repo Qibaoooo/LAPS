@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,17 @@ import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @RequestMapping(value = "/api")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class APILeaveApplicationController {
+	
+
+	/*
+	 * All methods below this comment is for API end points. API end points are for
+	 * ReactJS front end. If you are adding methods for Java Spring MVC (part of our
+	 * compulsory feature), please add them to the controller without 'API' in the name.
+	 * 
+	 */
+	
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
 
@@ -64,13 +75,13 @@ public class APILeaveApplicationController {
 
 		leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId()).forEach((l) -> {
 			JSONObject leave = new JSONObject();
-			leave.put("", l.getId());
-			leave.put("", l.getComment());
-			leave.put("", l.getDescription());
-			leave.put("", l.getFromDate());
-			leave.put("", l.getToDate());
-			leave.put("", l.getStatus().toString());
-			leave.put("", l.getType());
+			leave.put("id", l.getId());
+			leave.put("comment", l.getComment());
+			leave.put("description", l.getDescription());
+			leave.put("fromDate", l.getFromDate());
+			leave.put("toDate", l.getToDate());
+			leave.put("status", l.getStatus().toString());
+			leave.put("type", l.getType());
 			
 			leaveList.put(leave);
 		});
