@@ -72,7 +72,7 @@ public class ManagerApplicationController {
 	@GetMapping(value = "/process/{id}")
 	public String viewApplicationById(@PathVariable int id, Model model) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
-		model.addAttribute("application", application);
+		model.addAttribute("la", application);
 		System.out.println(application.getId());
 		model.addAttribute("test", application.getId());
 		return "manager-application-details";
@@ -86,7 +86,8 @@ public class ManagerApplicationController {
 		    } else {
 		      application.setStatus(ApplicationStatusEnum.REJECTED);
 		    }
-		return "redirect:manager/view";
+		leaveApplicationService.updateLeaveApplication(application);
+		return "redirect:/manager/view";
 	}
 
 	// ------------------------------------------------------//

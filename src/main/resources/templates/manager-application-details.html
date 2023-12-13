@@ -9,31 +9,35 @@
 	<table>
 		<tr>
 			<td><span th:utext="#{fieldLabel.leaveApplicationId}"></span></td>
-			<td><span th:text="${test}"></span></td>
+			<td><span th:text="${la.id}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.user}"></span></td>
+			<td><span th:text="${la.user.username}"></span></td>
 		</tr>
 		<tr>
 			<td><span th:utext="#{fieldLabel.type}"></span></td>
-			<td><span th:text="${application.type}"></span></td>
+			<td><span th:text="${la.type}"></span></td>
 		</tr>
 		<tr>
 			<td><span th:utext="#{fieldLabel.description}"></span></td>
-			<td><span th:text="${application.description}"></span></td>
+			<td><span th:text="${la.description}"></span></td>
 		</tr>
 		<tr>
 			<td><span th:utext="#{fieldLabel.startDate}"></span></td>
-			<td><span th:text="${#temporals.format(application.fromDate, 'yyyy-MM-dd')}"></span></td>
+			<td><span th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></span></td>
 		</tr>
 		<tr>
 			<td><span th:utext="#{fieldLabel.endDate}"></span></td>
-			<td><span th:text="${#temporals.format(application.toDate, 'yyyy-MM-dd')}"></span></td>
+			<td><span th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></span></td>
 		</tr>
 		<tr>
 			<td><span th:utext="#{fieldLabel.status}"></span></td>
-			<td><span th:text="${application.status}"></span></td>
+			<td><span th:text="${la.status}"></span></td>
 		</tr>
 	</table>
 	
-	<form action="#" th:action="@{/manager/process/}+${application.id}" method="post">
+	<form action="#" th:action="@{/manager/process/}+${la.id}" method="post">
     <table>
       <tr>
         <td>
@@ -51,7 +55,6 @@
             <input th:type="submit" th:value="Update" class="blcass" />
           </fieldset>
         </td>
-
       </tr>
     </table>
 
