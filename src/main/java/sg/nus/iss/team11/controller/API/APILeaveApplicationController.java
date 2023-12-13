@@ -22,7 +22,7 @@ import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
@@ -69,7 +69,7 @@ public class APILeaveApplicationController {
 	@GetMapping(value = "leave/list")
 	public ResponseEntity<String> leaveList(HttpSession session, HttpServletResponse response) {
 
-		User user = (User) session.getAttribute("user");
+		LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		JSONArray leaveList = new JSONArray();
 

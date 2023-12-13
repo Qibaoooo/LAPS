@@ -12,7 +12,7 @@ import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.Role;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.repository.CompensationClaimRepository;
 import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 import sg.nus.iss.team11.repository.RoleRepository;
@@ -40,11 +40,11 @@ public class LapsApplication {
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			User adminUser = userRepo.save(new User("adminUser", "password", adminRole));
-			User esther = userRepo.save(new User("esther", "password", managerRole));
-			User tin = userRepo.save(new User("tin", "password", staffRole));
-			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
-			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
+			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", "password", adminRole));
+			LAPSUser esther = userRepo.save(new LAPSUser("esther", "password", managerRole));
+			LAPSUser tin = userRepo.save(new LAPSUser("tin", "password", staffRole));
+			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", "password", staffRole));
+			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", "password", staffRole));
 			
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);

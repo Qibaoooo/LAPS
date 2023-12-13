@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.service.UserService;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -24,12 +24,12 @@ public class LoginController {
 
 	@RequestMapping(value = { "/", "/login", "/home" }, method = RequestMethod.GET)
 	public String login(Model model) {
-		model.addAttribute("user", new User());
+		model.addAttribute("user", new LAPSUser());
 		return "login";
 	}
 
 	@PostMapping("/login/authenticate")
-	public String login(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model,
+	public String login(@ModelAttribute("user") @Valid LAPSUser user, BindingResult bindingResult, Model model,
 			HttpSession session) {
 		// Checking for empty Username and Password
 		if (bindingResult.hasErrors()) {
@@ -37,7 +37,7 @@ public class LoginController {
 		}
 
 		// Authenticating Username and password from database
-		User searchedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
+		LAPSUser searchedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
 		if (searchedUser == null) {
 			model.addAttribute("loginMessage", "Incorrect username/password");
 			return "login";

@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class LAPSUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
@@ -38,7 +38,7 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<CompensationClaim> compensationClaim;
 	
-	public User(String username, String password, int annualLeaveEntitlement, int medicalLeaveEntitlement,
+	public LAPSUser(String username, String password, int annualLeaveEntitlement, int medicalLeaveEntitlement,
 			int compensationLeaveEntitlement, Role role, ArrayList<LeaveApplication> leaveApplications) {
 		super();
 		this.username = username;
@@ -50,20 +50,20 @@ public class User {
 		this.leaveApplications = leaveApplications;
 	}
 
-	public User(String username, String password, Role role) {
+	public LAPSUser(String username, String password, Role role) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
 
-	public User(String username, String password) {
+	public LAPSUser(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
 
-	public User() {
+	public LAPSUser() {
 		super();
 	}
 
@@ -139,7 +139,7 @@ public class User {
 		this.managerId = managerId;
 	}
 	
-	public User setManager(User manager) {
+	public LAPSUser setManager(LAPSUser manager) {
 		this.managerId = manager.getUserId();
 		return this;
 	}

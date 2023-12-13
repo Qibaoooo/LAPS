@@ -20,7 +20,7 @@ public class LeaveApplication {
 	private int id;
   
 	@ManyToOne()
-	private User user;
+	private LAPSUser user;
 
 	// comment is for manager to input
 	private String comment;
@@ -44,7 +44,7 @@ public class LeaveApplication {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate toDate;
 
-	public LeaveApplication(User user, String description, ApplicationStatusEnum status,
+	public LeaveApplication(LAPSUser user, String description, ApplicationStatusEnum status,
 			LeaveApplicationTypeEnum type, LocalDate fromDate, LocalDate toDate) {
 		super();
 		this.user = user;
@@ -67,11 +67,11 @@ public class LeaveApplication {
 		this.id = id;
 	}
 
-	public User getUser() {
+	public LAPSUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(LAPSUser user) {
 		this.user = user;
 	}
 

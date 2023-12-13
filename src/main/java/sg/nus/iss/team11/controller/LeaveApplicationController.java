@@ -23,7 +23,7 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
@@ -49,7 +49,7 @@ public class LeaveApplicationController {
 	@RequestMapping(value = "leave/list")
 	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
@@ -74,7 +74,7 @@ public class LeaveApplicationController {
 			return "staff-new-leave-application";
 		}
 
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 		leaveApplication.setUser(user);
 		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);

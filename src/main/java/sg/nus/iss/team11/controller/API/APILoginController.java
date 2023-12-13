@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.service.UserService;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -33,7 +33,7 @@ public class APILoginController {
 	 */
 
 	@PostMapping(value = "/api/login/authenticate")
-	public ResponseEntity<String> apiLogin(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+	public ResponseEntity<String> apiLogin(@ModelAttribute("user") @Valid LAPSUser user, BindingResult bindingResult,
 			HttpSession session, HttpServletResponse response) {
 		// Checking for empty Username and Password
 		if (bindingResult.hasErrors()) {
@@ -41,7 +41,7 @@ public class APILoginController {
 		}
 
 		// Authenticating Username and password from database
-		User searchedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
+		LAPSUser searchedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
 		if (searchedUser == null) {
 			return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
 		}

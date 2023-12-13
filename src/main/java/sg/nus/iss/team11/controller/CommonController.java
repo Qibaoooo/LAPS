@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 public class CommonController {
@@ -29,7 +29,7 @@ public class CommonController {
 	
 	@GetMapping(value = "/api/userinfo")
 	public ResponseEntity<String> getUserInfo(HttpSession session, HttpServletResponse response) {
-		User user = (User) session.getAttribute("user");
+		LAPSUser user = (LAPSUser) session.getAttribute("user");
 		
 		JSONObject json = new JSONObject();
 		json.put("username", user.getUsername());

@@ -20,7 +20,7 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 @RequestMapping(value = "/staff")
@@ -38,7 +38,7 @@ public class CompensationClaimController {
 	@RequestMapping(value = "claim/list")
 	public String staffCompensationClaimList(Model model, HttpSession session) {
 
-		User user = (User) session.getAttribute("user");
+		LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		List<CompensationClaim> ccList = compensationClaimService.findCompensationClaimsByUserId(user.getUserId());
 		model.addAttribute("ccList", ccList);
@@ -63,7 +63,7 @@ public class CompensationClaimController {
 			return "staff-new-compensation-claim";
 		}
 		
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 	    compensationClaim.setUser(user);
 	    compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
 	    compensationClaimService.createCompensationClaim(compensationClaim);

@@ -18,7 +18,7 @@ import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 @RequestMapping(value = "/manager")
@@ -48,11 +48,11 @@ public class ManagerApplicationController {
 	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("user");
-		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
+		LAPSUser currentManager = (LAPSUser) session.getAttribute("user");
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
-		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
-		for (User u : subordinates) {
+		Map<LAPSUser, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
+		for (LAPSUser u : subordinates) {
 			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsToProcess(u.getUserId());
 			if (userLAList != null) {
 				subordinate2LAs.put(u, userLAList);
@@ -102,11 +102,11 @@ public class ManagerApplicationController {
 	@RequestMapping(value = "/history")
 	public String viewApplicationsHistory(HttpSession session, Model model) {
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("user");
-		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
+		LAPSUser currentManager = (LAPSUser) session.getAttribute("user");
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
-		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
-		for (User u : subordinates) {
+		Map<LAPSUser, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
+		for (LAPSUser u : subordinates) {
 			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsByUserId(u.getUserId());
 			if (userLAList != null) {
 				subordinate2LAs.put(u, userLAList);
