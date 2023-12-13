@@ -13,15 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class LeaveApplication {
-
+public class CompensationClaim {
 	@Id
 	@GeneratedValue
 	private int id;
-  
+	
 	@ManyToOne()
 	private User user;
-
+	
 	// comment is for manager to input
 	private String comment;
 
@@ -31,32 +30,25 @@ public class LeaveApplication {
 	@Column(name = "status", columnDefinition = "ENUM('APPLIED', 'UPDATED', 'REJECTED', 'APPROVED', 'CANCELLED', 'DELETED')")
 	@Enumerated(EnumType.STRING)
 	private ApplicationStatusEnum status;
-
-	@Column(name = "type", columnDefinition = "ENUM('MedicalLeave', 'AnnualLeave', 'CompensationLeave')")
+	
+	@Column(name = "compensation_time", columnDefinition = "ENUM('AM', 'PM', 'WHOLEDAY')")
 	@Enumerated(EnumType.STRING)
-	private LeaveApplicationTypeEnum type;
-
-	@Column(name = "fromdate")
+	private CompensationClaimTimeEnum overtimeTime;
+	
+	@Column(name = "overtime_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate fromDate;
+	private LocalDate overtimeDate;
+	
+	public CompensationClaim() {}
 
-	@Column(name = "todate")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate toDate;
-
-	public LeaveApplication(User user, String description, ApplicationStatusEnum status,
-			LeaveApplicationTypeEnum type, LocalDate fromDate, LocalDate toDate) {
+	public CompensationClaim(User user, String description, ApplicationStatusEnum status,
+			CompensationClaimTimeEnum overtimeTime, LocalDate overTimeDate) {
 		super();
 		this.user = user;
 		this.description = description;
 		this.status = status;
-		this.type = type;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-	}
-
-	public LeaveApplication() {
-		super();
+		this.overtimeTime = overtimeTime;
+		this.overtimeDate = overTimeDate;
 	}
 
 	public int getId() {
@@ -83,6 +75,14 @@ public class LeaveApplication {
 		this.comment = comment;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public ApplicationStatusEnum getStatus() {
 		return status;
 	}
@@ -91,36 +91,20 @@ public class LeaveApplication {
 		this.status = status;
 	}
 
-	public LeaveApplicationTypeEnum getType() {
-		return type;
+	public CompensationClaimTimeEnum getOvertimeTime() {
+		return overtimeTime;
 	}
 
-	public void setType(LeaveApplicationTypeEnum type) {
-		this.type = type;
+	public void setOvertimeTime(CompensationClaimTimeEnum overtimeTime) {
+		this.overtimeTime = overtimeTime;
 	}
 
-	public LocalDate getFromDate() {
-		return fromDate;
+	public LocalDate getOverTimeDate() {
+		return overtimeDate;
 	}
 
-	public void setFromDate(LocalDate fromDate) {
-		this.fromDate = fromDate;
-	}
-
-	public LocalDate getToDate() {
-		return toDate;
-	}
-
-	public void setToDate(LocalDate toDate) {
-		this.toDate = toDate;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setOverTimeDate(LocalDate overTimeDate) {
+		this.overtimeDate = overTimeDate;
 	}
 
 }

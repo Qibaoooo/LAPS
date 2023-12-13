@@ -7,12 +7,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.User;
 
@@ -44,7 +48,7 @@ public class ManagerApplicationController {
 	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("User");
+		User currentManager = (User) session.getAttribute("user");
 		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
@@ -65,11 +69,25 @@ public class ManagerApplicationController {
 	// 2.Create a html page, showing id, name, description,
 	// from date, end date, type, status, maybe entitlementleft?
 	// ------------------------------------------------------//
-	@RequestMapping(value = "/process/{id}")
+	@GetMapping(value = "/process/{id}")
 	public String viewApplicationById(@PathVariable int id, Model model) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
-		model.addAttribute("application", application);
+		model.addAttribute("la", application);
+		System.out.println(application.getId());
+		model.addAttribute("test", application.getId());
 		return "manager-application-details";
+	}
+	
+	@PostMapping(value = "/process/{id}")
+	public String approveOrRejectApplication(@RequestParam String decision, @PathVariable int id) {
+		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
+		if (decision.equalsIgnoreCase(ApplicationStatusEnum.APPROVED.toString())) {
+		      application.setStatus(ApplicationStatusEnum.APPROVED);
+		    } else {
+		      application.setStatus(ApplicationStatusEnum.REJECTED);
+		    }
+		leaveApplicationService.updateLeaveApplication(application);
+		return "redirect:/manager/view";
 	}
 
 	// ------------------------------------------------------//
@@ -84,7 +102,7 @@ public class ManagerApplicationController {
 	@RequestMapping(value = "/history")
 	public String viewApplicationsHistory(HttpSession session, Model model) {
 		// Need to add session-related codes, to retrieve subordinates
-		User currentManager = (User) session.getAttribute("User");
+		User currentManager = (User) session.getAttribute("user");
 		List<User> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		Map<User, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
