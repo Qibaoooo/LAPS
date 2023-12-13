@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="layout.html :: html_head" />
 
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h2>Process Leave Application</h2>
+
+	<table>
+		<tr>
+			<td><span th:utext="#{fieldLabel.leaveApplicationId}"></span></td>
+			<td><span th:text="${test}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.type}"></span></td>
+			<td><span th:text="${application.type}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.description}"></span></td>
+			<td><span th:text="${application.description}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.startDate}"></span></td>
+			<td><span th:text="${#temporals.format(application.fromDate, 'yyyy-MM-dd')}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.endDate}"></span></td>
+			<td><span th:text="${#temporals.format(application.toDate, 'yyyy-MM-dd')}"></span></td>
+		</tr>
+		<tr>
+			<td><span th:utext="#{fieldLabel.status}"></span></td>
+			<td><span th:text="${application.status}"></span></td>
+		</tr>
+	</table>
+	
+	<form action="#" th:action="@{/manager/process/}+${application.id}" method="post">
+    <table>
+      <tr>
+        <td>
+          <fieldset>
+            <input type="radio" name="decision" th:value="APPROVED" />
+            <label th:text="#{caption.approve}"></label> &nbsp;&nbsp; 
+            <input type="radio" name="decision" th:value="REJECTED" /> 
+            <label th:text="#{caption.reject}"></label>
+          </fieldset>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <fieldset>
+            <input th:type="submit" th:value="Update" class="blcass" />
+          </fieldset>
+        </td>
+
+      </tr>
+    </table>
+
+  </form>
 </body>
 
 </html>

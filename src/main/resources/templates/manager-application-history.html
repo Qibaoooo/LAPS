@@ -15,7 +15,7 @@
 		<table>
 			<tr class="listHeading" th:each="entry, stat : ${viewApplications}">
 				<td>
-					<h4 th:text="${entry.key.username}">Name</h4>
+					<h4 th:text="${entry.key.username}"></h4>
 					<div th:if="${#lists.isEmpty(entry.value)}">
 						<p>No Leave Applications</p>
 					</div>
@@ -29,18 +29,15 @@
 								<th th:utext="#{fieldLabel.startDate}"></th>
 								<th th:utext="#{fieldLabel.endDate}"></th>
 								<th th:utext="#{fieldLabel.status}"></th>
-								<th th:utext="#{title.applicationDetails}"></th>
 							</tr>
 							<tr class="listRecord" th:each="la : ${entry.value}">
 								<td align="left" th:text="${la.id}"></td>
 								<td align="left" th:text="${la.user.username}"></td>
 								<td align="left" th:text="${la.type}"></td>
-								<td align="left" th:text="${la.description}">No Description</td>
+								<td align="left" th:text="${la.description} ? ${la.description} : 'No Description'"></td>
 								<td align="left" th:text="${#temporals.format(la.fromDate, 'yyyy-MM-dd')}"></td>
 								<td align="left" th:text="${#temporals.format(la.toDate, 'yyyy-MM-dd')}"></td>
 								<td align="left" th:text="${la.status}"></td>
-								<td><a th:href="@{/manager/process}+${la.Id}" class="btn btn-default">
-										<span th:text="#{caption.detail}"></span></a></td>
 							</tr>
 						</table>
 					</div>
