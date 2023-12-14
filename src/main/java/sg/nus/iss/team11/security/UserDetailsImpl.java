@@ -39,7 +39,7 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(LAPSUser user) {
-		List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getName()));
+		List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getRoleId()));
 
 		return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getPassword(), authorities);
 

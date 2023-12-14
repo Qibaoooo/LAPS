@@ -1,8 +1,10 @@
 package sg.nus.iss.team11.controller.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import sg.nus.iss.team11.model.LAPSUser;
@@ -13,6 +15,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepo;
 	
+	@Autowired
+	PasswordEncoder encoder;
+
 	@Override
 	public List<LAPSUser> findAllUsers() {
 		return userRepo.findAll();
@@ -50,7 +55,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public LAPSUser authenticateUser(String username, String password) {
-		return userRepo.findLAPSUserByNamePwd(username, password);
+		Optional<LAPSUser> user = userRepo.findLAPSUserByUsername(username);
+		if (user.isEmpty()) {
+			return null;
+		}
+		
+		if (this.encoder.matches(password, user.get().getPassword())) {
+			return user.get();
+		}
+		return null;
 	}
 
 }

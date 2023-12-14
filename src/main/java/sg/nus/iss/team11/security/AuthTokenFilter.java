@@ -25,11 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   private UserDetailsServiceImpl userDetailsService;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
-
-  @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-	    return request.getServletPath().startsWith("/api/auth");
-	}
+  
   
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
