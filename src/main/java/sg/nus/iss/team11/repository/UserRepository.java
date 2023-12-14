@@ -20,10 +20,10 @@ public interface UserRepository extends JpaRepository<LAPSUser, Integer> {
 	@Query("SELECT s From LAPSUser s WHERE s.username = :username AND s.password = :password")
 	LAPSUser findLAPSUserByNamePwd(@Param("username")String username, @Param("password")String password);
 	
-	@Query("SELECT DISTINCT s.managerId From User s")
+	@Query("SELECT DISTINCT s.managerId From LAPSUser s")
 	List<Integer> findAllManagerId();
 	
-	@Query("SELECT MAX(u.userId) FROM User u")
+	@Query("SELECT MAX(u.userId) FROM LAPSUser u")
 	int findMaxId();
 }
 	

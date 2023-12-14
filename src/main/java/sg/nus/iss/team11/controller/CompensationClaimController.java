@@ -21,6 +21,7 @@ import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
+@RequestMapping(value = "/v1/staff")
 public class CompensationClaimController {
 
 	@Autowired
