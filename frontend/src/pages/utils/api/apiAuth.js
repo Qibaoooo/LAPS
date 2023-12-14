@@ -1,14 +1,14 @@
 import axios from "axios";
-import { JsonHeaders } from "./properties";
+import { getJsonHeaders, getJsonHeadersWithJWT } from "../properties";
 
-let signup = (u, p) => {
+let login = (u, p) => {
   return axios.post(
     "http://localhost:8080/api/auth/login",
     { username: u, password: p },
     {
-      headers: JsonHeaders,
+      headers: getJsonHeaders(),
     }
   );
 };
 
-export { signup };
+export { login };

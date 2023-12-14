@@ -1,12 +1,13 @@
 import React from "react";
 import MyNavBar from "./components/myNavBar";
+import LoginCheckWrapper from "./components/loginCheckWrapper";
 
 function StaffClaimList() {
   return (
-    <div>
+    <LoginCheckWrapper>
       <MyNavBar></MyNavBar>
       StaffClaimList
-    </div>
+    </LoginCheckWrapper>
   );
 }
 

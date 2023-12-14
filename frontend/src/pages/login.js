@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import { Alert, Container, Stack } from "react-bootstrap";
 import MyNavBar from "./components/myNavBar";
-import { signup } from "./utils/apiAuth";
-import { setUserinfo } from "./utils/userinfo"
+import { login } from "./utils/api/apiAuth";
+import { getUserinfo, setUserinfo } from "./utils/userinfo";
 
 function LoginPage() {
   const [username, setUsername] = useState();
@@ -15,19 +15,34 @@ function LoginPage() {
   const onInputUN = ({ target: { value } }) => setUsername(value);
   const onInputPW = ({ target: { value } }) => setPassword(value);
 
+  useEffect(() => {
+    if (getUserinfo()) {
+      // alr logged in, redirect
+      if (getUserinfo().role === "staff") {
+        window.location.href = "/staff";
+      } else {
+        window.location.href = "/";
+      }
+    }
+  }, []);
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await signup(username, password);
-    if (response.status == 200) {      
-      console.log(JSON.stringify(response.data.username))
-      setUserinfo(response.data)
-      // window.location.reload()
-      window.location.href = "/staff"
-    } else {
-      setAlertMsg(await response.text())
-      setShowAlert(true);
-    }
+    login(username, password)
+      .then((response) => {
+        if (response.status == 200) {
+          console.log(JSON.stringify(response.data.username));
+          setUserinfo(response.data);
+          // window.location.reload()
+          window.location.href = "/staff";
+        }
+      })
+      .catch((error) => {
+        if (error.response.status == 401) {
+          setAlertMsg("incorrect username/password.");
+          setShowAlert(true);
+        }
+      });
   };
 
   return (
@@ -53,10 +68,10 @@ function LoginPage() {
             />
           </Form.Group>
           <Button variant="primary" type="submit" onClick={onFormSubmit}>
-            Submit
+            Login
           </Button>
         </Stack>
-        <Container className="m-5">
+        <Container className="col-md-4 mt-5">
           <Alert show={showAlert} variant="warning">
             <p>Login failed, error msg: </p>
             <p>{alertMsg}</p>

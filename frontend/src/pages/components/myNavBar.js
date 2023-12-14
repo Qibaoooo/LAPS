@@ -1,40 +1,51 @@
 import Cookies from "js-cookie";
 import React from "react";
-import { Navbar, Container, Nav, NavDropdown, Row } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  NavDropdown,
+  Row,
+  Button,
+} from "react-bootstrap";
+import { getUserinfo } from "../utils/userinfo";
+import { logout } from "../utils/api/apiAuth";
 
 function MyNavBar(props) {
-  let cookie = Cookies.get("LAPS_USERINFO");
-  let userinfo;
-  if (cookie) {
-    userinfo = JSON.parse(cookie);
-  }
+  let userinfo = getUserinfo();
 
   const handleLogout = () => {
-    fetch("http://localhost:8080/api/logout", {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS",
-        "Access-Control-Allow-Credentials": true,
-      },
-    }).then((r) => {
-      // window.location.reload()
-      Cookies.remove("LAPS_USERINFO");
-    });
+    localStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
-    <Navbar className="bg-body-tertiary justify-content-between">
+    <Navbar
+      bg="primary"
+      className="justify-content-between"
+      style={{ color: "white" }}
+    >
       <Container className="justify-content-start">
-        <Navbar.Brand href="/home">LAPS</Navbar.Brand>
+        <Navbar.Brand href="/home">
+          <h3
+            style={{
+              color: "white",
+              paddingLeft: "20px",
+              textDecoration: "underline",
+            }}
+          >
+            {" "}
+            LAPS{" "}
+          </h3>
+        </Navbar.Brand>
         <Nav.Link className="mx-3" href="/home">
           Home
         </Nav.Link>
-        <Nav.Link className="mx-3" href="/login">
-          Login
-        </Nav.Link>
+        {!userinfo && (
+          <Nav.Link className="mx-3" href="/login">
+            Login
+          </Nav.Link>
+        )}
         <NavDropdown className="mx-3" title="Staff" id="basic-nav-dropdown">
           <NavDropdown.Item href="/staff/leave/list">
             View Leave Applications
@@ -51,13 +62,18 @@ function MyNavBar(props) {
           <NavDropdown.Divider />
         </NavDropdown>
       </Container>
-      <Container className="justify-content-end mx-3">
-        <Nav.Link className="mx-3" href="">
-          Hello {userinfo ? userinfo.username : "User"}
-        </Nav.Link>
-        <Nav.Link className="mx-3" onClick={handleLogout}>
-          logout
-        </Nav.Link>
+      <Container
+        className="justify-content-end mx-3"
+        style={{ alignItems: "baseline" }}
+      >
+        <h6 className="mx-3" href="">
+          hello, {userinfo ? userinfo.username : "User"}
+        </h6>
+        {userinfo && (
+          <Button className="" onClick={handleLogout} variant="dark" size="sm">
+            logout
+          </Button>
+        )}
       </Container>
     </Navbar>
   );
