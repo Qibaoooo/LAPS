@@ -42,7 +42,11 @@ public class LapsApplication {
 
 			User adminUser = userRepo.save(new User("adminUser", "password", adminRole));
 			User esther = userRepo.save(new User("esther", "password", managerRole));
-			User tin = userRepo.save(new User("tin", "password", staffRole));
+			
+			//Testing for tin
+			User tin = new User("tin", "password", staffRole);
+			tin.setAnnualLeaveEntitlement(18);
+			tin = userRepo.save(tin);
 			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
 			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
 			
@@ -55,13 +59,13 @@ public class LapsApplication {
 			userRepo.save(cherwah.setManager(esther));
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
-			
 			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(cherwah, null, ApplicationStatusEnum.REJECTED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+
 
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
