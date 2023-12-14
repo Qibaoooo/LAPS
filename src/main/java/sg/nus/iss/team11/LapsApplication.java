@@ -41,20 +41,20 @@ public class LapsApplication {
 			leaveRepo.deleteAll();
 			userRepo.deleteAll();
 			roleRepo.deleteAll();
-
+			
 			Role adminRole = roleRepo.save(new Role("admin", "Administrator", "System administrator"));
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", "password", adminRole));
-			LAPSUser esther = userRepo.save(new LAPSUser("esther", "password", managerRole));
+			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", encoder.encode("password"), adminRole));
+			LAPSUser esther = userRepo.save(new LAPSUser("esther", encoder.encode("password"), managerRole));
 			
 			//Testing for tin
-			LAPSUser tin = new LAPSUser("tin", "password", staffRole);
+			LAPSUser tin = new LAPSUser("tin", encoder.encode("password"), staffRole);
 			tin.setAnnualLeaveEntitlement(18);
 			tin = userRepo.save(tin);
-			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", "password", staffRole));
-			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", "password", staffRole));
+			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", encoder.encode("password"), staffRole));
+			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", encoder.encode("password"), staffRole));
 			
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);
