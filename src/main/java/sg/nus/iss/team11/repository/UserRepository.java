@@ -18,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("SELECT s From User s WHERE s.username = :username AND s.password = :password")
 	User findUserByNamePwd(@Param("username")String username, @Param("password")String password);
 	
+	@Query("SELECT DISTINCT s.managerId From User s")
+	List<Integer> findAllManagerId();
+	
+	@Query("SELECT MAX(u.userId) FROM User u")
+	int findMaxId();
 }

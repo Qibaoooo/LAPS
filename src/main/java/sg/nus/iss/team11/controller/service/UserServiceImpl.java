@@ -52,5 +52,14 @@ public class UserServiceImpl implements UserService {
 	public User authenticateUser(String username, String password) {
 		return userRepo.findUserByNamePwd(username, password);
 	}
-
+	
+	@Override
+	public List<Integer> findAllManagerId(){
+		return userRepo.findAllManagerId();
+	}
+	
+	@Override
+	public int findMaxId() {
+		return userRepo.findMaxId();
+	}
 }
