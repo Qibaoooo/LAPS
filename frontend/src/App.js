@@ -3,6 +3,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/login';
 import Home from './pages/home';
+import About from './pages/about';
 import StaffLeaveList from './pages/staffLeaveList';
 import StaffLeaveNew from './pages/staffLeaveNew';
 import StaffClaimList from './pages/staffClaimList';
@@ -14,6 +15,7 @@ function App() {
        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/staff" element={<StaffLeaveList />} />
           <Route path="/staff/leave/list" element={<StaffLeaveList />} />

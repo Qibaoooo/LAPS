@@ -1,15 +1,6 @@
-import Cookies from "js-cookie";
 import React from "react";
-import {
-  Navbar,
-  Container,
-  Nav,
-  NavDropdown,
-  Row,
-  Button,
-} from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 import { getUserinfo } from "../utils/userinfo";
-import { logout } from "../utils/api/apiAuth";
 
 function MyNavBar(props) {
   let userinfo = getUserinfo();
@@ -26,7 +17,7 @@ function MyNavBar(props) {
       style={{ color: "white" }}
     >
       <Container className="justify-content-start">
-        <Navbar.Brand href="/home">
+        <Navbar.Brand href="/about">
           <h3
             style={{
               color: "white",
@@ -38,10 +29,11 @@ function MyNavBar(props) {
             LAPS{" "}
           </h3>
         </Navbar.Brand>
-        <Nav.Link className="mx-3" href="/home">
-          Home
-        </Nav.Link>
-        {!userinfo && (
+        {userinfo ? (
+          <Nav.Link className="mx-3" href="/home">
+            Home
+          </Nav.Link>
+        ) : (
           <Nav.Link className="mx-3" href="/login">
             Login
           </Nav.Link>

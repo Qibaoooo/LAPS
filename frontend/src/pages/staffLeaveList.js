@@ -33,7 +33,7 @@ function StaffLeaveList() {
       <h3 className="mt-3" style={{ fontStyle: "oblique" }}>
         Staff Leave Application List
       </h3>
-      <Col className="col-md-10 mx-auto">
+      <Col className="col-md-10 mx-auto" style={{  }}>
         <Table>
           <thead>
             <tr>
@@ -51,7 +51,7 @@ function StaffLeaveList() {
             {leaveList.map((value, index, array) => {
               return (
                 <tr>
-                  <td>{index}</td>
+                  <td>{index + 1}</td>
                   <td>{value.fromDate}</td>
                   <td>{value.toDate}</td>
                   <td>{value.type}</td>
