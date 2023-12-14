@@ -44,14 +44,14 @@ public class RoleController {
 	    return "role-list";
 	  }
 	
-	@GetMapping("/create")
-	
+	@GetMapping("/new")
 	public String newRolePage(Model model) {
-	  model.addAttribute("role", new Role());
-		
+
+		Role newrole = new Role();
+		model.addAttribute("role", newrole);
 		return "role-new";}
 	
-	@PostMapping("/create")
+	@PostMapping("/new")
 	public String createNewRole(@ModelAttribute @Valid Role role, BindingResult result) {
 		if (result.hasErrors()) {
 			return "role-new";
@@ -88,6 +88,7 @@ public class RoleController {
 	public String deleteRole(@PathVariable String id)
 			throws RoleNotFound {
 		Role role = rService.findRole(id);
+//		check if role is in use
 		rService.removeRole(role);
 		
 		String message = "The role " + role.getRoleId() + " was successfully deleted.";

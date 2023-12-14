@@ -94,9 +94,10 @@ public class LeaveApplicationController {
 
 	@PostMapping(value = "leave/edit/{id}")
 	public String editLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
-			@PathVariable Integer id, HttpSession session) throws LeaveApplicationNotFound {
+			@PathVariable Integer id, HttpSession session, Model model) throws LeaveApplicationNotFound {
 		
 		if (result.hasErrors()) {
+			model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 			return "staff-edit-leave-application";
 		}
 		

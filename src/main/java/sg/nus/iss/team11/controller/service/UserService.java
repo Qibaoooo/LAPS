@@ -22,4 +22,8 @@ public interface UserService {
 	List<LAPSUser> findSubordinates(int userId);
 	
 	LAPSUser authenticateUser(String username, String password);
+	
+	List<Integer> findAllManagerId();
+	
+	int findMaxId();
 }

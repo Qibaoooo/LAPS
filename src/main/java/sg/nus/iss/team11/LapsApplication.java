@@ -46,12 +46,16 @@ public class LapsApplication {
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", this.encoder.encode("password"), adminRole));
-			LAPSUser esther = userRepo.save(new LAPSUser("esther", this.encoder.encode("password"), managerRole));
-			LAPSUser tin = userRepo.save(new LAPSUser("tin", this.encoder.encode("password"), staffRole));
-			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", this.encoder.encode("password"), staffRole));
-			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", this.encoder.encode("password"), staffRole));
-
+			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", "password", adminRole));
+			LAPSUser esther = userRepo.save(new LAPSUser("esther", "password", managerRole));
+			
+			//Testing for tin
+			LAPSUser tin = new LAPSUser("tin", "password", staffRole);
+			tin.setAnnualLeaveEntitlement(18);
+			tin = userRepo.save(tin);
+			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", "password", staffRole));
+			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", "password", staffRole));
+			
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);
 			yuenkwan.setAnnualLeaveEntitlement(14);
@@ -61,13 +65,13 @@ public class LapsApplication {
 			userRepo.save(cherwah.setManager(esther));
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
-
 			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(cherwah, null, ApplicationStatusEnum.REJECTED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+
 
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
