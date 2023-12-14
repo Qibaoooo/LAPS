@@ -32,7 +32,17 @@
 						<a th:href="@{/manager/history}" th:utext="#{menu.leaveList}">Leave History</a>
 					</div>
 				</div>
-			</div>
+			 
+			 <div th:if="${session?.user?.username}">
+			 	<div th:if="${session.user.role.roleId == 'admin'}">
+            	 <div class="subnav">
+             		 <button class="subnavbtn">Admin Menu <i class="fa fa-caret-down"></i></button>
+              		 <div class="subnav-content">
+                		<a th:href="@{/admin/role/list}" th:utext="#{menu.admin.rlist}">Roles</a>
+               		    <a th:href="@{/admin/employee/list}" th:utext="#{menu.admin.elist}">Employees</a>               
+              		</div>
+            	</div>
+          	</div>
 			<div th:if="${session?.user?.username}" id="hiuser">
 				<div class="subnav">
 					<button class="subnavbtn">
