@@ -30,15 +30,15 @@
 				<td align="left" th:text="${cc.status}">Status</td>
 				<td>
 					<div th:switch="${cc.status.toString()}">
-						<a th:case="'APPLIED'" th:href="@{/staff/claim/edit/}+${cc.id}">Update</a>
-						<a th:case="'UPDATED'" th:href="@{/staff/claim/edit/}+${cc.id}">Update</a>
+						<a th:case="'APPLIED'" th:href="@{/v1/staff/claim/edit/}+${cc.id}">Update</a>
+						<a th:case="'UPDATED'" th:href="@{/v1/staff/claim/edit/}+${cc.id}">Update</a>
 						<span th:case="*"> --- </span>
 					</div>
 				</td>
 				<td>
 					<div th:switch="${cc.status.toString()}">
-						<a th:case="'APPLIED'" th:href="@{/staff/claim/cancel/}+${cc.id}">Cancel</a>
-						<a th:case="'UPDATED'" th:href="@{/staff/claim/cancel/}+${cc.id}">Cancel</a>
+						<a th:case="'APPLIED'" th:href="@{/v1/staff/claim/cancel/}+${cc.id}">Cancel</a>
+						<a th:case="'UPDATED'" th:href="@{/v1/staff/claim/cancel/}+${cc.id}">Cancel</a>
 						<span th:case="*"> --- </span>
 					</div>
 				</td>

@@ -21,7 +21,7 @@ import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/manager")
+@RequestMapping(value = "/v1/manager")
 public class ManagerApplicationController {
 
 	@Autowired
@@ -87,7 +87,7 @@ public class ManagerApplicationController {
 		      application.setStatus(ApplicationStatusEnum.REJECTED);
 		    }
 		leaveApplicationService.updateLeaveApplication(application);
-		return "redirect:/manager/view";
+		return "redirect:/v1/manager/view";
 	}
 
 	// ------------------------------------------------------//

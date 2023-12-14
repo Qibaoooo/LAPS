@@ -1,6 +1,5 @@
 package sg.nus.iss.team11.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
-import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
@@ -23,7 +21,6 @@ import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/staff")
 public class CompensationClaimController {
 
 	@Autowired
@@ -68,7 +65,7 @@ public class CompensationClaimController {
 	    compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
 	    compensationClaimService.createCompensationClaim(compensationClaim);
 	    
-		return "redirect:/staff/claim/list";
+		return "redirect:/v1/staff/claim/list";
 	}
 
 }

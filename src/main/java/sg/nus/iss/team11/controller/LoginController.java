@@ -22,6 +22,7 @@ import sg.nus.iss.team11.security.JwtUtils;
 import sg.nus.iss.team11.security.UserDetailsImpl;
 
 @Controller
+@RequestMapping(value = "/v1")
 public class LoginController {
 
 	@Autowired
@@ -69,24 +70,24 @@ public class LoginController {
 		// Redirecting user to the specific role view
 		String roleId = searchedUser.getRole().getRoleId();
 		if (roleId.equals("manager")) {
-			return "redirect:/manager/view";
+			return "redirect:/v1/manager/view";
 		}
 
 		if (roleId.equals("manager")) {
-			return "redirect:/manager/view";
+			return "redirect:/v1/manager/view";
 		}
 
 		if (roleId.equals("admin")) {
-			return "redirect:/admin/employee";
+			return "redirect:/v1/admin/employee";
 		}
 
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 	}
 
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:/v1/login";
 	}
 
 }

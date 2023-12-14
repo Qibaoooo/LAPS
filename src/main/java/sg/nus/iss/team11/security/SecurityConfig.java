@@ -18,11 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 	
 	private static String[] publicURLs = {
+			"/v1/**",       // this allows all MVC requests to bypass the Spring Security check
 			"/style.css",
-			"/api/auth/**", 
-			"/login/authenticate",  
-			"/login", 
-			"/logout", 
+			"/api/auth/login", 
 			"/about"
 	}; 
 
@@ -67,7 +65,7 @@ public class SecurityConfig {
 
 		http.authenticationProvider(authenticationProvider());
 
-//		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

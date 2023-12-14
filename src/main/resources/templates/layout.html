@@ -11,17 +11,17 @@
 
 		<!-- Navigation -->
 		<nav class="navbar">
-			<a th:href="@{/about}">Leave Application Processing System - LAPS</a>
-			<a th:href="@{/home}">Home</a>
-			<a th:href="@{/about}">About</a>
+			<a th:href="@{/v1/about}">Leave Application Processing System - LAPS</a>
+			<a th:href="@{/v1/home}">Home</a>
+			<a th:href="@{/v1/about}">About</a>
 			<div th:if="${session?.user?.username}">
 				<div class="subnav">
 					<button class="subnavbtn">Staff Menu <i class="fa fa-caret-down"></i></button>
 					<div class="subnav-content">
-						<a th:href="@{/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
-						<a th:href="@{/staff/leave/new}" th:utext="#{menu.applyNew}">ApplyNew</a>
-						<a th:href="@{/staff/claim/list}" th:utext="#{menu.claimList}">ClaimList</a>
-						<a th:href="@{/staff/claim/new}" th:utext="#{menu.claimNew}">ClaimNew</a>
+						<a th:href="@{/v1/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
+						<a th:href="@{/v1/staff/leave/new}" th:utext="#{menu.applyNew}">ApplyNew</a>
+						<a th:href="@{/v1/staff/claim/list}" th:utext="#{menu.claimList}">ClaimList</a>
+						<a th:href="@{/v1/staff/claim/new}" th:utext="#{menu.claimNew}">ClaimNew</a>
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 				<div th:if="${session.user.role.roleId=='manager'}" class="subnav">
 					<button class="subnavbtn">Manager Menu <i class="fa fa-caret-down"></i></button>
 					<div class="subnav-content">
-						<a th:href="@{/manager/history}" th:utext="#{menu.leaveList}">Leave History</a>
+						<a th:href="@{/v1/manager/history}" th:utext="#{menu.leaveList}">Leave History</a>
 					</div>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 						</i>
 					</button>
 					<div class="subnav-content">
-						<a th:href="@{/logout}" th:utext="#{menu.logout}">logout</a>
+						<a th:href="@{/v1/logout}" th:utext="#{menu.logout}">logout</a>
 					</div>
 				</div>
 			</div>

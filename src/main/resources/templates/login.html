@@ -7,7 +7,7 @@
 	<div th:replace="layout.html :: menu" />
 	<div>
 		<h3>Please Login To Use LAPS</h3>
-		<form action="#" th:object="${user}" th:action="@{'/login/authenticate'}" method="post">
+		<form action="#" th:object="${user}" th:action="@{'/v1/login/authenticate'}" method="post">
 			<table class="framed">
 				<tr>
 					<td><span>Username</span></td>

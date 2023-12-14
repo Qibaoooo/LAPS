@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Cookies from "js-cookie";
 import { Alert, Container, Stack } from "react-bootstrap";
 import MyNavBar from "./components/myNavBar";
-import { json } from "react-router-dom";
+import { signup } from "./utils/apiAuth";
+import { setUserinfo } from "./utils/userinfo"
 
 function LoginPage() {
   const [username, setUsername] = useState();
@@ -18,40 +17,13 @@ function LoginPage() {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(username);
-    console.log(password);
 
-    const data = new URLSearchParams();
-    
-    data.append("username", username);
-    data.append("password", password);
-    const response = await fetch(
-      "http://localhost:8080/api/login/authenticate",
-      {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Credentials": true,
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET,POST,PATCH,OPTIONS",
-        },
-        referrer: "http://localhost:8080/login",
-        body: data,
-      }
-    );
-    if (response.status == 200) {
-      let info = JSON.stringify(await response.json())
-      
-      console.log(info)
-      Cookies.set("LAPS_USERINFO", info)
-      // how to parse this later on other pages:
-      // let userinfo = JSON.parse(Cookies.get("LAPS_USERINFO")).
-      
+    const response = await signup(username, password);
+    if (response.status == 200) {      
+      console.log(JSON.stringify(response.data.username))
+      setUserinfo(response.data)
       // window.location.reload()
-      // window.location.href = "/staff"
-
+      window.location.href = "/staff"
     } else {
       setAlertMsg(await response.text())
       setShowAlert(true);

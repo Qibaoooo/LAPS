@@ -7,7 +7,7 @@
   <div th:replace="layout :: menu"/>
 
   <h3>Edit Role page</h3>
-  <form action="#" th:action="@{/admin/role/edit/}+${role.roleId}" th:object="${role}" method="post">
+  <form action="#" th:action="@{/v1/admin/role/edit/}+${role.roleId}" th:object="${role}" method="post">
 	<table>
       <tbody>
         <tr>

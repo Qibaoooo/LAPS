@@ -24,7 +24,7 @@ import sg.nus.iss.team11.security.JwtUtils;
 import sg.nus.iss.team11.security.UserDetailsImpl;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/auth")
 public class APILoginController {
 
@@ -43,7 +43,7 @@ public class APILoginController {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@PostMapping(value = "signin")
+	@PostMapping(value = "login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
@@ -59,7 +59,7 @@ public class APILoginController {
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), role));
 	}
 
-	@PostMapping(value = "/api/logout")
+	@PostMapping(value = "logout")
 	public ResponseEntity<String> apiLogout(HttpSession session) {
 		session.invalidate();
 		return new ResponseEntity<>("Logged out", HttpStatus.OK);

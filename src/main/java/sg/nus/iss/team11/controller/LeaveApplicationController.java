@@ -27,7 +27,7 @@ import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
-@RequestMapping(value = "/staff")
+@RequestMapping(value = "/v1/staff")
 public class LeaveApplicationController {
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
@@ -46,7 +46,7 @@ public class LeaveApplicationController {
 		binder.addValidators(leavedatevalidator);
 	}
 	
-	@RequestMapping(value = "leave/list")
+	@RequestMapping(value = {"leave/list", "/"})
 	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
 	    LAPSUser user = (LAPSUser) session.getAttribute("user");
@@ -79,7 +79,7 @@ public class LeaveApplicationController {
 		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
 
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 	}
 
 	@GetMapping(value = "leave/edit/{id}")
@@ -104,7 +104,7 @@ public class LeaveApplicationController {
 
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 
 	}
 	
@@ -115,7 +115,7 @@ public class LeaveApplicationController {
 		leaveApplication.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 	}	
 
 }
