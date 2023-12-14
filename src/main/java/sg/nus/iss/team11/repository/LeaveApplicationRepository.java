@@ -16,6 +16,6 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	@Query("SELECT la from LeaveApplication la WHERE la.user.id = :userId AND la.status IN ('UPDATED', 'APPLIED')")
 	List<LeaveApplication> findLeaveApplicationsToProcess(@Param("userId") Integer userId);
 	
-	@Query("SELECT la FROM leave_application la WHERE (MONTH(la.fromdate) = 12 AND YEAR(la.fromdate) = 2023) OR (MONTH(la.todate) = 12 AND YEAR(la.todate) = 2023) OR (la.fromdate < firststartdate AND lastenddate < la.todate)")
+	@Query("SELECT la FROM LeaveApplication la WHERE (MONTH(la.fromDate) = :month AND YEAR(la.fromDate) = :year) OR (MONTH(la.toDate) = :month AND YEAR(la.toDate) = :year) OR (la.fromDate < :firststartdate AND :lastenddate < la.toDate)")
 	List<LeaveApplication> findLeaveApplicationByYearMonth(@Param("year") Integer year, @Param("month") Integer month, @Param("firststartdate") LocalDate firststartdate, @Param("lastenddate") LocalDate lastenddate);
 }
