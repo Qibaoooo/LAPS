@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 import { getUserinfo } from "../utils/userinfo";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
-import {saveColorMode, getColorMode} from "../utils/colorModeSave"
+import { saveColorMode, getColorMode } from "../utils/colorModeSave";
 
 function MyNavBar(props) {
   let userinfo = getUserinfo();
 
-  const [colorMode, setColorMode] = useState()
+  const [colorMode, setColorMode] = useState();
 
   useEffect(() => {
     if (getColorMode()) {
-      console.log("color: ", getColorMode())
-      setColorMode(getColorMode())
+      console.log("color: ", getColorMode());
+      setColorMode(getColorMode());
       document.documentElement.setAttribute("data-bs-theme", colorMode);
     }
-  },[colorMode])
+  }, [colorMode]);
 
   const handleLogout = () => {
     localStorage.removeItem("userinfo");
@@ -25,32 +25,26 @@ function MyNavBar(props) {
   const onClickColorModeButton = () => {
     if (getColorMode() === "light") {
       // console.log("set to dark")
-      saveColorMode("dark")
-      setColorMode("dark")
+      saveColorMode("dark");
+      setColorMode("dark");
     } else {
       // console.log("set to light")
-      saveColorMode("light")
-      setColorMode("light")
+      saveColorMode("light");
+      setColorMode("light");
     }
   };
 
   return (
-    <Navbar
-      bg="primary"
-      className="justify-content-between"
-      style={{ color: "white" }}
-    >
+    <Navbar className="justify-content-between bg-success-subtle">
       <Container className="justify-content-start">
         <Navbar.Brand href="/about">
           <h3
             style={{
-              color: "white",
               paddingLeft: "20px",
               textDecoration: "underline",
             }}
           >
-            {" "}
-            LAPS{" "}
+            LAPS
           </h3>
         </Navbar.Brand>
         {userinfo ? (
@@ -62,41 +56,38 @@ function MyNavBar(props) {
             Login
           </Nav.Link>
         )}
-        {userinfo &&
-        <NavDropdown className="mx-3" title="Staff" id="basic-nav-dropdown">
-          <NavDropdown.Item href="/staff/leave/list">
-            View Leave Applications
-          </NavDropdown.Item>
-          <NavDropdown.Item href="/staff/leave/new">
-            New Leave Application
-          </NavDropdown.Item>
-          <NavDropdown.Item href="/staff/claim/list">
-            View Compensation Claims
-          </NavDropdown.Item>
-          <NavDropdown.Item href="/staff/claim/new">
-            New Compensation Claim
-          </NavDropdown.Item>
-          <NavDropdown.Divider />
-        </NavDropdown>
-        }
+        {userinfo && (
+          <NavDropdown className="mx-3" title="Staff" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/staff/leave/list">
+              View Leave Applications
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/staff/leave/new">
+              New Leave Application
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/staff/claim/list">
+              View Compensation Claims
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/staff/claim/new">
+              New Compensation Claim
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+          </NavDropdown>
+        )}
       </Container>
       <Container
         className="justify-content-end mx-3"
-        style={{ alignItems: "baseline" }}
+        style={{ alignItems: "end" }}
       >
-        <Button onClick={onClickColorModeButton}>
-          {colorMode==="light" ? 
-          <BsFillMoonStarsFill /> :
-          <BsFillSunFill />
-        }
+        <Button size="sm" onClick={onClickColorModeButton}>
+          {colorMode === "light" ? <BsFillMoonStarsFill /> : <BsFillSunFill />}
         </Button>
         <h6 className="mx-3" href="">
           hello, {userinfo ? userinfo.username : "User"}
         </h6>
         {userinfo && (
-          <Button className="" onClick={handleLogout} variant="dark" size="sm">
-            logout
-          </Button>
+          <h6 onClick={handleLogout}>
+            <a href="">logout</a>
+          </h6>
         )}
       </Container>
     </Navbar>
