@@ -17,10 +17,10 @@ public class CompensationClaim {
 	@Id
 	@GeneratedValue
 	private int id;
-	
+
 	@ManyToOne()
 	private LAPSUser user;
-	
+
 	// comment is for manager to input
 	private String comment;
 
@@ -30,16 +30,17 @@ public class CompensationClaim {
 	@Column(name = "status", columnDefinition = "ENUM('APPLIED', 'UPDATED', 'REJECTED', 'APPROVED', 'CANCELLED', 'DELETED')")
 	@Enumerated(EnumType.STRING)
 	private ApplicationStatusEnum status;
-	
+
 	@Column(name = "compensation_time", columnDefinition = "ENUM('AM', 'PM', 'WHOLEDAY')")
 	@Enumerated(EnumType.STRING)
 	private CompensationClaimTimeEnum overtimeTime;
-	
+
 	@Column(name = "overtime_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate overtimeDate;
-	
-	public CompensationClaim() {}
+
+	public CompensationClaim() {
+	}
 
 	public CompensationClaim(LAPSUser user, String description, ApplicationStatusEnum status,
 			CompensationClaimTimeEnum overtimeTime, LocalDate overTimeDate) {

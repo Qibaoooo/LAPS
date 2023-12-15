@@ -10,7 +10,7 @@ import sg.nus.iss.team11.repository.CompensationClaimRepository;
 
 @Service
 public class CompensationClaimServiceImpl implements CompensationClaimService {
-	
+
 	@Autowired
 	CompensationClaimRepository claimRepo;
 
@@ -48,5 +48,5 @@ public class CompensationClaimServiceImpl implements CompensationClaimService {
 	public List<CompensationClaim> findCompensationClaimsByUserId(Integer userId) {
 		return claimRepo.findCompensationClaimsByUserId(userId);
 	}
-	
+
 }
