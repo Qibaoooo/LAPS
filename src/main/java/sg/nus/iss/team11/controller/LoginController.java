@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.security.JwtUtils;
-import sg.nus.iss.team11.security.UserDetailsImpl;
 
 @Controller
 @RequestMapping(value = "/v1")
@@ -54,8 +52,8 @@ public class LoginController {
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		
+		session.setAttribute("jwt", jwt);
 		//############# end 
 		
 		// Authenticating Username and password from database

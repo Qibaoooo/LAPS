@@ -18,11 +18,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 	
 	private static String[] publicURLs = {
-			"/v1/**",       // this allows all MVC requests to bypass the Spring Security check
+			// public MVC URLs:
+			"/v1/about",       
+			"/v1/home",
+			"/v1/login",
+			"/v1/login/**",
+			// public REST API URLs:
 			"/style.css",
 			"/api/auth/login", 
 			"/about"
 	}; 
+
+	private static String[] mvcStaffURLs = {
+			"/v1/staff/**",
+	};
+	
+	private static String[] mvcManagerURLs = {
+			"/v1/manager/**",
+	};
+	
+	private static String[] mvcAdminURLs = {
+			"/v1/admin/**",
+	};
 
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -59,8 +76,11 @@ public class SecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> 
- 					auth.requestMatchers(publicURLs).permitAll()
- 					// TODO: filter by role
+ 					auth
+ 					.requestMatchers(publicURLs).permitAll()
+ 					.requestMatchers(mvcStaffURLs).hasRole("staff")
+ 					.requestMatchers(mvcManagerURLs).hasRole("manager")
+ 					.requestMatchers(mvcAdminURLs).hasRole("admin")
  						.anyRequest().authenticated()
 				);
 
