@@ -1,5 +1,6 @@
 package sg.nus.iss.team11.security;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +40,13 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(LAPSUser user) {
-		List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getRoleId()));
+		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>(
+				Arrays.asList(new SimpleGrantedAuthority(user.getRole().getRoleId())));
+
+		// MANAGERS SHOULD ALSO HAVE STAFF ACCESS.
+		if (user.getRole().getRoleId().equals("ROLE_manager")) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_staff"));
+		}
 
 		return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getPassword(), authorities);
 

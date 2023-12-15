@@ -25,7 +25,6 @@ import sg.nus.iss.team11.repository.UserRepository;
 public class LapsApplication {
 
 	public static void main(String[] args) {
-//		test
 		SpringApplication.run(LapsApplication.class, args);
 	}
 
@@ -42,9 +41,9 @@ public class LapsApplication {
 			userRepo.deleteAll();
 			roleRepo.deleteAll();
 			
-			Role adminRole = roleRepo.save(new Role("admin", "Administrator", "System administrator"));
-			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
-			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
+			Role adminRole = roleRepo.save(new Role("ROLE_admin", "Administrator", "System administrator"));
+			Role staffRole = roleRepo.save(new Role("ROLE_staff", "Staff", "Staff members"));
+			Role managerRole = roleRepo.save(new Role("ROLE_manager", "Manager", "Manager"));
 
 			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", encoder.encode("password"), adminRole));
 			LAPSUser esther = userRepo.save(new LAPSUser("esther", encoder.encode("password"), managerRole));

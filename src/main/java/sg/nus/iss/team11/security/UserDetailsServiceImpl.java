@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     LAPSUser user = userRepository.findLAPSUserByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-        
+    
     return UserDetailsImpl.build(user);
   }
 
