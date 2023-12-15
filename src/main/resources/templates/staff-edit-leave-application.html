@@ -19,19 +19,25 @@
 				</tr>
 				<tr>
 					<td>
-						<span th:text="'ID: ' + ${leaveApplication.id.toString()}" />
+						<span th:text="'ID: '" />
+					</td>
+					<td>
+						<span th:text="${leaveApplication.id.toString()}" />						
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<span th:text="'User: ' + ${leaveApplication.user.username}" />
+						<span th:text="'User: '" />
+					</td>
+					<td>
+						<span th:text="${leaveApplication.user.username}" />						
 					</td>
 				</tr>
 				<tr>
 					<td><span th:text="#{fieldLabel.type}"></span></td>
 					<td>
 						<select name="type">
-							<option th:each="type : ${leaveTypes}" th:text="${type}">
+							<option th:text="${leaveApplication.type}">
 							</option>
 						</select>
 					</td>
