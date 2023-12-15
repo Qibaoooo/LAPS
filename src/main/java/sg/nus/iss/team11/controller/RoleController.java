@@ -56,9 +56,12 @@ public class RoleController {
 		if (result.hasErrors()) {
 			return "role-new";
 		}
+	
+	// set roleId here programmatically
+	role.setRoleId(role.getName().toLowerCase());	
+	rService.createRole(role);
 	String message = "New role " + role.getRoleId() + " was successfully created.";
 	System.out.println(message);
-	rService.createRole(role);
 	
 	return "redirect:/v1/admin/role/list";}
 	
