@@ -22,7 +22,7 @@ import sg.nus.iss.team11.model.User;
 
 @Controller
 @RequestMapping(value = "/manager")
-public class ManagerApplicationController {
+public class ManagerController {
 
 	@Autowired
 	public LeaveApplicationService leaveApplicationService;
