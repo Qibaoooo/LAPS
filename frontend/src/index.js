@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 // Importing the Bootstrap CSS
-import 'bootswatch/dist/flatly/bootstrap.min.css';
+import 'bootswatch/dist/zephyr/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

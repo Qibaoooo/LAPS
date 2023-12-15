@@ -16,6 +16,3 @@ html,body{
   margin:0;
 }
 
-table tr td, table tr th{
-  background-color: rgba(210,130,240, 0) !important;
-}
