@@ -32,14 +32,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<span th:text="'Password: ' + ${editEmployee.password}" />
-					</td>
-				</tr>
-				<tr>
 					<td><span th:text="#{fieldLabel.password}"></span></td>
 					<td>
-						<input type="text" th:field="*{password}" rows="1" cols="30"/>
+						<input type="password" th:field="*{password}" rows="1" cols="30"/>
 					</td>
 				</tr>
 				<tr>
