@@ -22,4 +22,8 @@ public interface UserService {
 	List<User> findSubordinates(int userId);
 	
 	User authenticateUser(String username, String password);
+	
+	List<Integer> findAllManagerId();
+	
+	int findMaxId();
 }
