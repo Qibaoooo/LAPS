@@ -15,7 +15,7 @@
 			<a th:href="@{/v1/home}">Home</a>
 			<a th:href="@{/v1/about}">About</a>
 			<div th:if="${session?.user?.username}">
-				<div class="subnav">
+				<div th:if="${session.user.role.roleId=='manager' || session.user.role.roleId=='staff'}" class="subnav">
 					<button class="subnavbtn">Staff Menu <i class="fa fa-caret-down"></i></button>
 					<div class="subnav-content">
 						<a th:href="@{/v1/staff/leave/list}" th:utext="#{menu.leaveList}">LeaveList</a>
