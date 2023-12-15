@@ -60,6 +60,7 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> 
  					auth.requestMatchers(publicURLs).permitAll()
+ 					// TODO: filter by role
  						.anyRequest().authenticated()
 				);
 

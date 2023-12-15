@@ -41,6 +41,9 @@ function LoginPage() {
         if (error.response.status == 401) {
           setAlertMsg("incorrect username/password.");
           setShowAlert(true);
+        } else {
+          setAlertMsg("error, please try again.");
+          setShowAlert(true);
         }
       });
   };
