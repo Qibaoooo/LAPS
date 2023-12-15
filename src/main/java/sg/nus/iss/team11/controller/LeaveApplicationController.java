@@ -34,10 +34,10 @@ public class LeaveApplicationController {
 
 	@Autowired
 	RoleService roleService;
-
+	
 	@Autowired
 	UserService userService;
-
+	
 	@Autowired
 	private LeaveDateValidator leavedatevalidator;
 
@@ -45,11 +45,11 @@ public class LeaveApplicationController {
 	private void initValidators(WebDataBinder binder) {
 		binder.addValidators(leavedatevalidator);
 	}
-
-	@GetMapping(value = { "leave/list", "/" })
+	
+	@RequestMapping(value = {"leave/list", "/"})
 	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
-		LAPSUser user = (LAPSUser) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
@@ -74,7 +74,7 @@ public class LeaveApplicationController {
 			return "staff-new-leave-application";
 		}
 
-		LAPSUser user = (LAPSUser) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 		leaveApplication.setUser(user);
 		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
@@ -95,28 +95,28 @@ public class LeaveApplicationController {
 	@PostMapping(value = "leave/edit/{id}")
 	public String editLeave(@Valid @ModelAttribute LeaveApplication leaveApplication, BindingResult result,
 			@PathVariable Integer id, HttpSession session, Model model) throws LeaveApplicationNotFound {
-
+		
 		if (result.hasErrors()) {
 			model.addAttribute("leaveTypes", java.util.Arrays.asList(LeaveApplicationTypeEnum.values()));
 			return "staff-edit-leave-application";
 		}
-
+		
 		leaveApplication.setStatus(ApplicationStatusEnum.UPDATED);
 
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
-
+		
 		return "redirect:/v1/staff/leave/list";
 
 	}
-
-	@GetMapping(value = "leave/cancel/{id}")
-	public String cancelLeave(@PathVariable Integer id) throws LeaveApplicationNotFound {
+	
+	@RequestMapping(value = "leave/cancel/{id}")
+	public String cancelLeave(@PathVariable Integer id ) throws LeaveApplicationNotFound {
 		LeaveApplication leaveApplication = leaveApplicationService.findLeaveApplicationById(id);
-
+		
 		leaveApplication.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
-
+		
 		return "redirect:/v1/staff/leave/list";
-	}
+	}	
 
 }

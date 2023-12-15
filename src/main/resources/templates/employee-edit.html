@@ -50,8 +50,8 @@
 				<tr>
 					<td><span th:text="#{fieldLabel.managerId}"></span></td>
 					<td>
-						<select name="managerId">
-							<option th:each="manager : ${managers}" th:value="${manager.userId}" th:text="${manager.username}">
+						<select name="managerId" th:field="*{managerId}">
+							<option th:each="managerId : ${managersId}" th:value="${managerId}" th:text="${managerId}">
 							</option>
 						</select>
 					</td>
@@ -99,8 +99,9 @@
 					<td><span th:text="#{fieldLabel.roleName}"></span></td>
 					<td>
 						<select name="roleId">
-							<option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}">
-							</option>
+							<option value="staff">Staff</option>
+							<option value="manager">Manager</option>
+							<option value="admin">Admin</option>
 						</select>
 					</td>
 				</tr>

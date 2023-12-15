@@ -33,7 +33,7 @@ public class CompensationClaimController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping(value = "claim/list")
+	@RequestMapping(value = "claim/list")
 	public String staffCompensationClaimList(Model model, HttpSession session) {
 
 		LAPSUser user = (LAPSUser) session.getAttribute("user");
@@ -55,17 +55,17 @@ public class CompensationClaimController {
 	@PostMapping(value = "claim/new")
 	public String newClaim(@ModelAttribute CompensationClaim compensationClaim, BindingResult result,
 			HttpSession session, Model model) {
-
+		
 		if (result.hasErrors()) {
 			model.addAttribute("timeChoices", java.util.Arrays.asList(CompensationClaimTimeEnum.values()));
 			return "staff-new-compensation-claim";
 		}
-
-		LAPSUser user = (LAPSUser) session.getAttribute("user");
-		compensationClaim.setUser(user);
-		compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
-		compensationClaimService.createCompensationClaim(compensationClaim);
-
+		
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
+	    compensationClaim.setUser(user);
+	    compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
+	    compensationClaimService.createCompensationClaim(compensationClaim);
+	    
 		return "redirect:/v1/staff/claim/list";
 	}
 
