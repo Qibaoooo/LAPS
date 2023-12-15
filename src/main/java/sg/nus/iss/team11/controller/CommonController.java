@@ -17,4 +17,9 @@ public class CommonController {
 	public String homePage(HttpSession session) {
 		return "about";
 	}
+	
+	@RequestMapping(value = "/no-access")
+	public String noAccessPage(HttpSession session) {
+		return "no-access";
+	}
 }

@@ -83,6 +83,8 @@ public class SecurityConfig {
  					.requestMatchers(mvcAdminURLs).hasRole("admin")
  						.anyRequest().authenticated()
 				);
+		
+		http.formLogin(form -> form.loginPage("/v1/login").permitAll());
 
 		http.authenticationProvider(authenticationProvider());
 
@@ -90,5 +92,7 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+	
+	
 
 }

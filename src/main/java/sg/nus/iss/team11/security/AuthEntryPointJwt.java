@@ -20,6 +20,20 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
       throws IOException, ServletException {
     logger.error("Unauthorized error: {}", authException.getMessage());
-    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+
+    // handling for REST API
+    if (request.getHeader("Authorization") != null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized" + authException.getMessage());
+    }
+    
+    // handling for MVC 
+    if (request.getSession().getAttribute("user") != null) {
+    	// user is NOT null means this is a no access error.
+    	response.sendRedirect("/v1/no-access");
+    } else {    	
+    	// user is null means not logged in, redirect to login page.
+    	response.sendRedirect("/v1/login");
+    }
+    
   }
 }
