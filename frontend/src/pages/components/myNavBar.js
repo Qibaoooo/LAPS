@@ -1,25 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 import { getUserinfo } from "../utils/userinfo";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
+import {saveColorMode, getColorMode} from "../utils/colorModeSave"
 
 function MyNavBar(props) {
   let userinfo = getUserinfo();
 
-  const [colorMode, setColorMode] = useState("light");
+  const [colorMode, setColorMode] = useState()
+
+  useEffect(() => {
+    if (getColorMode()) {
+      console.log("color: ", getColorMode())
+      setColorMode(getColorMode())
+      document.documentElement.setAttribute("data-bs-theme", colorMode);
+    }
+  },[colorMode])
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("userinfo");
     window.location.href = "/login";
   };
 
   const onClickColorModeButton = () => {
-    if (colorMode === "light") {
-      setColorMode("dark");
+    if (getColorMode() === "light") {
+      // console.log("set to dark")
+      saveColorMode("dark")
+      setColorMode("dark")
     } else {
-      setColorMode("light");
+      // console.log("set to light")
+      saveColorMode("light")
+      setColorMode("light")
     }
-    document.documentElement.setAttribute("data-bs-theme", colorMode);
   };
 
   return (
@@ -50,6 +62,7 @@ function MyNavBar(props) {
             Login
           </Nav.Link>
         )}
+        {userinfo &&
         <NavDropdown className="mx-3" title="Staff" id="basic-nav-dropdown">
           <NavDropdown.Item href="/staff/leave/list">
             View Leave Applications
@@ -65,6 +78,7 @@ function MyNavBar(props) {
           </NavDropdown.Item>
           <NavDropdown.Divider />
         </NavDropdown>
+        }
       </Container>
       <Container
         className="justify-content-end mx-3"
