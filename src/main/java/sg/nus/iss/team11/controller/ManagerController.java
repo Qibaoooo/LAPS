@@ -22,7 +22,7 @@ import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
 @RequestMapping(value = "/v1/manager")
-public class ManagerApplicationController {
+public class ManagerController {
 
 	@Autowired
 	public LeaveApplicationService leaveApplicationService;
