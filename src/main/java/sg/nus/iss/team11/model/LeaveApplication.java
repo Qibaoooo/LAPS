@@ -138,6 +138,10 @@ public class LeaveApplication {
 
 	    return weekends;
 	}
+	
+	public boolean isOverlapping(LeaveApplication la) {
+	    return fromDate.isBefore(la.getToDate()) && la.getFromDate().isBefore(toDate);
+	}
 
 
 

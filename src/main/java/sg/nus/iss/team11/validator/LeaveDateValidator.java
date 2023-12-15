@@ -2,6 +2,7 @@ package sg.nus.iss.team11.validator;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.service.HolidayService;
+import sg.nus.iss.team11.controller.service.LeaveApplicationService;
+import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
@@ -21,6 +24,13 @@ import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 public class LeaveDateValidator implements Validator{
 	@Autowired
 	HolidayService holidayservice;
+	
+	@Autowired
+	UserService userservice;
+	
+	@Autowired
+	LeaveApplicationService leaveapplicationservice;
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return LeaveApplication.class.isAssignableFrom(clazz);
@@ -42,8 +52,13 @@ public class LeaveDateValidator implements Validator{
 		// Checks if the User has enough leave entitlement to take
 		LocalDate startDate = leaveapplication.getFromDate();
 		LocalDate toDate = leaveapplication.getToDate();
+		
+		// Getting User from session
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
 		LAPSUser currentUser = (LAPSUser) session.getAttribute("user");
+		
+		// Getting the updated information on the current user
+		LAPSUser updatedCurrentUser = userservice.findUser(currentUser.getUserId());
 		Period leaveDuration = Period.between(startDate, toDate);
 		
 		// Adding 1 to the leaveDurationDays to ensure the end date is counted into the number of leaves
@@ -61,26 +76,34 @@ public class LeaveDateValidator implements Validator{
 		// Calculating the net days of leave taken
 		leaveDurationDays -= (numberOfHolidays + weekends);
 		
-		
 		LeaveApplicationTypeEnum leavetype = leaveapplication.getType();
 		int leaveEntitlement = 0;
 		
 		switch(leavetype) {
 		case MedicalLeave:
-			leaveEntitlement = currentUser.getMedicalLeaveEntitlement();
+			leaveEntitlement = updatedCurrentUser.getMedicalLeaveEntitlement();
 			break;
 			
 		case AnnualLeave:
-			leaveEntitlement = currentUser.getAnnualLeaveEntitlement();
+			leaveEntitlement = updatedCurrentUser.getAnnualLeaveEntitlement();
 			break;
 			
 		case CompensationLeave:
-			leaveEntitlement = currentUser.getCompensationLeaveEntitlement();
+			leaveEntitlement = updatedCurrentUser.getCompensationLeaveEntitlement();
 		}
 		
-				
 		if (leaveDurationDays > leaveEntitlement) {
 			errors.rejectValue("toDate","error.dates", "Not enough Leave Entitlement, your remaining leave for this type is " + String.valueOf(leaveEntitlement));
+		}
+		
+		
+		// Checking for overlaps
+		List<LeaveApplication> userleaveapplications = leaveapplicationservice.findLeaveApplicationsByUserId(currentUser.getUserId());
+		
+		for(LeaveApplication la:userleaveapplications) {
+			if(leaveapplication.isOverlapping(la)) {
+				errors.rejectValue("toDate","error.dates", "Current leave application is overlapping with other leave application between: " + String.valueOf(la.getFromDate()) + " to " + String.valueOf(la.getToDate()));
+			};
 		}
 		
 		
