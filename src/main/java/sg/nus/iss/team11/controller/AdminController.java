@@ -3,6 +3,7 @@ package sg.nus.iss.team11.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,14 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/v1/admin")
 public class AdminController {
 	@Autowired
 	public UserService userservice;
 	@Autowired
 	public RoleService roleservice;
+	@Autowired
+	PasswordEncoder encoder;
 
 	@RequestMapping(value = "/employee")
 	public String viewEmployeeList(HttpSession session, Model model) {
@@ -37,14 +40,13 @@ public class AdminController {
 	public String deleteEmployee(@PathVariable int id) {
 		// add code to delete specific employee
 		userservice.removeUser(userservice.findUser(id));
-		return "redirect:/admin/employee";
+		return "redirect:/v1/admin/employee";
 	}
 
 	@GetMapping(value = "/employee/new")
 	public String newEmployee(Model model) {
 		model.addAttribute("newEmployee", new LAPSUser());
 		List<Integer> managersId = userservice.findAllManagerId();
-		managersId.add(userservice.findMaxId() + 1);
 		model.addAttribute("managersId", managersId);
 		return "employee-new";
 	}
@@ -52,19 +54,23 @@ public class AdminController {
 	@PostMapping(value = "/employee/new")
 	public String createEmployee(@ModelAttribute LAPSUser newEmployee, @RequestParam String roleId) {
 		newEmployee.setRole(roleservice.findRole(roleId));
+		newEmployee.setPassword(encoder.encode(newEmployee.getPassword()));
 		LAPSUser created = userservice.createUser(newEmployee);
 		if (roleId.equalsIgnoreCase("manager")) {
 			created.setManagerId(created.getUserId());
 			userservice.updateUser(created);
 		}
-		return "redirect:/admin/employee";
+		if (roleId.equalsIgnoreCase("admin")) {
+			created.setManagerId(0);
+			userservice.updateUser(created);
+		}
+		return "redirect:/v1/admin/employee";
 	}
 
 	@GetMapping(value = "/employee/edit/{id}")
 	public String editEmployee(Model model, @PathVariable int id) {
 		model.addAttribute("editEmployee", userservice.findUser(id));
 		List<Integer> managersId = userservice.findAllManagerId();
-		managersId.add(userservice.findMaxId() + 1);
 		model.addAttribute("managersId", managersId);
 		return "employee-edit";
 	}
@@ -72,7 +78,16 @@ public class AdminController {
 	@PostMapping(value = "/employee/edit/{id}")
 	public String saveEmployee(@ModelAttribute LAPSUser editEmployee, @RequestParam String roleId) {
 		editEmployee.setRole(roleservice.findRole(roleId));
-		userservice.updateUser(editEmployee);
-		return "redirect:/admin/employee";
+		editEmployee.setPassword(encoder.encode(editEmployee.getPassword()));
+		LAPSUser created=userservice.updateUser(editEmployee);
+		if (roleId.equalsIgnoreCase("manager")) {
+			created.setManagerId(created.getUserId());
+			userservice.updateUser(created);
+		}
+		if (roleId.equalsIgnoreCase("admin")) {
+			created.setManagerId(0);
+			userservice.updateUser(created);
+		}
+		return "redirect:/v1/admin/employee";
 	}
 }
