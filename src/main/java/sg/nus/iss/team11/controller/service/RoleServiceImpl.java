@@ -13,7 +13,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	RoleRepository roleRepo;
-	
+
 	@Override
 	public List<Role> findAllRoles() {
 		return roleRepo.findAll();
@@ -39,4 +39,8 @@ public class RoleServiceImpl implements RoleService {
 		roleRepo.delete(role);
 	}
 
+	@Override
+	public Role findRoleByName(String name) {
+		return roleRepo.findRoleByName(name);
+	}
 }

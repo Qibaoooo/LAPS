@@ -44,7 +44,7 @@ public class ManagerController {
 	// (done)3.Find related applications, staff.leaveApplications
 	// 4.Show respective html page
 	// ------------------------------------------------------//
-	@RequestMapping(value = "/view")
+	@GetMapping(value = { "/view", "/" })
 	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
@@ -77,15 +77,15 @@ public class ManagerController {
 		model.addAttribute("test", application.getId());
 		return "manager-application-details";
 	}
-	
+
 	@PostMapping(value = "/process/{id}")
 	public String approveOrRejectApplication(@RequestParam String decision, @PathVariable int id) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		if (decision.equalsIgnoreCase(ApplicationStatusEnum.APPROVED.toString())) {
-		      application.setStatus(ApplicationStatusEnum.APPROVED);
-		    } else {
-		      application.setStatus(ApplicationStatusEnum.REJECTED);
-		    }
+			application.setStatus(ApplicationStatusEnum.APPROVED);
+		} else {
+			application.setStatus(ApplicationStatusEnum.REJECTED);
+		}
 		leaveApplicationService.updateLeaveApplication(application);
 		return "redirect:/v1/manager/view";
 	}

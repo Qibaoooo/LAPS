@@ -5,14 +5,15 @@ import java.util.List;
 import sg.nus.iss.team11.model.Role;
 
 public interface RoleService {
-	  List<Role> findAllRoles();
+	List<Role> findAllRoles();
 
-	  Role findRole(String roleId);
+	Role findRole(String roleId);
 
-	  Role createRole(Role role);
+	Role createRole(Role role);
 
-	  Role updateRole(Role role);
+	Role updateRole(Role role);
 
-	  void removeRole(Role role);
+	void removeRole(Role role);
 
+	Role findRoleByName(String name);
 }

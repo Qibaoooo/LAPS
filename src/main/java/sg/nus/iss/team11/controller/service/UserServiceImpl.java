@@ -14,7 +14,7 @@ import sg.nus.iss.team11.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
 
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(LAPSUser user) {
 		userRepo.delete(user);
 	}
-	
+
 	@Override
 	public LAPSUser findUserByUsername(String username) {
 		return userRepo.findLAPSUserByUsername(username).orElseThrow();
@@ -52,27 +52,27 @@ public class UserServiceImpl implements UserService {
 	public List<LAPSUser> findSubordinates(int userId) {
 		return userRepo.findSubordinates(userId);
 	}
-	
+
 	@Override
 	public LAPSUser authenticateUser(String username, String password) {
 		Optional<LAPSUser> user = userRepo.findLAPSUserByUsername(username);
 		if (user.isEmpty()) {
 			return null;
 		}
-		
+
 		if (this.encoder.matches(password, user.get().getPassword())) {
 			return user.get();
 		}
 		return null;
 	}
-	
+
 	@Override
-	public List<Integer> findAllManagerId(){
+	public List<Integer> findAllManagerId() {
 		return userRepo.findAllManagerId();
 	}
-	
+
 	@Override
-	public int findMaxId() {
-		return userRepo.findMaxId();
+	public List<LAPSUser> findAllManager() {
+		return userRepo.findAllManager();
 	}
 }
