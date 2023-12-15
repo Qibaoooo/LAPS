@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h3>New Compensation Claim Page</h3>
-	<form action="#" th:action="@{/staff/claim/new}" th:object="${claim}" method="post">
+	<form action="#" th:action="@{/v1/staff/claim/new}" th:object="${claim}" method="post">
 		<table>
 			<tbody>
 				<tr>

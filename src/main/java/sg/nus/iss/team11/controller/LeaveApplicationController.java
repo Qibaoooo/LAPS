@@ -23,11 +23,11 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
-@RequestMapping(value = "/staff")
+@RequestMapping(value = "/v1/staff")
 public class LeaveApplicationController {
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
@@ -46,10 +46,10 @@ public class LeaveApplicationController {
 		binder.addValidators(leavedatevalidator);
 	}
 	
-	@RequestMapping(value = "leave/list")
+	@RequestMapping(value = {"leave/list", "/"})
 	public String staffLeaveApplicationList(Model model, HttpSession session) {
 
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
@@ -74,12 +74,12 @@ public class LeaveApplicationController {
 			return "staff-new-leave-application";
 		}
 
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 		leaveApplication.setUser(user);
 		leaveApplication.setStatus(ApplicationStatusEnum.APPLIED);
 		leaveApplicationService.createLeaveApplication(leaveApplication);
 
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 	}
 
 	@GetMapping(value = "leave/edit/{id}")
@@ -105,7 +105,7 @@ public class LeaveApplicationController {
 
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
-		return "redirect:/staff/leave/list";
+		return "redirect:/v1/staff/leave/list";
 
 	}
 	
@@ -116,7 +116,7 @@ public class LeaveApplicationController {
 		leaveApplication.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(leaveApplication);
 		
-		return "redirect:/staff/leave/list";
-	}
+		return "redirect:/v1/staff/leave/list";
+	}	
 
 }

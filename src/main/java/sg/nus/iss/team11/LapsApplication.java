@@ -1,10 +1,13 @@
 package sg.nus.iss.team11;
 
 import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
@@ -12,7 +15,7 @@ import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.Role;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.repository.CompensationClaimRepository;
 import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 import sg.nus.iss.team11.repository.RoleRepository;
@@ -26,6 +29,9 @@ public class LapsApplication {
 		SpringApplication.run(LapsApplication.class, args);
 	}
 
+	@Autowired
+	PasswordEncoder encoder;
+
 	@Bean
 	CommandLineRunner loadData(UserRepository userRepo, LeaveApplicationRepository leaveRepo, RoleRepository roleRepo,
 			CompensationClaimRepository claimRepo) {
@@ -35,20 +41,20 @@ public class LapsApplication {
 			leaveRepo.deleteAll();
 			userRepo.deleteAll();
 			roleRepo.deleteAll();
-
+			
 			Role adminRole = roleRepo.save(new Role("admin", "Administrator", "System administrator"));
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			User adminUser = userRepo.save(new User("adminUser", "password", adminRole));
-			User esther = userRepo.save(new User("esther", "password", managerRole));
+			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", encoder.encode("password"), adminRole));
+			LAPSUser esther = userRepo.save(new LAPSUser("esther", encoder.encode("password"), managerRole));
 			
 			//Testing for tin
-			User tin = new User("tin", "password", staffRole);
+			LAPSUser tin = new LAPSUser("tin", encoder.encode("password"), staffRole);
 			tin.setAnnualLeaveEntitlement(18);
 			tin = userRepo.save(tin);
-			User cherwah = userRepo.save(new User("cherwah", "password", staffRole));
-			User yuenkwan = userRepo.save(new User("yuenkwan", "password", staffRole));
+			LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", encoder.encode("password"), staffRole));
+			LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", encoder.encode("password"), staffRole));
 			
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);
@@ -100,7 +106,6 @@ public class LapsApplication {
 					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
-
 
 		};
 	}

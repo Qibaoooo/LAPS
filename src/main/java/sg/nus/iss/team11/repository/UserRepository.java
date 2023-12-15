@@ -1,26 +1,29 @@
 package sg.nus.iss.team11.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
-	User findUserByUsername(String username);
+@Repository
+public interface UserRepository extends JpaRepository<LAPSUser, Integer> {
+	Optional<LAPSUser> findLAPSUserByUsername(String username);
 
-	@Query("SELECT s FROM User s WHERE s.managerId = :managerId")
-	List<User> findSubordinates(@Param("managerId") Integer managerId);
+	@Query("SELECT s FROM LAPSUser s WHERE s.managerId = :managerId")
+	List<LAPSUser> findSubordinates(@Param("managerId") Integer managerId);
 	
-	@Query("SELECT s From User s WHERE s.username = :username AND s.password = :password")
-	User findUserByNamePwd(@Param("username")String username, @Param("password")String password);
+	@Query("SELECT s From LAPSUser s WHERE s.username = :username AND s.password = :password")
+	LAPSUser findLAPSUserByNamePwd(@Param("username")String username, @Param("password")String password);
 	
-	@Query("SELECT DISTINCT s.managerId From User s")
+	@Query("SELECT DISTINCT s.managerId From LAPSUser s")
 	List<Integer> findAllManagerId();
 	
-	@Query("SELECT MAX(u.userId) FROM User u")
+	@Query("SELECT MAX(u.userId) FROM LAPSUser u")
 	int findMaxId();
 }
+	

@@ -24,8 +24,7 @@ import sg.nus.iss.team11.validator.RoleValidator;
 
 
 @Controller
-@RequestMapping(value="/admin/role")
-
+@RequestMapping(value="/v1/admin/role")
 public class RoleController {
 	@Autowired
 	private RoleService rService;
@@ -61,7 +60,7 @@ public class RoleController {
 	System.out.println(message);
 	rService.createRole(role);
 	
-	return "redirect:/admin/role/list";}
+	return "redirect:/v1/admin/role/list";}
 	
 	@GetMapping("/edit/{id}")
 	public String editRolePage(@PathVariable String id, Model model) {
@@ -82,7 +81,7 @@ public class RoleController {
 		System.out.println(message);
 		rService.updateRole(role);
 		
-		return "redirect:/admin/role/list";
+		return "redirect:/v1/admin/role/list";
 	}
 	
 	@GetMapping("/delete/{id}")
@@ -95,7 +94,7 @@ public class RoleController {
 		String message = "The role " + role.getRoleId() + " was successfully deleted.";
 		System.out.println(message);
 		
-		return "redirect:/admin/role/list";
+		return "redirect:/v1/admin/role/list";
 	}
 }
 

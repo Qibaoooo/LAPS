@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/v1/admin")
 public class AdminController {
 	@Autowired
 	public UserService userservice;
@@ -27,8 +27,8 @@ public class AdminController {
 
 	@RequestMapping(value = "/employee")
 	public String viewEmployeeList(HttpSession session, Model model) {
-		User currentAdmin = (User) session.getAttribute("user");
-		List<User> employees = userservice.findAllUsers();
+		LAPSUser currentAdmin = (LAPSUser) session.getAttribute("user");
+		List<LAPSUser> employees = userservice.findAllUsers();
 		model.addAttribute("Employees", employees);
 		return "employee-list";
 	}
@@ -42,7 +42,7 @@ public class AdminController {
 
 	@GetMapping(value = "/employee/new")
 	public String newEmployee(Model model) {
-		model.addAttribute("newEmployee",new User());
+		model.addAttribute("newEmployee",new LAPSUser());
 		List<Integer> managersId=userservice.findAllManagerId();
 		managersId.add(userservice.findMaxId()+1);
 		model.addAttribute("managersId",managersId);
@@ -50,7 +50,7 @@ public class AdminController {
 	}
 
 	@PostMapping(value = "/employee/new")
-	public String createEmployee(@ModelAttribute User newEmployee,@RequestParam String roleId) {
+	public String createEmployee(@ModelAttribute LAPSUser newEmployee,@RequestParam String roleId) {
 		newEmployee.setRole(roleservice.findRole(roleId));
 		User created = userservice.createUser(newEmployee);
 		if (roleId.equalsIgnoreCase("manager")) {

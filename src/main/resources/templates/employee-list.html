@@ -29,16 +29,16 @@
 								<td align="left" th:text="${la.medicalLeaveEntitlement}"></td>
 								<td align="left" th:text="${la.compensationLeaveEntitlement}"></td>
 								<td align="left" th:text="${la.role.name}"></td>
-								<td><a th:href="@{/admin/employee/edit/}+${la.userId}"th:method="get" class="btn btn-default">
+								<td><a th:href="@{/v1/admin/employee/edit/}+${la.userId}"th:method="get" class="btn btn-default">
 									<span th:text="#{caption.edit}"></span></a>
 								</td>
-								<td><a th:href="@{/admin/employee/delete/}+${la.userId}"th:method="get" class="btn btn-default">
+								<td><a th:href="@{/v1/admin/employee/delete/}+${la.userId}"th:method="get" class="btn btn-default">
 									<span th:text="#{caption.delete}"></span></a>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<a th:href="@{/admin/employee/new}" th:method="get" class="btn btn-default">
+									<a th:href="@{/v1/admin/employee/new}" th:method="get" class="btn btn-default">
     								<span th:text="#{caption.new}"></span></a>
 								</td>
 								</tr>

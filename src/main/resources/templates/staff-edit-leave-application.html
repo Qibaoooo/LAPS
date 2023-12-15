@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h3>Edit Leave Application Page</h3>
-	<form action="#" th:action="@{/staff/leave/edit/} + ${leaveApplication.id}" th:object="${leaveApplication}"
+	<form action="#" th:action="@{/v1/staff/leave/edit/} + ${leaveApplication.id}" th:object="${leaveApplication}"
 		method="post">
 		<table>
 			<tbody>

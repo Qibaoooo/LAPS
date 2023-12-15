@@ -12,7 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Component
 public class LeaveDateValidator implements Validator{
@@ -40,7 +40,7 @@ public class LeaveDateValidator implements Validator{
 //		User currentUser = (User) session.getAttribute("user");
 //		User currentUser = leaveapplication.getUser();
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
-        User currentUser = (User) session.getAttribute("user");
+		LAPSUser currentUser = (LAPSUser) session.getAttribute("user");
 		Period leaveDuration = Period.between(leaveapplication.getFromDate(), leaveapplication.getToDate());
 		LeaveApplicationTypeEnum leavetype = leaveapplication.getType();
 		int leaveEntitlement = 0;

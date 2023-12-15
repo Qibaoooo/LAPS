@@ -1,6 +1,5 @@
 package sg.nus.iss.team11.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
-import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/staff")
+@RequestMapping(value = "/v1/staff")
 public class CompensationClaimController {
 
 	@Autowired
@@ -38,7 +36,7 @@ public class CompensationClaimController {
 	@RequestMapping(value = "claim/list")
 	public String staffCompensationClaimList(Model model, HttpSession session) {
 
-		User user = (User) session.getAttribute("user");
+		LAPSUser user = (LAPSUser) session.getAttribute("user");
 
 		List<CompensationClaim> ccList = compensationClaimService.findCompensationClaimsByUserId(user.getUserId());
 		model.addAttribute("ccList", ccList);
@@ -63,12 +61,12 @@ public class CompensationClaimController {
 			return "staff-new-compensation-claim";
 		}
 		
-	    User user = (User) session.getAttribute("user");
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
 	    compensationClaim.setUser(user);
 	    compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
 	    compensationClaimService.createCompensationClaim(compensationClaim);
 	    
-		return "redirect:/staff/claim/list";
+		return "redirect:/v1/staff/claim/list";
 	}
 
 }

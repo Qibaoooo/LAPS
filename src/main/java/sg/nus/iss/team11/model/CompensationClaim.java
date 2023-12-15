@@ -19,7 +19,7 @@ public class CompensationClaim {
 	private int id;
 	
 	@ManyToOne()
-	private User user;
+	private LAPSUser user;
 	
 	// comment is for manager to input
 	private String comment;
@@ -41,7 +41,7 @@ public class CompensationClaim {
 	
 	public CompensationClaim() {}
 
-	public CompensationClaim(User user, String description, ApplicationStatusEnum status,
+	public CompensationClaim(LAPSUser user, String description, ApplicationStatusEnum status,
 			CompensationClaimTimeEnum overtimeTime, LocalDate overTimeDate) {
 		super();
 		this.user = user;
@@ -59,11 +59,11 @@ public class CompensationClaim {
 		this.id = id;
 	}
 
-	public User getUser() {
+	public LAPSUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(LAPSUser user) {
 		this.user = user;
 	}
 

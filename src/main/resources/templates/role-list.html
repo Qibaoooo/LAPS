@@ -6,7 +6,7 @@
   <div th:replace="layout :: menu" />
   
   <h3>Role List</h3>
-  <a th:href="@{/admin/role/new}">Add Role</a>
+  <a th:href="@{/v1/admin/role/new}">Add Role</a>
   
   <div th:if="${not #lists.isEmpty(roleList)}">
     <table style="border: 1;">
@@ -21,9 +21,9 @@
         <td align="left" th:text="${role.roleId}">Id</td>
         <td align="left" th:text="${role.name}">Name</td>
         <td align="left" th:text="${role.description}">Description</td>
-        <td><a th:href="@{/admin/role/edit/}+${role.roleId}" class="btn btn-default">
+        <td><a th:href="@{/v1/admin/role/edit/}+${role.roleId}" class="btn btn-default">
                 <span th:text="#{caption.edit}"></span></a></td>
-        <td><a th:href="@{/admin/role/delete/}+${role.roleId}" class="btn btn-default">
+        <td><a th:href="@{/v1/admin/role/delete/}+${role.roleId}" class="btn btn-default">
                 <span th:text="#{caption.delete}"></span></a></td>
      </tr>
     </table>

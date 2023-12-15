@@ -4,24 +4,24 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import sg.nus.iss.team11.model.User;
+import sg.nus.iss.team11.model.LAPSUser;
 
 public interface UserService {
-	List<User> findAllUsers();
+	List<LAPSUser> findAllUsers();
 
-	User findUser(Integer userId);
+	LAPSUser findUser(Integer userId);
 
-	User findUserByUsername(String username);
+	LAPSUser findUserByUsername(String username);
 
-	User createUser(User User);
+	LAPSUser createUser(LAPSUser User);
 
-	User updateUser(User User);
+	LAPSUser updateUser(LAPSUser User);
 
-	void removeUser(User User);
+	void removeUser(LAPSUser User);
 
-	List<User> findSubordinates(int userId);
+	List<LAPSUser> findSubordinates(int userId);
 	
-	User authenticateUser(String username, String password);
+	LAPSUser authenticateUser(String username, String password);
 	
 	List<Integer> findAllManagerId();
 	
