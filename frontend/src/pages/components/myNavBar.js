@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 import { getUserinfo } from "../utils/userinfo";
+import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 
 function MyNavBar(props) {
   let userinfo = getUserinfo();
 
+  const [colorMode, setColorMode] = useState("light");
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/login";
+  };
+
+  const onClickColorModeButton = () => {
+    if (colorMode === "light") {
+      setColorMode("dark");
+    } else {
+      setColorMode("light");
+    }
+    document.documentElement.setAttribute("data-bs-theme", colorMode);
   };
 
   return (
@@ -58,6 +70,12 @@ function MyNavBar(props) {
         className="justify-content-end mx-3"
         style={{ alignItems: "baseline" }}
       >
+        <Button onClick={onClickColorModeButton}>
+          {colorMode==="light" ? 
+          <BsFillMoonStarsFill /> :
+          <BsFillSunFill />
+        }
+        </Button>
         <h6 className="mx-3" href="">
           hello, {userinfo ? userinfo.username : "User"}
         </h6>
