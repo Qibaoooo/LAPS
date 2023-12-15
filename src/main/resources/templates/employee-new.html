@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h3>New Employee Application Page</h3>
-	<form action="#" th:action="@{/admin/employee/new}" th:object="${newEmployee}" method="post">
+	<form action="#" th:action="@{/v1/admin/employee/new}" th:object="${newEmployee}" method="post">
 		<table>
 			<tbody>
 				<tr>

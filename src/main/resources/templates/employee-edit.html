@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="layout.html :: menu" />
 	<h3>Edit Employee Page</h3>
-	<form action="#" th:action="@{/admin/employee/edit/} + ${editEmployee.userId}" th:object="${editEmployee}"
+	<form action="#" th:action="@{/v1/admin/employee/edit/} + ${editEmployee.userId}" th:object="${editEmployee}"
 		method="post">
 		<table>
 			<tbody>
