@@ -52,7 +52,11 @@ public class AdminController {
 	@PostMapping(value = "/employee/new")
 	public String createEmployee(@ModelAttribute User newEmployee,@RequestParam String roleId) {
 		newEmployee.setRole(roleservice.findRole(roleId));
-		userservice.createUser(newEmployee);
+		User created = userservice.createUser(newEmployee);
+		if (roleId.equalsIgnoreCase("manager")) {
+		created.setManagerId(created.getUserId());
+		userservice.updateUser(created);
+		}
 		return "redirect:/admin/employee";
 	}
 	@GetMapping(value = "/employee/edit/{id}")
