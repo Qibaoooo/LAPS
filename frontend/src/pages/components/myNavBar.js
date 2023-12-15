@@ -70,7 +70,7 @@ function MyNavBar(props) {
             <NavDropdown.Item href="/staff/claim/new">
               New Compensation Claim
             </NavDropdown.Item>
-            <NavDropdown.Divider />
+            {/* <NavDropdown.Divider /> */}
           </NavDropdown>
         )}
       </Container>
