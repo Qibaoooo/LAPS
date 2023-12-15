@@ -41,10 +41,10 @@ public class UserDetailsImpl implements UserDetails {
 
 	public static UserDetailsImpl build(LAPSUser user) {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>(
-				Arrays.asList(new SimpleGrantedAuthority(user.getRole().getRoleId())));
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleId())));
 
 		// MANAGERS SHOULD ALSO HAVE STAFF ACCESS.
-		if (user.getRole().getRoleId().equals("ROLE_manager")) {
+		if (user.getRole().getRoleId().equals("manager")) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_staff"));
 		}
 
