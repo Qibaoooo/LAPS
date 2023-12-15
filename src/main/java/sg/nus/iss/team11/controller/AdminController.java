@@ -18,7 +18,7 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
-@RequestMapping(value = "/v1/admin")
+@RequestMapping(value = "/admin")
 public class AdminController {
 	@Autowired
 	public UserService userservice;
@@ -42,34 +42,35 @@ public class AdminController {
 
 	@GetMapping(value = "/employee/new")
 	public String newEmployee(Model model) {
-		model.addAttribute("newEmployee",new LAPSUser());
-		List<Integer> managersId=userservice.findAllManagerId();
-		managersId.add(userservice.findMaxId()+1);
-		model.addAttribute("managersId",managersId);
+		model.addAttribute("newEmployee", new LAPSUser());
+		List<Integer> managersId = userservice.findAllManagerId();
+		managersId.add(userservice.findMaxId() + 1);
+		model.addAttribute("managersId", managersId);
 		return "employee-new";
 	}
 
 	@PostMapping(value = "/employee/new")
-	public String createEmployee(@ModelAttribute LAPSUser newEmployee,@RequestParam String roleId) {
+	public String createEmployee(@ModelAttribute LAPSUser newEmployee, @RequestParam String roleId) {
 		newEmployee.setRole(roleservice.findRole(roleId));
-		User created = userservice.createUser(newEmployee);
+		LAPSUser created = userservice.createUser(newEmployee);
 		if (roleId.equalsIgnoreCase("manager")) {
-		created.setManagerId(created.getUserId());
-		userservice.updateUser(created);
+			created.setManagerId(created.getUserId());
+			userservice.updateUser(created);
 		}
 		return "redirect:/admin/employee";
 	}
+
 	@GetMapping(value = "/employee/edit/{id}")
-	public String editEmployee(Model model,@PathVariable int id) {
-		model.addAttribute("editEmployee",userservice.findUser(id));
-		List<Integer> managersId=userservice.findAllManagerId();
-		managersId.add(userservice.findMaxId()+1);
-		model.addAttribute("managersId",managersId);
+	public String editEmployee(Model model, @PathVariable int id) {
+		model.addAttribute("editEmployee", userservice.findUser(id));
+		List<Integer> managersId = userservice.findAllManagerId();
+		managersId.add(userservice.findMaxId() + 1);
+		model.addAttribute("managersId", managersId);
 		return "employee-edit";
 	}
 
 	@PostMapping(value = "/employee/edit/{id}")
-	public String saveEmployee(@ModelAttribute User editEmployee,@RequestParam String roleId) {
+	public String saveEmployee(@ModelAttribute LAPSUser editEmployee, @RequestParam String roleId) {
 		editEmployee.setRole(roleservice.findRole(roleId));
 		userservice.updateUser(editEmployee);
 		return "redirect:/admin/employee";
