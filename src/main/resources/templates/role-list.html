@@ -11,14 +11,12 @@
   <div th:if="${not #lists.isEmpty(roleList)}">
     <table style="border: 1;">
       <tr class="listHeading">
-        <th><span th:text="#{fieldLabel.roleId}"></span></th>
         <th><span th:text="#{fieldLabel.roleName}"></span></th>
         <th><span th:text="#{fieldLabel.roleDesc}"></span></th>
         <th><span th:text="#{caption.edit}"></span></th>
         <th><span th:text="#{caption.delete}"></span></th>
       </tr>
        <tr th:each="role : ${roleList}" class="listRecord">
-        <td align="left" th:text="${role.roleId}">Id</td>
         <td align="left" th:text="${role.name}">Name</td>
         <td align="left" th:text="${role.description}">Description</td>
         <td><a th:href="@{/v1/admin/role/edit/}+${role.roleId}" class="btn btn-default">

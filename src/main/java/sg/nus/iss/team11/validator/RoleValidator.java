@@ -19,7 +19,6 @@ public class RoleValidator implements Validator {
   public void validate(Object target, Errors errors) {
     System.out.println(target);
     
-    ValidationUtils.rejectIfEmpty(errors, "roleId", "error.role.roleid.empty");
     ValidationUtils.rejectIfEmpty(errors, "name", "error.role.name.empty");
     ValidationUtils.rejectIfEmpty(errors, "description", "error.role.description.empty");
   }
