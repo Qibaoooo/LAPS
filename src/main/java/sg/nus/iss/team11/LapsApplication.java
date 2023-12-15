@@ -9,14 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
+import sg.nus.iss.team11.model.Holiday;
+import sg.nus.iss.team11.model.LAPSUser;
+import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.Role;
-import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.repository.CompensationClaimRepository;
+import sg.nus.iss.team11.repository.HolidayRepository;
 import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 import sg.nus.iss.team11.repository.RoleRepository;
 import sg.nus.iss.team11.repository.UserRepository;
@@ -34,7 +36,7 @@ public class LapsApplication {
 
 	@Bean
 	CommandLineRunner loadData(UserRepository userRepo, LeaveApplicationRepository leaveRepo, RoleRepository roleRepo,
-			CompensationClaimRepository claimRepo) {
+			CompensationClaimRepository claimRepo, HolidayRepository holidayRepo) {
 		return (args) -> {
 			// clean start
 			claimRepo.deleteAll();
@@ -60,6 +62,43 @@ public class LapsApplication {
 			cherwah.setAnnualLeaveEntitlement(14);
 			yuenkwan.setAnnualLeaveEntitlement(14);
 			userRepo.flush();
+			
+			// Adding Holidays
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 1, 1), "New Year's Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 2, 1), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 2, 2), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 4, 15), "Good Friday"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 5, 1), "Labour Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 5, 3), "Hari Raya Puasa"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 5, 15), "Vesak Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 7, 10), "Hari Raya Haji"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 8, 9), "National Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 10, 24), "Deepavali"));
+			holidayRepo.save(new Holiday(LocalDate.of(2022, 12, 25), "Christmas Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 1, 1), "New Year's Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 1, 22), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 1, 23), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 4, 7), "Good Friday"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 4, 22), "Hari Raya Puasa"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 5, 1), "Labour Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 6, 2), "Vesak Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 6, 29), "Hari Raya Haji"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 8, 9), "National Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 9, 1), "Polling Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 11, 12), "Deepavali"));
+			holidayRepo.save(new Holiday(LocalDate.of(2023, 12, 25), "Christmas Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 1, 1), "New Year's Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 2, 10), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 2, 11), "Chinese New Year"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 3, 29), "Good Friday"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 4, 10), "Hari Raya Puasa"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 5, 1), "Labour Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 5, 22), "Vesak Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 6, 17), "Hari Raya Haji"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 8, 9), "National Day"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 10, 31), "Deepavali"));
+			holidayRepo.save(new Holiday(LocalDate.of(2024, 12, 25), "Christmas Day"));
+
 
 			userRepo.save(tin.setManager(esther));
 			userRepo.save(cherwah.setManager(esther));

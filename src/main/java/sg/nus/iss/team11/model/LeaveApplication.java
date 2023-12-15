@@ -1,5 +1,6 @@
 package sg.nus.iss.team11.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -122,5 +123,22 @@ public class LeaveApplication {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public static int countWeekends(final LocalDate start, final LocalDate end) {
+	    int weekends = 0;
+	    LocalDate date = start;
+
+	    while (!date.isAfter(end)) {
+	        DayOfWeek dow = date.getDayOfWeek();
+	        if (dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY) {
+	            weekends++;
+	        }
+	        date = date.plusDays(1);
+	    }
+
+	    return weekends;
+	}
+
+
 
 }
