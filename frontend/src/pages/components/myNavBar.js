@@ -7,11 +7,11 @@ import { saveColorMode, getColorMode } from "../utils/colorModeSave";
 function MyNavBar(props) {
   let userinfo = getUserinfo();
 
-  const [colorMode, setColorMode] = useState();
+  const [colorMode, setColorMode] = useState("");
 
   useEffect(() => {
     if (getColorMode()) {
-      console.log("color: ", getColorMode());
+      // console.log("color: ", getColorMode());
       setColorMode(getColorMode());
       document.documentElement.setAttribute("data-bs-theme", colorMode);
     }

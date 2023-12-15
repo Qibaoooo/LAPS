@@ -26,7 +26,8 @@ public class SecurityConfig {
 			// public REST API URLs:
 			"/style.css",
 			"/api/auth/login", 
-			"/about"
+			"/about",
+			"/error"
 	}; 
 
 	private static String[] mvcStaffURLs = {
@@ -40,6 +41,11 @@ public class SecurityConfig {
 	private static String[] mvcAdminURLs = {
 			"/v1/admin/**",
 	};
+	
+	private static String[] reactStaffURLs = {
+			"/api/staff/**",
+	};
+
 
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -78,9 +84,12 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> 
  					auth
  					.requestMatchers(publicURLs).permitAll()
+ 					
  					.requestMatchers(mvcStaffURLs).hasRole("staff")
  					.requestMatchers(mvcManagerURLs).hasRole("manager")
  					.requestMatchers(mvcAdminURLs).hasRole("admin")
+ 					
+ 					.requestMatchers(reactStaffURLs).hasRole("staff")
  						.anyRequest().authenticated()
 				);
 		

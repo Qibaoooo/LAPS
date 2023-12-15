@@ -1,10 +1,10 @@
 import axios from "axios";
 import { getJsonHeadersWithJWT } from "../properties";
 
-let getLeaveList = () => {
-  return axios.get("http://localhost:8080/api/leave/list", {
+let getUserDetails = () => {
+  return axios.get("http://localhost:8080/api/common/user-details", {
     headers: getJsonHeadersWithJWT(),
   });
 };
 
-export { getLeaveList };
+export { getUserDetails };

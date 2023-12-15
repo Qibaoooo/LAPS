@@ -20,10 +20,11 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
       throws IOException, ServletException {
     logger.error("Unauthorized error: {}", authException.getMessage());
-
+    String url = request.getRequestURI();
     // handling for REST API
-    if (request.getHeader("Authorization") != null) {
+    if (url.contains("/api")) {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized" + authException.getMessage());
+        return;
     }
     
     // handling for MVC 

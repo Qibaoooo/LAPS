@@ -41,7 +41,7 @@ function StaffLeaveList() {
         <tbody>
           {leaveList.map((value, index, array) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{value.fromDate}</td>
                 <td>{value.toDate}</td>

@@ -32,9 +32,12 @@ function LoginPage() {
       .then((response) => {
         if (response.status == 200) {
           console.log(JSON.stringify(response.data.username));
+          alert(JSON.stringify(response.data))
           setUserinfo(response.data);
-          // window.location.reload()
           window.location.href = "/staff";
+        } else {
+          setAlertMsg(JSON.stringify(response));
+          setShowAlert(true);
         }
       })
       .catch((error) => {
@@ -52,7 +55,7 @@ function LoginPage() {
     <div>
       <MyNavBar></MyNavBar>
       <Form className="mx-5">
-        <Stack gap={3} className="col-sm-4 mx-auto">
+        <Stack gap={3} className="col-sm-4 mx-auto mt-5">
           <Form.Group as={Col} controlId="formGridUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -70,9 +73,15 @@ function LoginPage() {
               placeholder="Password"
             />
           </Form.Group>
-          <Button variant="primary" type="submit" onClick={onFormSubmit}>
-            Login
-          </Button>
+          <div>
+            <Button
+              type="submit"
+              onClick={onFormSubmit}
+              style={{ maxWidth: "100px" }}
+            >
+              Login
+            </Button>
+          </div>
         </Stack>
         <Container className="col-md-4 mt-5">
           <Alert show={showAlert} variant="warning">
