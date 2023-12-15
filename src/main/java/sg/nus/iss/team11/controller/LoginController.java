@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +31,11 @@ public class LoginController {
 
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+	@GetMapping(value = { "/login" })
 	public String login(Model model) {
 		model.addAttribute("user", new LAPSUser());
 		return "login";
@@ -47,17 +48,17 @@ public class LoginController {
 		if (bindingResult.hasErrors()) {
 			return "login";
 		}
-		
-		//############# code for spring security
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-		
+
+		// ############# code for spring security
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		//############# end 
-		
+		// ############# end
+
 		// Authenticating Username and password from database
 		LAPSUser searchedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
 		if (searchedUser == null) {
@@ -66,7 +67,7 @@ public class LoginController {
 		}
 		// Storing user object in HttpSession
 		session.setAttribute("user", searchedUser);
-		
+
 		// Redirecting user to the specific role view
 		String roleId = searchedUser.getRole().getRoleId();
 		if (roleId.equals("manager")) {
@@ -84,7 +85,7 @@ public class LoginController {
 		return "redirect:/v1/staff/leave/list";
 	}
 
-	@RequestMapping(value = "/logout")
+	@GetMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/v1/login";
