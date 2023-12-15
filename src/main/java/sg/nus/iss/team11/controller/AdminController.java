@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
+import sg.nus.iss.team11.model.LeaveApplication;
 
 @Controller
 @RequestMapping(value = "/v1/admin")
@@ -25,6 +27,8 @@ public class AdminController {
 	public UserService userservice;
 	@Autowired
 	public RoleService roleservice;
+	@Autowired
+	public LeaveApplicationService leaveservice;
 	@Autowired
 	PasswordEncoder encoder;
 
@@ -38,8 +42,13 @@ public class AdminController {
 
 	@RequestMapping(value = "/employee/delete/{id}")
 	public String deleteEmployee(@PathVariable int id) {
-		// add code to delete specific employee
+		List<LeaveApplication> userapplications = leaveservice.findLeaveApplicationsByUserId(id);
+		for (LeaveApplication l:userapplications) {
+			leaveservice.removeLeaveApplication(l);
+		}
+
 		userservice.removeUser(userservice.findUser(id));
+
 		return "redirect:/v1/admin/employee";
 	}
 
