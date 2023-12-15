@@ -20,8 +20,6 @@ function LoginPage() {
       // alr logged in, redirect
       if (getUserinfo().role === "staff") {
         window.location.href = "/staff";
-      } else {
-        window.location.href = "/";
       }
     }
   }, []);
@@ -32,9 +30,8 @@ function LoginPage() {
       .then((response) => {
         if (response.status == 200) {
           console.log(JSON.stringify(response.data.username));
-          alert(JSON.stringify(response.data))
           setUserinfo(response.data);
-          window.location.href = "/staff";
+          window.location.href = "/home";
         } else {
           setAlertMsg(JSON.stringify(response));
           setShowAlert(true);
@@ -75,6 +72,7 @@ function LoginPage() {
           </Form.Group>
           <div>
             <Button
+              className="opacity-75"
               type="submit"
               onClick={onFormSubmit}
               style={{ maxWidth: "100px" }}

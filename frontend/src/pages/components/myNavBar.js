@@ -1,21 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  NavDropdown,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { getUserinfo } from "../utils/userinfo";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { saveColorMode, getColorMode } from "../utils/colorModeSave";
 
 function MyNavBar(props) {
-  let userinfo = getUserinfo();
+  let userinfo;
 
   const [colorMode, setColorMode] = useState("");
+  const [showStaffMenu, setShowStaffMenu] = useState(false);
+  const [showManagerMenu, setShowManagerMenu] = useState(false);
+  const [showaAdminMenu, setShowAdminMenu] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
+  const [user, setUser] = useState("guest");
 
   useEffect(() => {
     if (getColorMode()) {
-      // console.log("color: ", getColorMode());
       setColorMode(getColorMode());
       document.documentElement.setAttribute("data-bs-theme", colorMode);
     }
   }, [colorMode]);
+
+  useEffect(() => {
+    userinfo = getUserinfo();
+    if (userinfo === null) {
+      // user not logged in, no need to update navbar menus
+      return;
+    }
+
+    // user is logged in, update menus for different roles
+    if (showLogin === true) {
+      setShowLogin(false);
+    }
+    if (showaAdminMenu === false && userinfo.role === "ROLE_admin") {
+      setShowAdminMenu(true);
+    }
+    if (showStaffMenu === false && userinfo.role === "ROLE_staff") {
+      setShowStaffMenu(true);
+    }
+    if (showManagerMenu === false && userinfo.role === "ROLE_manager") {
+      setShowStaffMenu(true);
+      setShowManagerMenu(true);
+    }
+    if (user === "guest") {
+      setUser(userinfo.username);
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("userinfo");
@@ -47,7 +85,7 @@ function MyNavBar(props) {
             LAPS
           </h3>
         </Navbar.Brand>
-        {userinfo ? (
+        {!showLogin ? (
           <Nav.Link className="mx-3" href="/home">
             Home
           </Nav.Link>
@@ -56,7 +94,7 @@ function MyNavBar(props) {
             Login
           </Nav.Link>
         )}
-        {userinfo && (
+        {showStaffMenu && (
           <NavDropdown className="mx-3" title="Staff" id="basic-nav-dropdown">
             <NavDropdown.Item href="/staff/leave/list">
               View Leave Applications
@@ -73,18 +111,49 @@ function MyNavBar(props) {
             {/* <NavDropdown.Divider /> */}
           </NavDropdown>
         )}
+        {showManagerMenu && (
+          <NavDropdown className="mx-3" title="Manager" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+          </NavDropdown>
+        )}
+        {showaAdminMenu && (
+          <NavDropdown className="mx-3" title="Admin" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+          </NavDropdown>
+        )}
       </Container>
       <Container
         className="justify-content-end mx-3"
         style={{ alignItems: "end" }}
       >
-        <Button size="sm" onClick={onClickColorModeButton}>
-          {colorMode === "light" ? <BsFillMoonStarsFill /> : <BsFillSunFill />}
-        </Button>
+        <OverlayTrigger
+          key="colorModeButton"
+          placement="bottom"
+          overlay={<Tooltip id={`tooltip-colorModeButton`}>Toggle Light/Dark</Tooltip>}
+        >
+          <Button
+            style={{ borderRadius: "15px" }}
+            className="opacity-50"
+            size="sm"
+            onClick={onClickColorModeButton}
+          >
+            {colorMode === "light" ? (
+              <BsFillMoonStarsFill />
+            ) : (
+              <BsFillSunFill />
+            )}
+          </Button>
+        </OverlayTrigger>
         <h6 className="mx-3" href="">
-          hello, {userinfo ? userinfo.username : "User"}
+          hello, {user}
         </h6>
-        {userinfo && (
+        {!showLogin && (
           <h6 onClick={handleLogout}>
             <a href="">logout</a>
           </h6>

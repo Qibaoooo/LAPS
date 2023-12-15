@@ -16,7 +16,7 @@ function App() {
       style={{height:"100vh"}}
     >
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<LoginPage />} />
