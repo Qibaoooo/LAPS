@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { getUserinfo } from "../utils/userinfo";
+import { getUserinfoFromLocal } from "../utils/userinfo";
 import PleaseLoginModal from "./pleaseLoginModal";
 
 function LoginCheckWrapper({ children }) {
@@ -9,7 +9,7 @@ function LoginCheckWrapper({ children }) {
   const handleGoToLogin = () => (window.location.href = "/login");
 
   useEffect(() => {
-    if (!getUserinfo()) {
+    if (!getUserinfoFromLocal()) {
       console.log("login please");
       setShowPleaseLogin(true);
     }

@@ -8,7 +8,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
-import { getUserinfo } from "../utils/userinfo";
+import { getUserinfoFromLocal } from "../utils/userinfo";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { saveColorMode, getColorMode } from "../utils/colorModeSave";
 
@@ -30,7 +30,7 @@ function MyNavBar(props) {
   }, [colorMode]);
 
   useEffect(() => {
-    userinfo = getUserinfo();
+    userinfo = getUserinfoFromLocal();
     if (userinfo === null) {
       // user not logged in, no need to update navbar menus
       return;
@@ -40,13 +40,13 @@ function MyNavBar(props) {
     if (showLogin === true) {
       setShowLogin(false);
     }
-    if (showaAdminMenu === false && userinfo.role === "ROLE_admin") {
+    if (showaAdminMenu === false && userinfo.roleId === "ROLE_admin") {
       setShowAdminMenu(true);
     }
-    if (showStaffMenu === false && userinfo.role === "ROLE_staff") {
+    if (showStaffMenu === false && userinfo.roleId === "ROLE_staff") {
       setShowStaffMenu(true);
     }
-    if (showManagerMenu === false && userinfo.role === "ROLE_manager") {
+    if (showManagerMenu === false && userinfo.roleId === "ROLE_manager") {
       setShowStaffMenu(true);
       setShowManagerMenu(true);
     }

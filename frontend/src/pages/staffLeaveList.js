@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import { getLeaveList } from "./utils/api/apiStaff";
-import { getUserinfo } from "./utils/userinfo";
+import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button, Col, Table } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
@@ -11,7 +11,7 @@ function StaffLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
 
   useEffect(() => {
-    if (getUserinfo()) {
+    if (getUserinfoFromLocal()) {
       getLeaveList()
         .then((response) => response.data)
         .then((list) => {

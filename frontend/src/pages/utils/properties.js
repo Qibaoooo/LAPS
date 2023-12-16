@@ -1,4 +1,4 @@
-import { getUserinfo } from "./userinfo";
+import { getUserinfoFromLocal } from "./userinfo";
 
 export const getJsonHeaders = () => {
   return {
@@ -15,6 +15,6 @@ export const getJsonHeadersWithJWT = () => {
     "Access-Control-Allow-Origin": "http://localhost:3000",
     "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-    "Authorization": "Bearer " + getUserinfo().jwt
+    "Authorization": "Bearer " + getUserinfoFromLocal().jwt
   };
 };

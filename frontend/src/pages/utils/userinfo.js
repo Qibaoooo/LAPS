@@ -1,10 +1,9 @@
-let setUserinfo = (info) => {
+let setUserinfoLocal = (info) => {
     localStorage.setItem('userinfo', JSON.stringify(info))
 }
 
-let getUserinfo = () => {
-    let fromLocal = JSON.parse(localStorage.getItem('userinfo'))
-    return fromLocal
+let getUserinfoFromLocal = () => {
+    return JSON.parse(localStorage.getItem('userinfo'))
 }
 
-export { setUserinfo, getUserinfo }
+export { setUserinfoLocal, getUserinfoFromLocal }

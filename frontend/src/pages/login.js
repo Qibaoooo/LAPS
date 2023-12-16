@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import { Alert, Container, Stack } from "react-bootstrap";
 import MyNavBar from "./components/myNavBar";
 import { login } from "./utils/api/apiAuth";
-import { getUserinfo, setUserinfo } from "./utils/userinfo";
+import { getUserinfoFromLocal, setUserinfoLocal } from "./utils/userinfo";
 
 function LoginPage() {
   const [username, setUsername] = useState();
@@ -16,9 +16,9 @@ function LoginPage() {
   const onInputPW = ({ target: { value } }) => setPassword(value);
 
   useEffect(() => {
-    if (getUserinfo()) {
+    if (getUserinfoFromLocal()) {
       // alr logged in, redirect
-      if (getUserinfo().role === "staff") {
+      if (getUserinfoFromLocal().roleId === "ROLE_staff") {
         window.location.href = "/staff";
       }
     }
@@ -30,7 +30,7 @@ function LoginPage() {
       .then((response) => {
         if (response.status == 200) {
           console.log(JSON.stringify(response.data.username));
-          setUserinfo(response.data);
+          setUserinfoLocal(response.data);
           window.location.href = "/home";
         } else {
           setAlertMsg(JSON.stringify(response));
