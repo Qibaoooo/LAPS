@@ -8,6 +8,7 @@ import StaffLeaveList from "./pages/staffLeaveList";
 import StaffLeaveNew from "./pages/staffLeaveNew";
 import StaffClaimList from "./pages/staffClaimList";
 import StaffClaimNew from "./pages/staffClaimNew";
+import ManagerLeaveView from "./pages/managerLeaveView";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/staff/leave/new" element={<StaffLeaveNew />} />
         <Route path="/staff/claim/list" element={<StaffClaimList />} />
         <Route path="/staff/claim/new" element={<StaffClaimNew />} />
+        <Route path="/manager/leave/view" element={<ManagerLeaveView />} />
       </Routes>
     </div>
   );

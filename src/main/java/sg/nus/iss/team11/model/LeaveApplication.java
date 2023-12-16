@@ -2,6 +2,7 @@ package sg.nus.iss.team11.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Period;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -138,6 +139,27 @@ public class LeaveApplication {
 
 	    return weekends;
 	}
+	
+	public int countWeekend() {
+	    int weekends = 0;
+	    LocalDate date = this.getFromDate();
+
+	    while (!date.isAfter(this.getToDate())) {
+	        DayOfWeek dow = date.getDayOfWeek();
+	        if (dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY) {
+	            weekends++;
+	        }
+	        date = date.plusDays(1);
+	    }
+
+	    return weekends;
+	}
+	
+	public int countLeaveDays() {
+		Period period = Period.between(this.getFromDate(), this.getToDate());
+        return period.getDays();
+	}
+	
 	
 	public boolean isOverlapping(LeaveApplication la) {
 	    return fromDate.isBefore(la.getToDate()) && la.getFromDate().isBefore(toDate);
