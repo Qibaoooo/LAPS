@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import sg.nus.iss.team11.controller.service.HolidayService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
@@ -28,11 +29,10 @@ public class ManagerController {
 	public LeaveApplicationService leaveApplicationService;
 
 	@Autowired
-	public UserService userService;
+	public HolidayService holidayservice;
 
-	// ------------------------------------------------------//
-	// Add login validate codes after
-	// ------------------------------------------------------//
+	@Autowired
+	public UserService userService;
 
 	// ------------------------------------------------------//
 	// Show list of leave application
@@ -73,19 +73,60 @@ public class ManagerController {
 	public String viewApplicationById(@PathVariable int id, Model model) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		model.addAttribute("la", application);
-		System.out.println(application.getId());
-		model.addAttribute("test", application.getId());
+
+		LAPSUser user = application.getUser();
+		int entitlement = holidayservice.getEntitlement(application);
+		boolean enough = true;
+		switch (application.getType().toString()) {
+		case "MedicalLeave":
+			if (user.getMedicalLeaveEntitlement() < entitlement) {
+				enough = false;
+			}
+			model.addAttribute("entitlementLeft", user.getMedicalLeaveEntitlement());
+			break;
+		case "AnnualLeave":
+			if (user.getAnnualLeaveEntitlement() < entitlement) {
+				enough = false;
+			}
+			model.addAttribute("entitlementLeft", user.getAnnualLeaveEntitlement());
+			break;
+		case "CompensationLeave":
+			if (user.getCompensationLeaveEntitlement() < entitlement) {
+				enough = false;
+			}
+			model.addAttribute("entitlementLeft", user.getCompensationLeaveEntitlement());
+			break;
+		}
+		model.addAttribute("result", enough);
+
 		return "manager-application-details";
 	}
-	
+
 	@PostMapping(value = "/process/{id}")
 	public String approveOrRejectApplication(@RequestParam String decision, @PathVariable int id) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		if (decision.equalsIgnoreCase(ApplicationStatusEnum.APPROVED.toString())) {
-		      application.setStatus(ApplicationStatusEnum.APPROVED);
-		    } else {
-		      application.setStatus(ApplicationStatusEnum.REJECTED);
-		    }
+			application.setStatus(ApplicationStatusEnum.APPROVED);
+			LAPSUser user = application.getUser();
+			int entitlement = holidayservice.getEntitlement(application);
+			switch (application.getType().toString()) {
+			case "MedicalLeave":
+				user.setMedicalLeaveEntitlement(user.getMedicalLeaveEntitlement() - entitlement);
+				userService.updateUser(user);
+				break;
+			case "AnnualLeave":
+				user.setAnnualLeaveEntitlement(user.getAnnualLeaveEntitlement() - entitlement);
+				userService.updateUser(user);
+				break;
+			case "CompensationLeave":
+				user.setCompensationLeaveEntitlement(user.getCompensationLeaveEntitlement() - entitlement);
+				userService.updateUser(user);
+				break;
+			}
+
+		} else {
+			application.setStatus(ApplicationStatusEnum.REJECTED);
+		}
 		leaveApplicationService.updateLeaveApplication(application);
 		return "redirect:/v1/manager/view";
 	}
