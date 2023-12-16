@@ -29,16 +29,8 @@ import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/staff")
 public class APILeaveApplicationController {
-	
-
-	/*
-	 * All methods below this comment is for API end points. API end points are for
-	 * ReactJS front end. If you are adding methods for Java Spring MVC (part of our
-	 * compulsory feature), please add them to the controller without 'API' in the name.
-	 * 
-	 */
 	
 	@Autowired
 	LeaveApplicationService leaveApplicationService;

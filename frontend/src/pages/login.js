@@ -6,6 +6,7 @@ import { Alert, Container, Stack } from "react-bootstrap";
 import MyNavBar from "./components/myNavBar";
 import { login } from "./utils/api/apiAuth";
 import { getUserinfoFromLocal, setUserinfoLocal } from "./utils/userinfo";
+import MyAlert from "./components/myAlert";
 
 function LoginPage() {
   const [username, setUsername] = useState();
@@ -79,20 +80,13 @@ function LoginPage() {
             </Button>
           </div>
         </Stack>
-        <Container className="col-md-4 mt-5">
-          <Alert show={showAlert} variant="warning">
-            <p>Login failed, error msg: </p>
-            <p>{alertMsg}</p>
-            <div className="">
-              <Button
-                onClick={() => setShowAlert(false)}
-                variant="outline-warning"
-              >
-                Close
-              </Button>
-            </div>
-          </Alert>
-        </Container>
+        <MyAlert
+          showAlert={showAlert}
+          variant="warning"
+          msg1="Login failed, error msg:"
+          msg2={alertMsg}
+          handleCLose={() => setShowAlert(false)}
+        ></MyAlert>
       </Form>
     </div>
   );
