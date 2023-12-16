@@ -44,7 +44,7 @@ public class ManagerController {
 	// (done)3.Find related applications, staff.leaveApplications
 	// 4.Show respective html page
 	// ------------------------------------------------------//
-	@RequestMapping(value = "/view")
+	@RequestMapping(value = "/leave/view")
 	public String viewApplicationsForApproval(HttpSession session, Model model) {
 
 		// Need to add session-related codes, to retrieve subordinates
@@ -69,7 +69,7 @@ public class ManagerController {
 	// 2.Create a html page, showing id, name, description,
 	// from date, end date, type, status, maybe entitlementleft?
 	// ------------------------------------------------------//
-	@GetMapping(value = "/process/{id}")
+	@GetMapping(value = "/leave/process/{id}")
 	public String viewApplicationById(@PathVariable int id, Model model) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		model.addAttribute("la", application);
@@ -102,7 +102,7 @@ public class ManagerController {
 		return "manager-application-details";
 	}
 
-	@PostMapping(value = "/process/{id}")
+	@PostMapping(value = "/leave/process/{id}")
 	public String approveOrRejectApplication(@RequestParam String decision, @PathVariable int id) {
 		LeaveApplication application = leaveApplicationService.findLeaveApplicationById(id);
 		if (decision.equalsIgnoreCase(ApplicationStatusEnum.APPROVED.toString())) {
@@ -140,7 +140,7 @@ public class ManagerController {
 	// (done)3.Find related applications, staff.leaveApplications
 	// 4.Show respective html page
 	// ------------------------------------------------------//
-	@RequestMapping(value = "/history")
+	@RequestMapping(value = "/leave/history")
 	public String viewApplicationsHistory(HttpSession session, Model model) {
 		// Need to add session-related codes, to retrieve subordinates
 		LAPSUser currentManager = (LAPSUser) session.getAttribute("user");
