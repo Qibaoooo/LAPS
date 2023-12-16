@@ -17,20 +17,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.exception.LeaveApplicationNotFound;
+import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
+import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @RequestMapping(value = "/v1/staff")
-public class LeaveApplicationController {
+public class StaffController {
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
+
+	@Autowired
+	CompensationClaimService compensationClaimService;
 
 	@Autowired
 	RoleService roleService;
@@ -41,7 +47,7 @@ public class LeaveApplicationController {
 	@Autowired
 	private LeaveDateValidator leavedatevalidator;
 
-	@InitBinder
+	@InitBinder("leaveApplication")
 	private void initValidators(WebDataBinder binder) {
 		binder.addValidators(leavedatevalidator);
 	}
@@ -118,5 +124,45 @@ public class LeaveApplicationController {
 		
 		return "redirect:/v1/staff/leave/list";
 	}	
+	
+	// merged from previous claim controller:
+	
+
+	@RequestMapping(value = "claim/list")
+	public String staffCompensationClaimList(Model model, HttpSession session) {
+
+		LAPSUser user = (LAPSUser) session.getAttribute("user");
+
+		List<CompensationClaim> ccList = compensationClaimService.findCompensationClaimsByUserId(user.getUserId());
+		model.addAttribute("ccList", ccList);
+
+		return "staff-compensation-claim-list";
+	}
+
+	@GetMapping(value = "claim/new")
+	public String newClaim(Model model) {
+		model.addAttribute("claim", new CompensationClaim());
+		model.addAttribute("timeChoices", java.util.Arrays.asList(CompensationClaimTimeEnum.values()));
+
+		return "staff-new-compensation-claim";
+	}
+
+	@PostMapping(value = "claim/new")
+	public String newClaim(@ModelAttribute CompensationClaim compensationClaim, BindingResult result,
+			HttpSession session, Model model) {
+		
+		if (result.hasErrors()) {
+			model.addAttribute("timeChoices", java.util.Arrays.asList(CompensationClaimTimeEnum.values()));
+			return "staff-new-compensation-claim";
+		}
+		
+	    LAPSUser user = (LAPSUser) session.getAttribute("user");
+	    compensationClaim.setUser(user);
+	    compensationClaim.setStatus(ApplicationStatusEnum.APPLIED);
+	    compensationClaimService.createCompensationClaim(compensationClaim);
+	    
+		return "redirect:/v1/staff/claim/list";
+	}
+
 
 }
