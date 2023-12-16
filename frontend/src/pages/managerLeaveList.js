@@ -3,11 +3,11 @@ import MyNavBar from "./components/myNavBar";
 import { getLeaveList } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button, Col, Table } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 
-function ViewLeaveList() {
+function ManagerLeaveList() {
     const [leaveList, setLeaveList] = useState([]);
 
     useEffect(() => {
@@ -66,4 +66,4 @@ function ViewLeaveList() {
     );
 }
 
-export default ViewLeaveList;
+export default ManagerLeaveList;

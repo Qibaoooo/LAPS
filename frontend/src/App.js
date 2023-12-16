@@ -8,7 +8,8 @@ import StaffLeaveList from "./pages/staffLeaveList";
 import StaffLeaveNew from "./pages/staffLeaveNew";
 import StaffClaimList from "./pages/staffClaimList";
 import StaffClaimNew from "./pages/staffClaimNew";
-import ManagerLeaveView from "./pages/managerLeaveView";
+import ManagerLeaveList from "./pages/managerLeaveList";
+import ManagerClaimList from "./pages/managerClaimList";
 import AdminEmployeeList from "./pages/adminEmployeeList";
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
         <Route path="/staff/leave/new" element={<StaffLeaveNew />} />
         <Route path="/staff/claim/list" element={<StaffClaimList />} />
         <Route path="/staff/claim/new" element={<StaffClaimNew />} />
-        <Route path="/manager/leave/view" element={<ManagerLeaveView />} />
+        <Route path="/manager/leave/list" element={<ManagerLeaveList />} />
+        <Route path="/manager/claim/list" element={<ManagerClaimList />} />
         <Route path="/admin/employee" element={<AdminEmployeeList/>}/>
       </Routes>
     </div>
