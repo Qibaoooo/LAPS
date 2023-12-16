@@ -7,7 +7,7 @@ function aboutPage() {
     <div>
       <MyNavBar></MyNavBar>
       <Container className="col-md-5 mt-5 " style={{ textAlign:"start"}}>
-        <h5>ReactJS Frontend Of Leave Application Processing System (LAPS)</h5>
+        <h5>ReactJS Frontend of the Leave Application Processing System (LAPS)</h5>
         <br></br>
         <h5>Made by Team11, GDipSA 57</h5>
         <br></br>
