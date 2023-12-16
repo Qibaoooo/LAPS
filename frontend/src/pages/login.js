@@ -18,9 +18,7 @@ function LoginPage() {
   useEffect(() => {
     if (getUserinfoFromLocal()) {
       // alr logged in, redirect
-      if (getUserinfoFromLocal().roleId === "ROLE_staff") {
-        window.location.href = "/staff";
-      }
+      window.location.href = "/home";
     }
   }, []);
 
