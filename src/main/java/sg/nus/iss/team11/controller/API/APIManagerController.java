@@ -27,33 +27,37 @@ import sg.nus.iss.team11.model.LeaveApplication;
 public class APIManagerController {
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
-	
+
 	@GetMapping(value = "/leave/view")
 	public ResponseEntity<String> viewApplicationsForApproval(Authentication authentication, Principal principal) {
 
 		// Need to add session-related codes, to retrieve subordinates
 		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
-		
+
 		JSONArray leaveList = new JSONArray();
-		
+
 		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
-		
-		for(LAPSUser u:subordinates) {
+
+		for (LAPSUser u : subordinates) {
 			JSONArray userLeave = new JSONArray();
 			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsToProcess(u.getUserId());
-			for (LeaveApplication l:userLAList) {
+			if (userLAList.isEmpty()) {
+				continue;
+			}
+			for (LeaveApplication l : userLAList) {
 				JSONObject leave = new JSONObject();
 				leave.put("id", l.getId());
+				leave.put("username", l.getUser().getUsername());
 				leave.put("comment", l.getComment());
 				leave.put("description", l.getDescription());
 				leave.put("fromDate", l.getFromDate());
 				leave.put("toDate", l.getToDate());
 				leave.put("status", l.getStatus().toString());
 				leave.put("type", l.getType());
-				
+
 				userLeave.put(leave);
 			}
 			leaveList.put(userLeave);
