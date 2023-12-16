@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.CompensationClaim;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,16 +32,18 @@ public class APIManagerController {
 
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
+	
+	@Autowired
+	CompensationClaimService compensationClaimService;
 
-	@GetMapping(value = "/leave/view")
+	@GetMapping(value = "/leave/list")
 	public ResponseEntity<String> viewApplicationsForApproval(Authentication authentication, Principal principal) {
 
 		// Need to add session-related codes, to retrieve subordinates
 		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		JSONArray leaveList = new JSONArray();
-
-		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		for (LAPSUser u : subordinates) {
 			JSONArray userLeave = new JSONArray();
@@ -64,6 +68,39 @@ public class APIManagerController {
 		}
 
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/claim/list")
+	public ResponseEntity<String> viewClaimsForApproval(Authentication authentication, Principal principal) {
+
+		// Need to add session-related codes, to retrieve subordinates
+		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+
+		JSONArray claimList = new JSONArray();
+		
+		for (LAPSUser u : subordinates) {
+			JSONArray userClaim = new JSONArray();
+			List<CompensationClaim> userClaimList = compensationClaimService.findCompensationClaimsByUserId(u.getUserId());
+			if (userClaimList.isEmpty()) {
+				continue;
+			}
+			for (CompensationClaim c : userClaimList) {
+				JSONObject leave = new JSONObject();
+				leave.put("id", c.getId());
+				leave.put("username", c.getUser().getUsername());
+				leave.put("comment", c.getComment());
+				leave.put("description", c.getDescription());
+				leave.put("status", c.getStatus().toString());
+				leave.put("time", c.getOvertimeTime());
+				leave.put("date", c.getOverTimeDate());
+
+				userClaim.put(leave);
+			}
+			claimList.put(userClaim);
+		}
+
+		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
 	}
 
 }

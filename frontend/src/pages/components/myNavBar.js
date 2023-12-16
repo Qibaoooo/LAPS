@@ -113,9 +113,13 @@ function MyNavBar(props) {
         )}
         {showManagerMenu && (
           <NavDropdown className="mx-3" title="Manager" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/manager/leave/list">
+              Process Leave Application
+            </NavDropdown.Item>
             <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
-            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
-            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/claim/list">
+              Process Compensation Claim
+            </NavDropdown.Item>
             <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
           </NavDropdown>
         )}
