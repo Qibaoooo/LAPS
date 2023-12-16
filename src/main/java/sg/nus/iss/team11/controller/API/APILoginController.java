@@ -53,10 +53,10 @@ public class APILoginController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		String role = userDetails.getAuthorities().iterator().next().toString();
+		String roleId = userDetails.getAuthorities().iterator().next().toString();
 
 		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), role));
+				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roleId));
 	}
 
 	@PostMapping(value = "logout")

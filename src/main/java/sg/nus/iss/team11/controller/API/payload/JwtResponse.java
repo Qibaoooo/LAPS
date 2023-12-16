@@ -6,7 +6,7 @@ public class JwtResponse {
 	private String jwt;
 	private int id;
 	private String username;
-	private String role;
+	private String roleId;
 	public String getJwt() {
 		return jwt;
 	}
@@ -25,18 +25,18 @@ public class JwtResponse {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getRole() {
-		return role;
+	public String getRoleId() {
+		return roleId;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
-	public JwtResponse(String jwt, int id, String username, String role) {
+	public JwtResponse(String jwt, int id, String username, String roleId) {
 		super();
 		this.jwt = jwt;
 		this.id = id;
 		this.username = username;
-		this.role = role;
+		this.roleId = roleId;
 	}
 
 }
