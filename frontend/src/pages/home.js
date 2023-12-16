@@ -56,16 +56,16 @@ function HomePage() {
             )}
             {roleId === "ROLE_manager" && (
               <div className="mt-3">
-                <Card.Link href="/?"> View Suborinates Leaves </Card.Link>
+                <Card.Link href="/manager/leave/list"> View Suborinates Leaves </Card.Link>
                 <br />
-                <Card.Link href="/?"> New Suborinates Claims </Card.Link>
+                <Card.Link href="/manager/claim/list"> New Suborinates Claims </Card.Link>
               </div>
             )}
             {roleId === "ROLE_admin" && (
               <div className="mt-3">
               <Card.Link href="/?"> Manage Roles </Card.Link>
                 <br />
-                <Card.Link href="/?"> Manage Users </Card.Link>
+                <Card.Link href="/admin/employee"> Manage Users </Card.Link>
               </div>
             )}
           </Card.Body>
