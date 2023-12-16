@@ -125,7 +125,9 @@ function MyNavBar(props) {
         )}
         {showaAdminMenu && (
           <NavDropdown className="mx-3" title="Admin" id="basic-nav-dropdown">
-            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/employee">
+              View Employee List
+            </NavDropdown.Item>
             <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
             <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
             <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
