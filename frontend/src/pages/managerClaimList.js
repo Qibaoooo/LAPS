@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getSubordinateClaimList } from "./utils/api/apiManager";
+import { getClaimList } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button } from "react-bootstrap";
@@ -12,7 +12,7 @@ function ManagerClaimList() {
 
     useEffect(() => {
         if (getUserinfoFromLocal()) {
-            getSubordinateClaimList()
+            getClaimList()
                 .then((response) => response.data)
                 .then((list) => {
                     console.log(list);
