@@ -82,3 +82,6 @@ public class APIAdminController {
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
 	}
 }
+
+
+

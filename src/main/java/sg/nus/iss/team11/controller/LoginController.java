@@ -68,11 +68,11 @@ public class LoginController {
 		// Redirecting user to the specific role view
 		String roleId = searchedUser.getRole().getRoleId();
 		if (roleId.equals("manager")) {
-			return "redirect:/v1/manager/view";
+			return "redirect:/v1/manager/leave/view";
 		}
 
 		if (roleId.equals("manager")) {
-			return "redirect:/v1/manager/view";
+			return "redirect:/v1/manager/leave/view";
 		}
 
 		if (roleId.equals("admin")) {

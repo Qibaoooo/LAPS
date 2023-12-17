@@ -29,8 +29,8 @@
 				<div th:if="${session.user.role.roleId=='manager'}" class="subnav">
 					<button class="subnavbtn">Manager Menu <i class="fa fa-caret-down"></i></button>
 					<div class="subnav-content">
-						<a th:href="@{/v1/manager/view}" th:utext="#{menu.approve}"></a>
-						<a th:href="@{/v1/manager/history}" th:utext="#{menu.managerHistory}"></a>
+						<a th:href="@{/v1/manager/leave/view}" th:utext="#{menu.approve}"></a>
+						<a th:href="@{/v1/manager/leave/history}" th:utext="#{menu.managerHistory}"></a>
 					</div>
 				</div>
 			 
