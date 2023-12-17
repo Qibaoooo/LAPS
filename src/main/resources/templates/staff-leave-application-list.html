@@ -38,10 +38,10 @@
 					</div>
 				</td>
 				<td>
-					<div th:switch="${la.status.toString()}">
-						<a th:case="'APPLIED'" th:href="@{/v1/staff/leave/cancel/}+${la.id}">Cancel</a>
-						<a th:case="'UPDATED'" th:href="@{/v1/staff/leave/cancel/}+${la.id}">Cancel</a>
-						<span th:case="*"> --- </span>
+					<div>
+						<a th:if="${la.status.toString() == 'APPLIED' || la.status.toString() == 'UPDATED'}" th:href="@{/v1/staff/leave/cancel/}+${la.id}">Cancel</a>
+    					<a th:if="${la.status.toString() == 'APPROVED' && la.fromDate.isAfter(currentDate) && la.toDate.isAfter(currentDate)}"  th:href="@{/v1/staff/leave/cancel/}+${la.id}">Cancel</a>
+    					<span th:if="${la.status.toString() != 'APPLIED' && la.status.toString() != 'UPDATED' && !(la.status.toString() == 'APPROVED' && la.fromDate.isAfter(currentDate))}">---</span>
 					</div>
 				</td>
 			</tr>
