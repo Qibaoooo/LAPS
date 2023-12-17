@@ -28,7 +28,7 @@ function ManagerLeaveList() {
     return (
         <LoginCheckWrapper>
             <MyNavBar />
-            <PageTitle title="Subordinates Leave Application List"></PageTitle>
+            <PageTitle title="Subordinates Leave Application History"></PageTitle>
              
             {leaveList.map((userLeaveArray,index) => (
                 <MyTable>  

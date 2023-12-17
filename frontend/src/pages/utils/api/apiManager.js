@@ -19,16 +19,29 @@ let getClaimList = () => {
   });
 };
 
+let getClaimHistory = () => {
+  return axios.get("http://localhost:8080/api/manager/claim/history", {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
 let approveClaim = (data) => {
   return axios.post("http://localhost:8080/api/manager/claim/approve", data, {
     headers: getJsonHeadersWithJWT(),
-  })
+  });
 };
 
 let rejectClaim = (data) => {
   return axios.post("http://localhost:8080/api/manager/claim/reject", data, {
     headers: getJsonHeadersWithJWT(),
-  })
+  });
 };
 
-export { getLeaveList, getLeaveHistory, getClaimList, approveClaim, rejectClaim };
+export {
+  getLeaveList,
+  getLeaveHistory,
+  getClaimList,
+  approveClaim,
+  rejectClaim,
+  getClaimHistory,
+};
