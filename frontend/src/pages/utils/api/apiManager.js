@@ -19,14 +19,14 @@ let getClaimList = () => {
   });
 };
 
-let approveClaim = (id) => {
-  return axios.post("http://localhost:8080/api/manager/claim/approve", id, {
+let approveClaim = (data) => {
+  return axios.post("http://localhost:8080/api/manager/claim/approve", data, {
     headers: getJsonHeadersWithJWT(),
   })
 };
 
-let rejectClaim = (id) => {
-  return axios.post("http://localhost:8080/api/manager/claim/reject", id, {
+let rejectClaim = (data) => {
+  return axios.post("http://localhost:8080/api/manager/claim/reject", data, {
     headers: getJsonHeadersWithJWT(),
   })
 };

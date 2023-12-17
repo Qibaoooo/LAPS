@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import sg.nus.iss.team11.controller.API.payload.ProcessClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
@@ -126,7 +127,7 @@ public class APIManagerController {
 			for (CompensationClaim c : userClaimList) {
 				if ((c.getStatus() == ApplicationStatusEnum.APPLIED)
 						|| (c.getStatus() == ApplicationStatusEnum.UPDATED)) {
-					
+
 					JSONObject leave = new JSONObject();
 					leave.put("id", c.getId());
 					leave.put("username", c.getUser().getUsername());
@@ -139,9 +140,9 @@ public class APIManagerController {
 					userClaim.put(leave);
 				}
 			}
-			
+
 			if (!userClaim.isEmpty()) {
-				claimList.put(userClaim);				
+				claimList.put(userClaim);
 			}
 		}
 
@@ -150,16 +151,17 @@ public class APIManagerController {
 
 	@PostMapping(value = "/claim/approve")
 	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
-			@RequestBody int id) {
+			@RequestBody ProcessClaimRequest processClaimRequest) {
 
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
 			// TODO: further improve check to make sure the staff belongs to this manager
 
-			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
+			CompensationClaim claim = compensationClaimService.findCompensationClaimById(processClaimRequest.getId());
 			claim.setStatus(ApplicationStatusEnum.APPROVED);
+			claim.setComment(processClaimRequest.getComment());
 			compensationClaimService.updateCompensationClaim(claim);
 
-			return new ResponseEntity<>("approved claim " + id, HttpStatus.OK);
+			return new ResponseEntity<>("approved claim " + processClaimRequest.getId(), HttpStatus.OK);
 
 		}
 
@@ -167,16 +169,18 @@ public class APIManagerController {
 	}
 
 	@PostMapping(value = "/claim/reject")
-	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication, @RequestBody int id) {
+	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication,
+			@RequestBody ProcessClaimRequest processClaimRequest) {
 
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
 			// TODO: further improve check to make sure the staff belongs to this manager
 
-			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
+			CompensationClaim claim = compensationClaimService.findCompensationClaimById(processClaimRequest.getId());
 			claim.setStatus(ApplicationStatusEnum.REJECTED);
+			claim.setComment(processClaimRequest.getComment());
 			compensationClaimService.updateCompensationClaim(claim);
 
-			return new ResponseEntity<>("rejected claim " + id, HttpStatus.OK);
+			return new ResponseEntity<>("rejected claim " + processClaimRequest.getId(), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
