@@ -15,7 +15,7 @@ import { saveColorMode, getColorMode } from "../utils/colorModeSave";
 function MyNavBar(props) {
   let userinfo;
 
-  const [colorMode, setColorMode] = useState("");
+  const [colorMode, setColorMode] = useState(getColorMode());
   const [showStaffMenu, setShowStaffMenu] = useState(false);
   const [showManagerMenu, setShowManagerMenu] = useState(false);
   const [showaAdminMenu, setShowAdminMenu] = useState(false);
