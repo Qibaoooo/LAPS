@@ -124,18 +124,25 @@ public class APIManagerController {
 				continue;
 			}
 			for (CompensationClaim c : userClaimList) {
-				JSONObject leave = new JSONObject();
-				leave.put("id", c.getId());
-				leave.put("username", c.getUser().getUsername());
-				leave.put("comment", c.getComment());
-				leave.put("description", c.getDescription());
-				leave.put("status", c.getStatus().toString());
-				leave.put("time", c.getOvertimeTime().toString());
-				leave.put("date", c.getOverTimeDate());
+				if ((c.getStatus() == ApplicationStatusEnum.APPLIED)
+						|| (c.getStatus() == ApplicationStatusEnum.UPDATED)) {
+					
+					JSONObject leave = new JSONObject();
+					leave.put("id", c.getId());
+					leave.put("username", c.getUser().getUsername());
+					leave.put("comment", c.getComment());
+					leave.put("description", c.getDescription());
+					leave.put("status", c.getStatus().toString());
+					leave.put("time", c.getOvertimeTime().toString());
+					leave.put("date", c.getOverTimeDate());
 
-				userClaim.put(leave);
+					userClaim.put(leave);
+				}
 			}
-			claimList.put(userClaim);
+			
+			if (!userClaim.isEmpty()) {
+				claimList.put(userClaim);				
+			}
 		}
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
@@ -144,38 +151,35 @@ public class APIManagerController {
 	@PostMapping(value = "/claim/approve")
 	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
 			@RequestBody int id) {
-		
-		
+
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
-			// TODO: further improve check to make sure the staff belongs to this manager 
-			
+			// TODO: further improve check to make sure the staff belongs to this manager
+
 			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
 			claim.setStatus(ApplicationStatusEnum.APPROVED);
 			compensationClaimService.updateCompensationClaim(claim);
-			
+
 			return new ResponseEntity<>("approved claim " + id, HttpStatus.OK);
 
 		}
-		
+
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
-	
+
 	@PostMapping(value = "/claim/reject")
-	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication,
-			@RequestBody int id) {
-		
-		
+	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication, @RequestBody int id) {
+
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
-			// TODO: further improve check to make sure the staff belongs to this manager 
-			
+			// TODO: further improve check to make sure the staff belongs to this manager
+
 			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
 			claim.setStatus(ApplicationStatusEnum.REJECTED);
 			compensationClaimService.updateCompensationClaim(claim);
-			
+
 			return new ResponseEntity<>("rejected claim " + id, HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
-	
+
 }

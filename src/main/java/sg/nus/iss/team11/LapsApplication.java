@@ -147,6 +147,20 @@ public class LapsApplication {
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
 
+			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+
+			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+
 		};
 	}
 
