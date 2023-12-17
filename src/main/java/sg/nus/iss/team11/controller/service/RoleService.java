@@ -15,4 +15,5 @@ public interface RoleService {
 
 	  void removeRole(Role role);
 
+	  Role findRoleByRoleName(String rolename);
 }
