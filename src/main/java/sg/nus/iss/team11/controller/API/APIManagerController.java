@@ -126,7 +126,7 @@ public class APIManagerController {
 				leave.put("comment", c.getComment());
 				leave.put("description", c.getDescription());
 				leave.put("status", c.getStatus().toString());
-				leave.put("time", c.getOvertimeTime());
+				leave.put("time", c.getOvertimeTime().toString());
 				leave.put("date", c.getOverTimeDate());
 
 				userClaim.put(leave);
