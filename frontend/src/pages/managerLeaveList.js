@@ -6,6 +6,7 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
+import MyStatusBadge from "./components/myStatusBadge";
 
 function ManagerLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
@@ -57,9 +58,7 @@ function ManagerLeaveList() {
                 <td width="20%">{value.type}</td>
                 <td width="20%">{value.description}</td>
                 <td width="10%">
-                  <Badge pill bg="warning">
-                    {value.status}
-                  </Badge>
+                  <MyStatusBadge status={value.status}></MyStatusBadge>
                 </td>
                 <td width="10%">
                   <Button variant="secondary" size="sm">

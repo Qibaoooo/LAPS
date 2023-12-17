@@ -7,10 +7,11 @@ import {
 } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import ConfirmClaimModal from "./components/confirmClaimModal";
+import MyStatusBadge from "./components/myStatusBadge";
 
 function ManagerClaimList() {
   const [claimList, setClaimList] = useState([]);
@@ -95,7 +96,7 @@ function ManagerClaimList() {
                   <td>{value.time}</td>
                   <td>{value.date}</td>
                   <td>
-                    <Badge>{value.status}</Badge>
+                    <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
                   <td style={{ textAlign: "end" }}>
                     <Button

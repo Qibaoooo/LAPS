@@ -6,6 +6,7 @@ import { Badge } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import { getClaimHistory } from "./utils/api/apiManager";
+import MyStatusBadge from "./components/myStatusBadge";
 
 function ManagerClaimHistory() {
   const [claimList, setClaimList] = useState([]);
@@ -54,7 +55,7 @@ function ManagerClaimHistory() {
                 <td>{claim.time}</td>
                 <td>{claim.description}</td>
                 <td>
-                  <Badge>{claim.status}</Badge>
+                  <MyStatusBadge status={claim.status}></MyStatusBadge>
                 </td>
                 <td>{claim.comment ? claim.comment: `-` }</td>
               </tr>
