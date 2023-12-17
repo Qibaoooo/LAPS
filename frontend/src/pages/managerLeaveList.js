@@ -53,7 +53,9 @@ function ManagerLeaveList() {
                                 <td width="15%">{value.toDate}</td>
                                 <td width="20%">{value.type}</td>
                                 <td width="20%">{value.description}</td>
-                                <td width="10%"><Badge>{value.status}</Badge></td>
+                                <td width="10%"><Badge pill bg="warning">
+                                    {value.status}
+                                    </Badge></td>
                                 <td width="10%"><Button variant="secondary" size="sm">Details</Button></td>
                             </tr>
                         ))}

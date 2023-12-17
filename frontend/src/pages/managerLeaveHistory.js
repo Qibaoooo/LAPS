@@ -21,9 +21,9 @@ function ManagerLeaveList() {
         }
     }, [])
     const namelist = leaveList.map((userLeaveArray) => (
-                userLeaveArray[0].username.charAt(0).toUpperCase() 
-                + userLeaveArray[0].username.slice(1)))
-    ;
+        userLeaveArray[0].username.charAt(0).toUpperCase()
+        + userLeaveArray[0].username.slice(1)))
+        ;
 
     return (
         <LoginCheckWrapper>
@@ -32,7 +32,6 @@ function ManagerLeaveList() {
              
             {leaveList.map((userLeaveArray,index) => (
                 <MyTable>  
-                                   
                     <thead>
                         <tr><td colSpan={8}><b>Leave Application for {namelist[index]}</b></td></tr>
                         <tr>
@@ -53,7 +52,22 @@ function ManagerLeaveList() {
                                 <td width="15%">{value.toDate}</td>
                                 <td width="20%">{value.type}</td>
                                 <td width="20%">{value.description}</td>
-                                <td width="10%"><Badge>{value.status}</Badge></td>
+                                <td width="10%"><Badge pill bg={(() => {
+                                    switch (value.status.toString().toLowerCase()) {
+                                        case 'approved':
+                                            return "success";
+                                        case 'applied':
+                                            return "warning";
+                                        case 'updated':
+                                            return "warning";
+                                        case 'rejected':
+                                            return "danger";
+                                        default:
+                                            return "";
+                                    }
+                                })()}>
+                                    {value.status}
+                                </Badge></td>
                                 <td width="10%"><Button variant="secondary" size="sm">Details</Button></td>
                             </tr>
                         ))}
