@@ -56,17 +56,7 @@ public class APIManagerController {
 				continue;
 			}
 			for (LeaveApplication l : userLAList) {
-				JSONObject leave = new JSONObject();
-				leave.put("id", l.getId());
-				leave.put("username", l.getUser().getUsername());
-				leave.put("comment", l.getComment());
-				leave.put("description", l.getDescription());
-				leave.put("fromDate", l.getFromDate());
-				leave.put("toDate", l.getToDate());
-				leave.put("status", l.getStatus().toString());
-				leave.put("type", l.getType());
-
-				userLeave.put(leave);
+				userLeave.put(buildLeave(l));
 			}
 			leaveList.put(userLeave);
 		}
@@ -90,17 +80,7 @@ public class APIManagerController {
 				continue;
 			}
 			for (LeaveApplication l : userLAList) {
-				JSONObject leave = new JSONObject();
-				leave.put("id", l.getId());
-				leave.put("username", l.getUser().getUsername());
-				leave.put("comment", l.getComment());
-				leave.put("description", l.getDescription());
-				leave.put("fromDate", l.getFromDate());
-				leave.put("toDate", l.getToDate());
-				leave.put("status", l.getStatus().toString());
-				leave.put("type", l.getType());
-
-				userLeave.put(leave);
+				userLeave.put(buildLeave(l));
 			}
 			leaveList.put(userLeave);
 		}
@@ -108,10 +88,51 @@ public class APIManagerController {
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
 
+	private JSONObject buildLeave(LeaveApplication l) {
+		JSONObject leave = new JSONObject();
+		leave.put("id", l.getId());
+		leave.put("username", l.getUser().getUsername());
+		leave.put("comment", l.getComment());
+		leave.put("description", l.getDescription());
+		leave.put("fromDate", l.getFromDate());
+		leave.put("toDate", l.getToDate());
+		leave.put("status", l.getStatus().toString());
+		leave.put("type", l.getType());
+		return leave;
+	}
+
 	@GetMapping(value = "/claim/list")
-	public ResponseEntity<String> viewClaimsForApproval(Authentication authentication, Principal principal) {
+	public ResponseEntity<String> getClaimsForApproval(Authentication authentication, Principal principal) {
 
 		// Need to add session-related codes, to retrieve subordinates
+		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+
+		JSONArray claimList = new JSONArray();
+
+		for (LAPSUser u : subordinates) {
+			JSONArray userClaim = new JSONArray();
+			List<CompensationClaim> userClaimList = compensationClaimService
+					.findCompensationClaimsToProcess(u.getUserId());
+			if (userClaimList.isEmpty()) {
+				continue;
+			}
+			for (CompensationClaim c : userClaimList) {
+				userClaim.put(buildClaimJson(c));
+
+			}
+
+			if (!userClaim.isEmpty()) {
+				claimList.put(userClaim);
+			}
+		}
+
+		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/claim/history")
+	public ResponseEntity<String> getClaimsHistory(Authentication authentication, Principal principal) {
+
 		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
 		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
@@ -124,21 +145,9 @@ public class APIManagerController {
 			if (userClaimList.isEmpty()) {
 				continue;
 			}
+
 			for (CompensationClaim c : userClaimList) {
-				if ((c.getStatus() == ApplicationStatusEnum.APPLIED)
-						|| (c.getStatus() == ApplicationStatusEnum.UPDATED)) {
-
-					JSONObject leave = new JSONObject();
-					leave.put("id", c.getId());
-					leave.put("username", c.getUser().getUsername());
-					leave.put("comment", c.getComment());
-					leave.put("description", c.getDescription());
-					leave.put("status", c.getStatus().toString());
-					leave.put("time", c.getOvertimeTime().toString());
-					leave.put("date", c.getOverTimeDate());
-
-					userClaim.put(leave);
-				}
+				userClaim.put(buildClaimJson(c));
 			}
 
 			if (!userClaim.isEmpty()) {
@@ -147,6 +156,18 @@ public class APIManagerController {
 		}
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+	}
+
+	private JSONObject buildClaimJson(CompensationClaim c) {
+		JSONObject claim = new JSONObject();
+		claim.put("id", c.getId());
+		claim.put("username", c.getUser().getUsername());
+		claim.put("comment", c.getComment());
+		claim.put("description", c.getDescription());
+		claim.put("status", c.getStatus().toString());
+		claim.put("time", c.getOvertimeTime().toString());
+		claim.put("date", c.getOverTimeDate());
+		return claim;
 	}
 
 	@PostMapping(value = "/claim/approve")

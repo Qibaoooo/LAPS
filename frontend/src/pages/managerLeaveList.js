@@ -36,7 +36,7 @@ function ManagerLeaveList() {
                     <thead>
                         <tr><td colSpan={8}><b>Leave Application for {namelist[index]}</b></td></tr>
                         <tr>
-                            <th>No.</th>
+                            <th>ID</th>
                             <th>From Date</th>
                             <th>To Date</th>
                             <th>Type</th>
