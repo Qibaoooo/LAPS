@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import { getClaimHistory } from "./utils/api/apiManager";

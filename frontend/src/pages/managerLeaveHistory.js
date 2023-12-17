@@ -3,7 +3,7 @@ import MyNavBar from "./components/myNavBar";
 import { getLeaveHistory } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import MyStatusBadge from "./components/myStatusBadge";
