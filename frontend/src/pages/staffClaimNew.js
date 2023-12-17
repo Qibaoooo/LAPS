@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
@@ -21,6 +21,10 @@ function StaffClaimNew() {
   
   const [validated, setValidated] = useState(false);
 
+  useEffect(()=>{
+    // set the value of OT time to AM on page load.
+    setClaimTime("AM")
+  },[])
 
   const onFormSubmit = (event) => {
     event.preventDefault();
