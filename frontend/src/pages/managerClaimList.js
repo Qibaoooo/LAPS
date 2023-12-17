@@ -17,6 +17,8 @@ function ManagerClaimList() {
   const [showModal, setShowModal] = useState(false);
   const [selectedClaim, setSelectedClaim] = useState({});
   const [selectedAction, setSelectedAction] = useState("");
+  const [comment, setComment] = useState("");
+  const [showCommentAlert, setShowCommentAlert] = useState(false);
 
   useEffect(() => {
     if (getUserinfoFromLocal()) {
@@ -31,15 +33,25 @@ function ManagerClaimList() {
   const handleUpdate = () => {
     console.log("handleUpdate");
     if (selectedAction === "APPROVE") {
-      approveClaim(selectedClaim.id).then((resp) => {});
+      approveClaim({ id: selectedClaim.id, comment: comment }).then(
+        (resp) => {}
+      );
     } else {
-      rejectClaim(selectedClaim.id).then((resp) => {});
+      if (comment === "") {
+        setShowCommentAlert(true);
+        return;
+      }
+      rejectClaim({ id: selectedClaim.id, comment: comment }).then(
+        (resp) => {}
+      );
     }
     window.location.reload();
   };
 
   const handleClose = () => {
     setShowModal(false);
+    setComment("");
+    setShowCommentAlert(false);
   };
 
   const namelist = claimList.map(
@@ -52,68 +64,70 @@ function ManagerClaimList() {
     <LoginCheckWrapper>
       <MyNavBar />
       <PageTitle title="Subordinates Compensastion Claim List"></PageTitle>
-      {claimList.length === 0 && 
-      <p style={{marginTop:"100px"}}>No pending claims for approval.</p>
-      }
+      {claimList.length === 0 && (
+        <p style={{ marginTop: "100px" }}>No pending claims for approval.</p>
+      )}
       {claimList.map((userClaimArray, index) => (
-        <MyTable key={index}>
-          <thead>
-            <tr>
-              <td colSpan={8}>
-                <b>Compensation Claim for {namelist[index]}</b>
-              </td>
-            </tr>
-            <tr>
-              <th>ID</th>
-              <th>Applied By</th>
-              <th>Description</th>
-              <th>Time</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userClaimArray.map((value, index) => (
-              <tr key={index}>
-                <td>{value.id}</td>
-                <td>{value.username}</td>
-                <td>{value.description}</td>
-                <td>{value.time}</td>
-                <td>{value.date}</td>
-                <td>
-                  <Badge>{value.status}</Badge>
-                </td>
-                <td style={{ textAlign: "end" }}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      setShowModal(true);
-                      setSelectedClaim(value);
-                      setSelectedAction("APPROVE");
-                    }}
-                  >
-                    Approve
-                  </Button>
-                  <div className="m-1"></div>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      setShowModal(true);
-                      setSelectedClaim(value);
-                      setSelectedAction("REJECT");
-                    }}
-                  >
-                    Reject
-                  </Button>
+        <div>
+          <MyTable key={index}>
+            <thead>
+              <tr>
+                <td colSpan={8}>
+                  <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>
-            ))}
-          </tbody>
-          <tbody style={{ marginTop: "20px" }}></tbody>
-        </MyTable>
+              <tr>
+                <th>ID</th>
+                <th>Applied By</th>
+                <th>Description</th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userClaimArray.map((value, index) => (
+                <tr key={index}>
+                  <td>{value.id}</td>
+                  <td>{value.username}</td>
+                  <td>{value.description}</td>
+                  <td>{value.time}</td>
+                  <td>{value.date}</td>
+                  <td>
+                    <Badge>{value.status}</Badge>
+                  </td>
+                  <td style={{ textAlign: "end" }}>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => {
+                        setShowModal(true);
+                        setSelectedClaim(value);
+                        setSelectedAction("APPROVE");
+                      }}
+                    >
+                      Approve
+                    </Button>
+                    <div className="m-1"></div>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        setShowModal(true);
+                        setSelectedClaim(value);
+                        setSelectedAction("REJECT");
+                      }}
+                    >
+                      Reject
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </MyTable>
+          <div style={{ marginTop: "20px" }}></div>
+        </div>
       ))}
       <ConfirmClaimModal
         show={showModal}
@@ -121,6 +135,11 @@ function ManagerClaimList() {
         action={selectedAction}
         handleClose={handleClose}
         handleUpdate={handleUpdate}
+        comment={comment}
+        showCommentAlert={showCommentAlert}
+        onCommentInput={(e) => {
+          setComment(e.target.value);
+        }}
       ></ConfirmClaimModal>
     </LoginCheckWrapper>
   );
