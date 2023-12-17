@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
@@ -21,6 +23,7 @@ import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 
 @Controller
@@ -32,7 +35,7 @@ public class APIManagerController {
 
 	@Autowired
 	LeaveApplicationService leaveApplicationService;
-	
+
 	@Autowired
 	CompensationClaimService compensationClaimService;
 
@@ -69,7 +72,7 @@ public class APIManagerController {
 
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/leave/history")
 	public ResponseEntity<String> viewApplicationsHistory(Authentication authentication, Principal principal) {
 
@@ -112,10 +115,11 @@ public class APIManagerController {
 		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
 
 		JSONArray claimList = new JSONArray();
-		
+
 		for (LAPSUser u : subordinates) {
 			JSONArray userClaim = new JSONArray();
-			List<CompensationClaim> userClaimList = compensationClaimService.findCompensationClaimsByUserId(u.getUserId());
+			List<CompensationClaim> userClaimList = compensationClaimService
+					.findCompensationClaimsByUserId(u.getUserId());
 			if (userClaimList.isEmpty()) {
 				continue;
 			}
@@ -137,4 +141,41 @@ public class APIManagerController {
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/claim/approve")
+	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
+			@RequestBody int id) {
+		
+		
+		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
+			// TODO: further improve check to make sure the staff belongs to this manager 
+			
+			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
+			claim.setStatus(ApplicationStatusEnum.APPROVED);
+			compensationClaimService.updateCompensationClaim(claim);
+			
+			return new ResponseEntity<>("approved claim " + id, HttpStatus.OK);
+
+		}
+		
+		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
+	}
+	
+	@PostMapping(value = "/claim/reject")
+	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication,
+			@RequestBody int id) {
+		
+		
+		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
+			// TODO: further improve check to make sure the staff belongs to this manager 
+			
+			CompensationClaim claim = compensationClaimService.findCompensationClaimById(id);
+			claim.setStatus(ApplicationStatusEnum.REJECTED);
+			compensationClaimService.updateCompensationClaim(claim);
+			
+			return new ResponseEntity<>("rejected claim " + id, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
+	}
+	
 }
