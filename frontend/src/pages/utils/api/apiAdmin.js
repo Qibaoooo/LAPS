@@ -7,4 +7,10 @@ let getEmployeeList = () => {
   });
 };
 
-export { getEmployeeList};
+let createNewEmployee = (employee) => {
+    return axios.post("http://localhost:8080/api/admin/employee/new", employee, {
+      headers: getJsonHeadersWithJWT(),
+    });
+  };
+
+export { getEmployeeList,createNewEmployee};
