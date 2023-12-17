@@ -17,7 +17,6 @@ function App() {
   return (
     <div
       className="App bg-primary-subtle"
-      style={{height:"100vh"}}
     >
       <Routes>
         <Route path="/" element={<LoginPage />} />
