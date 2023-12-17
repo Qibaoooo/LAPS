@@ -158,24 +158,24 @@ public class ManagerController {
 		return "manager-application-history";
 	}
 	
-	@RequestMapping(value = "/claim/view")
-	public String viewClaimsForApproval(HttpSession session, Model model) {
-
-		// Need to add session-related codes, to retrieve subordinates
-		LAPSUser currentManager = (LAPSUser) session.getAttribute("user");
-		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
-
-		Map<LAPSUser, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
-		for (LAPSUser u : subordinates) {
-			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsToProcess(u.getUserId());
-			if (userLAList != null) {
-				subordinate2LAs.put(u, userLAList);
-			}
-		}
-
-		model.addAttribute("viewApplications", subordinate2LAs);
-
-		return "manager-view-applications";
-	}
+//	@RequestMapping(value = "/claim/view")
+//	public String viewClaimsForApproval(HttpSession session, Model model) {
+//
+//		// Need to add session-related codes, to retrieve subordinates
+//		LAPSUser currentManager = (LAPSUser) session.getAttribute("user");
+//		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+//
+//		Map<LAPSUser, List<LeaveApplication>> subordinate2LAs = new HashMap<>();
+//		for (LAPSUser u : subordinates) {
+//			List<LeaveApplication> userLAList = leaveApplicationService.findLeaveApplicationsToProcess(u.getUserId());
+//			if (userLAList != null) {
+//				subordinate2LAs.put(u, userLAList);
+//			}
+//		}
+//
+//		model.addAttribute("viewApplications", subordinate2LAs);
+//
+//		return "manager-view-applications";
+//	}
 
 }
