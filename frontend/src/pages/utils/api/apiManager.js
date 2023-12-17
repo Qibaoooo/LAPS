@@ -13,10 +13,10 @@ let getLeaveHistory = () => {
   });
 };
 
-let getClaimList = () => {
+let getSubordinateClaimList = () => {
     return axios.get("http://localhost:8080/api/manager/claim/list", {
       headers: getJsonHeadersWithJWT(),
     });
   };
 
-export { getLeaveList, getLeaveHistory, getClaimList };
+export { getLeaveList, getLeaveHistory, getSubordinateClaimList };

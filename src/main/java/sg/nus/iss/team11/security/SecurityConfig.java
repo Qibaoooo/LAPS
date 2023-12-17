@@ -41,9 +41,17 @@ public class SecurityConfig {
 	private static String[] mvcAdminURLs = {
 			"/v1/admin/**",
 	};
-	
+
 	private static String[] reactStaffURLs = {
 			"/api/staff/**",
+	};
+
+	private static String[] reactManagerURLs = {
+			"/api/manager/**",
+	};
+
+	private static String[] reactAdminURLs = {
+			"/api/admin/**",
 	};
 
 
@@ -90,6 +98,9 @@ public class SecurityConfig {
  					.requestMatchers(mvcAdminURLs).hasRole("admin")
  					
  					.requestMatchers(reactStaffURLs).hasRole("staff")
+ 					.requestMatchers(reactManagerURLs).hasRole("manager")
+ 					.requestMatchers(reactAdminURLs).hasRole("admin")
+ 					
  						.anyRequest().authenticated()
 				);
 		
