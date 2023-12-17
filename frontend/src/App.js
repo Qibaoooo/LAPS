@@ -12,6 +12,7 @@ import ManagerLeaveList from "./pages/managerLeaveList";
 import ManagerLeaveHistory from "./pages/managerLeaveHistory";
 import ManagerClaimList from "./pages/managerClaimList";
 import AdminEmployeeList from "./pages/adminEmployeeList";
+import StaffClaimEdit from "pages/staffClaimEdit";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/staff/leave/new" element={<StaffLeaveNew />} />
         <Route path="/staff/claim/list" element={<StaffClaimList />} />
         <Route path="/staff/claim/new" element={<StaffClaimNew />} />
+        <Route path="/staff/claim/edit" element={<StaffClaimEdit />} />
         <Route path="/manager/leave/list" element={<ManagerLeaveList />} />
         <Route path="/manager/leave/history" element={<ManagerLeaveHistory />} />
         <Route path="/manager/claim/list" element={<ManagerClaimList />} />
