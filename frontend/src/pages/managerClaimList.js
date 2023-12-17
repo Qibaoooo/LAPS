@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getClaimList, approveClaim, rejectClaim } from "./utils/api/apiManager";
+import {
+  getClaimList,
+  approveClaim,
+  rejectClaim,
+} from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button } from "react-bootstrap";
@@ -19,7 +23,6 @@ function ManagerClaimList() {
       getClaimList()
         .then((response) => response.data)
         .then((list) => {
-          console.log(list);
           setClaimList(list);
         });
     }
@@ -49,6 +52,9 @@ function ManagerClaimList() {
     <LoginCheckWrapper>
       <MyNavBar />
       <PageTitle title="Subordinates Compensastion Claim List"></PageTitle>
+      {claimList.length === 0 && 
+      <p style={{marginTop:"100px"}}>No pending claims for approval.</p>
+      }
       {claimList.map((userClaimArray, index) => (
         <MyTable key={index}>
           <thead>
