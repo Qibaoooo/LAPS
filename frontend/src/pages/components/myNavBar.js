@@ -116,7 +116,9 @@ function MyNavBar(props) {
             <NavDropdown.Item href="/manager/leave/list">
               Process Leave Application
             </NavDropdown.Item>
-            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/leave/history">
+              Leave Application History
+            </NavDropdown.Item>
             <NavDropdown.Item href="/manager/claim/list">
               Process Compensation Claim
             </NavDropdown.Item>

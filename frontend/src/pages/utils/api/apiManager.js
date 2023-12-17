@@ -7,10 +7,16 @@ let getLeaveList = () => {
   });
 };
 
+let getLeaveHistory = () => {
+  return axios.get("http://localhost:8080/api/manager/leave/history", {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
 let getClaimList = () => {
     return axios.get("http://localhost:8080/api/manager/claim/list", {
       headers: getJsonHeadersWithJWT(),
     });
   };
 
-export { getLeaveList, getClaimList };
+export { getLeaveList, getLeaveHistory, getClaimList };

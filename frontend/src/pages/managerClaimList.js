@@ -36,7 +36,6 @@ function ManagerClaimList() {
                         <tr>
                             <th>ID</th>
                             <th>Applied By</th>
-                            <th>To Date</th>
                             <th>Description</th>
                             <th>Status</th>
                             <th>Time</th>
@@ -49,7 +48,6 @@ function ManagerClaimList() {
                             <tr key={index}>
                                 <td>{value.id}</td>
                                 <td>{value.username}</td>
-                                <td>{value.toDate}</td>
                                 <td>{value.description}</td>
                                 <td>
                                     <Badge>{value.status}</Badge>
