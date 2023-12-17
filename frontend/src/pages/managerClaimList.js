@@ -37,9 +37,9 @@ function ManagerClaimList() {
                             <th>ID</th>
                             <th>Applied By</th>
                             <th>Description</th>
-                            <th>Status</th>
                             <th>Time</th>
                             <th>Date</th>
+                            <th>Status</th>
                             <th>Details</th>
                         </tr>
                     </thead>
@@ -49,11 +49,11 @@ function ManagerClaimList() {
                                 <td>{value.id}</td>
                                 <td>{value.username}</td>
                                 <td>{value.description}</td>
+                                <td>{value.time}</td>
+                                <td>{value.date}</td>
                                 <td>
                                     <Badge>{value.status}</Badge>
                                 </td>
-                                <td>{value.time}</td>
-                                <td>{value.date}</td>
                                 <td>
                                     <Button variant="secondary" size="sm">
                                         Details
