@@ -16,7 +16,7 @@ function StaffClaimNew() {
   const [alertMsg, setAlertMsg] = useState();
   
   const onInputDT = ({ target: { value } }) => setClaimDate(value);
-  const onInputTM = ({ taPrget: { value } }) => setClaimTime(value);
+  const onInputTM = ({ target: { value } }) => setClaimTime(value);
   const onInputDS = ({ target: { value } }) => setDescription(value);
   
   const [validated, setValidated] = useState(false);
