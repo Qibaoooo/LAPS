@@ -118,7 +118,7 @@ public class APIAdminController {
 
 	return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
 	}
-}
+
 	
 	@PostMapping(value = "/employee/edit/{id}")
 	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody EditEmployee editEmployee) {
@@ -151,6 +151,7 @@ public class APIAdminController {
 		}
 
 		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
+	}
     
     @PostMapping(value="/role/new")
 	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole){
