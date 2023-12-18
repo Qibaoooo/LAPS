@@ -14,7 +14,7 @@ let createNewClaim = (claim) => {
 };
 
 let editClaim = (claim) => {
-  return axios.put("http://localhost:8080/api/staff/claim/edit", claim, {
+  return axios.put("http://localhost:8080/api/staff/claims", claim, {
     headers: getJsonHeadersWithJWT(),
   });
 }

@@ -118,7 +118,7 @@ public class APIStaffController {
 		return new ResponseEntity<String>("claim created: " + created.getId(), HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/claim/edit")
+	@PutMapping(value = "/claims")
 	public ResponseEntity<String> editClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
