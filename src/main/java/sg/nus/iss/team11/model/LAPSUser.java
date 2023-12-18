@@ -27,7 +27,7 @@ public class LAPSUser {
 
 	private int annualLeaveEntitlement;
 	private int medicalLeaveEntitlement;
-	private int compensationLeaveEntitlement;
+	private double compensationLeaveEntitlement;
 
 	@ManyToOne
 	private Role role;
@@ -123,11 +123,11 @@ public class LAPSUser {
 		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 	}
 
-	public int getCompensationLeaveEntitlement() {
+	public double getCompensationLeaveEntitlement() {
 		return compensationLeaveEntitlement;
 	}
 
-	public void setCompensationLeaveEntitlement(int compensationLeaveEntitlement) {
+	public void setCompensationLeaveEntitlement(double compensationLeaveEntitlement) {
 		this.compensationLeaveEntitlement = compensationLeaveEntitlement;
 	}
 
