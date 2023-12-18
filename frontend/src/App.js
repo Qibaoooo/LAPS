@@ -12,6 +12,8 @@ import ManagerLeaveList from "./pages/managerLeaveList";
 import ManagerLeaveHistory from "./pages/managerLeaveHistory";
 import ManagerClaimList from "./pages/managerClaimList";
 import AdminEmployeeList from "./pages/adminEmployeeList";
+import AdminRoleList from "./pages/adminRoleList";
+import AdminEmployeeEdit from "./pages/adminEmployeeEdit";
 import StaffClaimEdit from "pages/staffClaimEdit";
 import AdminEmployeeNew from "./pages/adminEmployeeNew";
 import ManagerClaimHistory from "pages/managerClaimHistory";
@@ -38,6 +40,8 @@ function App() {
         <Route path="/manager/claim/history" element={<ManagerClaimHistory />} />
         <Route path="/admin/employee" element={<AdminEmployeeList/>}/>
         <Route path="/admin/employee/new" element={<AdminEmployeeNew/>}/>
+        <Route path="/admin/employee/edit" element={<AdminEmployeeEdit/>}/>
+        <Route path="/admin/role" element={<AdminRoleList/>}/>
       </Routes>
     </div>
   );

@@ -48,6 +48,8 @@ public class APIAdminController {
 	@Autowired
 	RoleService roleservice;
 
+	
+
 	@GetMapping(value = "/employee")
 	public ResponseEntity<String> viewEmployeeList(Authentication authentication, Principal principal) {
 		List<LAPSUser> employees = userservice.findAllUsers();
@@ -80,6 +82,41 @@ public class APIAdminController {
 		LAPSUser created = userservice.createUser(nuser);
 
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/employee/edit/{id}")
+	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody NewEmployee editEmployee) {
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+		
+		LAPSUser eUser = new LAPSUser();
+
+		eUser.setUsername(editEmployee.getUsername());
+		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
+		eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
+		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
+		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
+		eUser.setMedicalLeaveEntitlement(editEmployee.getMedicalLeaveEntitlement());
+		eUser.setCompensationLeaveEntitlement(editEmployee.getCompensationLeaveEntitlement());
+		eUser.setUser(user);
+
+		LAPSUser edited = userservice.updateUser(eUser);
+
+		return new ResponseEntity<String>("user edited:" + edited.getUserId(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/role")
+	public ResponseEntity<String> viewRoleList(Authentication authentication, Principal principal) {
+		List<Role> roles = userservice.findAllRoles();
+		JSONArray rolesList = new JSONArray();
+		for (Role r : roles) {
+			JSONObject rp = new JSONObject();
+			rp.put("Id", r.getRoleId());
+			rp.put("name", r.getName());
+			rp.put("description", r.getDescription());
+			rolesList.put(rp);
+		}
+
+		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
 	}
 }
 

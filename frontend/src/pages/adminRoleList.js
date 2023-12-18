@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getEmployeeList } from "./utils/api/apiAdmin";
+import { getRoleList } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 
-function AdminEmployeeList() {
-  const [employeeList, setEmployeeList] = useState([]);
+function AdminRoleList() {
+  const [roleList, setRoleList] = useState([]);
 
   useEffect(() => {
     if (getUserinfoFromLocal()) {
-      getEmployeeList()
+        getRoleList()
         .then((response) => response.data)
         .then((list) => {
           console.log(list);
-          setEmployeeList(list);
+          setRoleList(list);
         });
     }
   }, []);
@@ -24,44 +24,39 @@ function AdminEmployeeList() {
   return (
     <LoginCheckWrapper>
       <MyNavBar />
-      <PageTitle title="Employee List"></PageTitle>
+      <PageTitle title={"Role List"}></PageTitle>
       <MyTable>
         <thead>
           <tr>
-            <th>User ID</th>
-            <th>User Name</th>
-            <th>Manager ID</th>
-            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Role</th>
-            <th>Annual Leave Entitlement</th>
-            <th>Medical Leave Entitlement</th>
-            <th>Compensation Leave Entitlement</th>
+            <th>Role Name</th>
+            <th>Role Description</th>
             <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Edit</th>
             <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {employeeList.map((value, index, array) => {
+          {roleList.map((rp, index) => {
             return (
               <tr key={index}>
-                <td>{value.Id}</td>
-                <td>{value.name}</td>
-                <td>{value.managerId}</td>
-                <td>{value.role}</td>
-                <td>{value.annualLeaveEntitlement}</td>
-                <td>{value.medicalLeaveEntitlement}</td>
-                <td>{value.compensationLeaveEntitlement}</td>
+                <td>{rp.name}</td>
+                <td>{rp.description}</td>
                 <td>
                   <Button variant="secondary" size="sm"
                   onClick={() => {
                     window.location.href =
-                      "/admin/employee/edit/?id=" + value.id;
+                      "/admin/role/edit/?id=" + rp.id;
                   }}
                   >
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button variant="danger" size="sm">
+                  <Button variant="danger" size="sm"
+                  onClick={() => {
+                    window.location.href =
+                      "/admin/delete/?id=" + rp.id;
+                  }}
+                  >
                     Delete
                   </Button>
                 </td>
@@ -74,4 +69,4 @@ function AdminEmployeeList() {
   );
 }
 
-export default AdminEmployeeList;
+export default AdminRoleList;
