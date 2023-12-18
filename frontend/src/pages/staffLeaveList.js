@@ -11,7 +11,7 @@ import MyStatusBadge from "./components/myStatusBadge";
 function StaffLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getLeaveList()
         .then((response) => response.data)
@@ -20,10 +20,13 @@ function StaffLeaveList() {
           setLeaveList(list);
         });
     }
-  }, []);
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}
+    >
       <MyNavBar />
       <PageTitle title="Staff Leave Application List"></PageTitle>
       <MyTable>
