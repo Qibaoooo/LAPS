@@ -122,7 +122,7 @@ function MyNavBar(props) {
             <NavDropdown.Item href="/manager/claim/list">
               Process Compensation Claim
             </NavDropdown.Item>
-            <NavDropdown.Item href="/manager/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/claim/history">Compensation Claim History</NavDropdown.Item>
           </NavDropdown>
         )}
         {showaAdminMenu && (
@@ -130,9 +130,9 @@ function MyNavBar(props) {
             <NavDropdown.Item href="/admin/employee">
               View Employee List
             </NavDropdown.Item>
-            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
-            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
-            <NavDropdown.Item href="/admin/?">TO BE CHANGED</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/employee/new">Create New Employee</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/role">View Role List</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/role/new">Create New Role</NavDropdown.Item>
           </NavDropdown>
         )}
       </Container>

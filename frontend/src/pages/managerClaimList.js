@@ -7,10 +7,11 @@ import {
 } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import ConfirmClaimModal from "./components/confirmClaimModal";
+import MyStatusBadge from "./components/myStatusBadge";
 
 function ManagerClaimList() {
   const [claimList, setClaimList] = useState([]);
@@ -20,7 +21,7 @@ function ManagerClaimList() {
   const [comment, setComment] = useState("");
   const [showCommentAlert, setShowCommentAlert] = useState(false);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getClaimList()
         .then((response) => response.data)
@@ -28,7 +29,7 @@ function ManagerClaimList() {
           setClaimList(list);
         });
     }
-  }, []);
+  };
 
   const handleUpdate = () => {
     console.log("handleUpdate");
@@ -61,7 +62,7 @@ function ManagerClaimList() {
   );
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Subordinates Compensastion Claim List"></PageTitle>
       {claimList.length === 0 && (
@@ -95,7 +96,7 @@ function ManagerClaimList() {
                   <td>{value.time}</td>
                   <td>{value.date}</td>
                   <td>
-                    <Badge>{value.status}</Badge>
+                    <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
                   <td style={{ textAlign: "end" }}>
                     <Button

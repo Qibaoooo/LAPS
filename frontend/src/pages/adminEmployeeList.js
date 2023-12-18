@@ -3,14 +3,14 @@ import MyNavBar from "./components/myNavBar";
 import { getEmployeeList } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Button } from "react-bootstrap";
+import { Badge, Button, Col, Table } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 
 function AdminEmployeeList() {
   const [employeeList, setEmployeeList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getEmployeeList()
         .then((response) => response.data)
@@ -19,24 +19,30 @@ function AdminEmployeeList() {
           setEmployeeList(list);
         });
     }
-  }, []);
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Employee List"></PageTitle>
       <MyTable>
         <thead>
           <tr>
-            <th>User ID</th>
+            <th>User Id</th>
             <th>User Name</th>
-            <th>Manager ID</th>
-            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Role</th>
+            <th>Manager Id</th>
+            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+              Role
+            </th>
             <th>Annual Leave Entitlement</th>
             <th>Medical Leave Entitlement</th>
             <th>Compensation Leave Entitlement</th>
-            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Edit</th>
-            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Delete</th>
+            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+              Edit
+            </th>
+            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+              Delete
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +57,12 @@ function AdminEmployeeList() {
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>
                 <td>
-                  <Button variant="secondary" size="sm">
+                  <Button variant="secondary" size="sm"
+                  onClick={() => {
+                    window.location.href =
+                      "/admin/employee/edit/?id=" + value.id;
+                  }}
+                  >
                     Edit
                   </Button>
                 </td>

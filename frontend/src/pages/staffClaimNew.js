@@ -7,24 +7,23 @@ import { createNewClaim } from "./utils/api/apiStaff";
 import MyAlert from "./components/myAlert";
 
 function StaffClaimNew() {
-
   const [claimDate, setClaimDate] = useState();
   const [claimTime, setClaimTime] = useState();
   const [description, setDescription] = useState();
-  
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState();
-  
+
   const onInputDT = ({ target: { value } }) => setClaimDate(value);
   const onInputTM = ({ target: { value } }) => setClaimTime(value);
   const onInputDS = ({ target: { value } }) => setDescription(value);
-  
+
   const [validated, setValidated] = useState(false);
 
-  useEffect(()=>{
+  const loadData = () => {
     // set the value of OT time to AM on page load.
-    setClaimTime("AM")
-  },[])
+    setClaimTime("AM");
+  };
 
   const onFormSubmit = (event) => {
     event.preventDefault();
@@ -32,26 +31,31 @@ function StaffClaimNew() {
     if (form.checkValidity() === false) {
       event.stopPropagation();
       setValidated(true);
-    } else {      
+    } else {
       createNewClaim({
         description: description,
         overtimeTime: claimTime,
         overtimeDate: claimDate,
-      }).then((response) => {
-        if (response.status == 200) {
-          console.log(JSON.stringify(response.data));
-          setAlertMsg(JSON.stringify(response.data));
+      })
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(JSON.stringify(response.data));
+            setAlertMsg(JSON.stringify(response.data));
+            setShowAlert(true);
+          }
+        })
+        .catch((error) => {
+          setAlertMsg("error, please try again.");
           setShowAlert(true);
-        }
-      }).catch((error)=>{
-        setAlertMsg("error, please try again.");
-        setShowAlert(true);
-      });
+        });
     }
   };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}
+    >
       <MyNavBar></MyNavBar>
       <PageTitle title="Create New Compensation Claim"></PageTitle>
 
@@ -96,13 +100,13 @@ function StaffClaimNew() {
         <br></br>
         <Button type="submit">Submit</Button>
       </Form>
-        <MyAlert
-          showAlert={showAlert}
-          variant="info"
-          msg1="Result:"
-          msg2={alertMsg}
-          handleCLose={() => setShowAlert(false)}
-        ></MyAlert>
+      <MyAlert
+        showAlert={showAlert}
+        variant="info"
+        msg1="Result:"
+        msg2={alertMsg}
+        handleCLose={() => setShowAlert(false)}
+      ></MyAlert>
     </LoginCheckWrapper>
   );
 }

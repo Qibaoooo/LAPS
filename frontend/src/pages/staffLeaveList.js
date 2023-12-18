@@ -3,14 +3,15 @@ import MyNavBar from "./components/myNavBar";
 import { getLeaveList } from "./utils/api/apiStaff";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button, Col, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
+import MyStatusBadge from "./components/myStatusBadge";
 
 function StaffLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getLeaveList()
         .then((response) => response.data)
@@ -19,10 +20,13 @@ function StaffLeaveList() {
           setLeaveList(list);
         });
     }
-  }, []);
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}
+    >
       <MyNavBar />
       <PageTitle title="Staff Leave Application List"></PageTitle>
       <MyTable>
@@ -48,7 +52,7 @@ function StaffLeaveList() {
                 <td>{value.type}</td>
                 <td>{value.description}</td>
                 <td>
-                  <Badge>{value.status}</Badge>
+                  <MyStatusBadge status={value.status}></MyStatusBadge>
                 </td>
                 <td>
                   <Button variant="secondary" size="sm">
