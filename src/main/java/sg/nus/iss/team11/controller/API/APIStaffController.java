@@ -3,6 +3,8 @@ package sg.nus.iss.team11.controller.API;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -82,7 +85,7 @@ public class APIStaffController {
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/claim/list")
+	@GetMapping(value = "/claims")
 	public ResponseEntity<String> getClaimList(Principal principal) {
 		LAPSUser user = userService.findUserByUsername(principal.getName());
 
@@ -118,7 +121,7 @@ public class APIStaffController {
 		return new ResponseEntity<String>("claim created: " + created.getId(), HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/claim/edit")
+	@PutMapping(value = "/claims")
 	public ResponseEntity<String> editClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
@@ -134,5 +137,22 @@ public class APIStaffController {
 		claimService.updateCompensationClaim(claim);
 		
 		return new ResponseEntity<String>("claim updated: " + editClaimRequest.getId(), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/claims")
+	public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
+		
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+		
+		List<CompensationClaim> userClaims = claimService.findCompensationClaimsByUserId(user.getUserId());
+		
+		Optional<CompensationClaim> claim = userClaims.stream().filter(c -> c.getId() == editClaimRequest.getId()).findFirst();
+		
+		if (claim == null) {
+			return new ResponseEntity<String>("You are not allowed to delete this claim.", HttpStatus.BAD_REQUEST);
+		} else {
+			claimService.removeCompensationClaim(claim.get());
+			return new ResponseEntity<String>("claim deleted: " + editClaimRequest.getId(), HttpStatus.OK);
+		}
 	}
 }

@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
-import { getClaimList } from "./utils/api/apiStaff";
+import { getClaimList, deleteClaim } from "./utils/api/apiStaff";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import MyTable from "./components/myTable";
 import { Button } from "react-bootstrap";
+import MyStatusBadge from "./components/myStatusBadge";
+import RedirectionModal from "./components/redirectionModal";
 
 function StaffClaimList() {
   const [claimList, setClaimList] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [chosenClaim, setChosenClaim] = useState({});
 
   const loadData = () => {
     if (getUserinfoFromLocal()) {
@@ -35,7 +39,7 @@ function StaffClaimList() {
             <th>time</th>
             <th>description</th>
             <th>status</th>
-            <th>Update</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +50,9 @@ function StaffClaimList() {
                 <td>{claim.date}</td>
                 <td>{claim.time}</td>
                 <td>{claim.description}</td>
-                <td>{claim.status}</td>
+                <td>
+                  <MyStatusBadge status={claim.status}></MyStatusBadge>
+                </td>
                 <td>
                   <Button
                     variant="secondary"
@@ -58,12 +64,38 @@ function StaffClaimList() {
                   >
                     Update
                   </Button>
+                  {["APPLIED", "UPDATED"].includes(claim.status) && (
+                    <a
+                      href=""
+                      style={{ marginLeft: "10px" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setChosenClaim(claim);
+                        setShowDeleteModal(true);
+                      }}
+                    >
+                      delete
+                    </a>
+                  )}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </MyTable>
+      <RedirectionModal
+        show={showDeleteModal}
+        handleButtonClick={() => {
+          deleteClaim(chosenClaim);
+          window.location.reload();
+        }}
+        headerMsg={"Confirm delete claim " + chosenClaim.id + " ?"}
+        buttonMsg={"DELETE"}
+        enableCloseButton={true}
+        handleClose={() => {
+          setShowDeleteModal(false);
+        }}
+      ></RedirectionModal>
     </LoginCheckWrapper>
   );
 }
