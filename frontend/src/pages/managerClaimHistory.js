@@ -10,7 +10,7 @@ import MyStatusBadge from "./components/myStatusBadge";
 function ManagerClaimHistory() {
   const [claimList, setClaimList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getClaimHistory()
         .then((response) => response.data)
@@ -19,14 +19,14 @@ function ManagerClaimHistory() {
           setClaimList(list);
         });
     }
-  }, []);
+  };
   const namelist = claimList.map(
     (userClaimArray) =>
       userClaimArray[0].username.charAt(0).toUpperCase() +
       userClaimArray[0].username.slice(1)
   );
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Subordinates OT Claim History"></PageTitle>
       {claimList.map((userLeaveArray, index) => (
@@ -56,7 +56,7 @@ function ManagerClaimHistory() {
                 <td>
                   <MyStatusBadge status={claim.status}></MyStatusBadge>
                 </td>
-                <td>{claim.comment ? claim.comment: `-` }</td>
+                <td>{claim.comment ? claim.comment : `-`}</td>
               </tr>
             ))}
           </tbody>

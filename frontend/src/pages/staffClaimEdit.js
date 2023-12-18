@@ -5,7 +5,7 @@ import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { editClaim, setClaimDataOnLoad } from "./utils/api/apiStaff";
 import { useSearchParams } from "react-router-dom";
-import MyAlert from "./components/myAlert"
+import MyAlert from "./components/myAlert";
 
 function StaffClaimEdit() {
   const [searchParams] = useSearchParams();
@@ -26,9 +26,9 @@ function StaffClaimEdit() {
 
   const formRef = useRef();
 
-  useEffect(() => {
+  const loadData = () => {
     setClaimDataOnLoad(id, formRef);
-  }, []);
+  };
 
   const onFormSubmit = (event) => {
     event.preventDefault();
@@ -37,27 +37,32 @@ function StaffClaimEdit() {
     if (form.checkValidity() === false) {
       event.stopPropagation();
       setValidated(true);
-    } else {      
+    } else {
       editClaim({
         description: formRef.current.querySelector("#formDescription").value,
         overtimeTime: formRef.current.querySelector("#formTime").value,
         overtimeDate: formRef.current.querySelector("#formDate").value,
-        id: id
-      }).then((response) => {
-        if (response.status == 200) {
-          console.log(JSON.stringify(response.data));
-          setAlertMsg(JSON.stringify(response.data));
+        id: id,
+      })
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(JSON.stringify(response.data));
+            setAlertMsg(JSON.stringify(response.data));
+            setShowAlert(true);
+          }
+        })
+        .catch((error) => {
+          setAlertMsg("error, please try again.");
           setShowAlert(true);
-        }
-      }).catch((error)=>{
-        setAlertMsg("error, please try again.");
-        setShowAlert(true);
-      });
+        });
     }
   };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}
+    >
       <MyNavBar></MyNavBar>
       <PageTitle title="Edit Compensation Claim"></PageTitle>
 
@@ -108,13 +113,12 @@ function StaffClaimEdit() {
         <Button type="submit">Submit</Button>
       </Form>
       <MyAlert
-          showAlert={showAlert}
-          variant="info"
-          msg1="Result:"
-          msg2={alertMsg}
-          handleCLose={() => setShowAlert(false)}
-        ></MyAlert>
-
+        showAlert={showAlert}
+        variant="info"
+        msg1="Result:"
+        msg2={alertMsg}
+        handleCLose={() => setShowAlert(false)}
+      ></MyAlert>
     </LoginCheckWrapper>
   );
 }

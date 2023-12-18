@@ -10,7 +10,7 @@ import { Button } from "react-bootstrap";
 function StaffClaimList() {
   const [claimList, setClaimList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getClaimList()
         .then((response) => response.data)
@@ -18,10 +18,13 @@ function StaffClaimList() {
           setClaimList(list);
         });
     }
-  }, []);
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}
+    >
       <MyNavBar></MyNavBar>
       <PageTitle title={"Compensation Claim List"}></PageTitle>
       <MyTable>
