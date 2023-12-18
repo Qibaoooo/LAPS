@@ -82,7 +82,7 @@ public class APIStaffController {
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/claim/list")
+	@GetMapping(value = "/claims")
 	public ResponseEntity<String> getClaimList(Principal principal) {
 		LAPSUser user = userService.findUserByUsername(principal.getName());
 

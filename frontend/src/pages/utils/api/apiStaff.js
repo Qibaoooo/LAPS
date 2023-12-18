@@ -20,7 +20,7 @@ let editClaim = (claim) => {
 }
 
 let getClaimList = () => {
-  return axios.get("http://localhost:8080/api/staff/claim/list", {
+  return axios.get("http://localhost:8080/api/staff/claims", {
     headers: getJsonHeadersWithJWT(),
   });
 };
