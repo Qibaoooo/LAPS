@@ -19,4 +19,18 @@ let getAllList = () => {
     });
   };
 
-export { getEmployeeList,createNewEmployee,getAllList};
+let createNewRole = (role) => {
+  return axios.post("http://localhost:8080/api/admin/role/new", role, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+let editRole=(role)=>{
+  return axios.put("http://localhost:8080/api/admin/role/edit", role, {
+    headers: getJsonHeadersWithJWT(),
+  })
+}
+
+
+export { getEmployeeList,createNewEmployee,createNewRole,editRole};
+

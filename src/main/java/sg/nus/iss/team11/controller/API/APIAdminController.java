@@ -20,13 +20,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import sg.nus.iss.team11.controller.API.payload.EditRole;
 import sg.nus.iss.team11.controller.API.payload.NewEmployee;
+import sg.nus.iss.team11.controller.API.payload.NewRole;
 import sg.nus.iss.team11.controller.API.payload.EditEmployee;
 import sg.nus.iss.team11.controller.exception.RoleNotFound;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
@@ -146,6 +149,30 @@ public class APIAdminController {
 		}
 
 		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
+    
+    @PostMapping(value="/role/new")
+	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole){
+		Role roles=new Role();
+		roles.setRoleId(roleservice.findRoleByRoleName(newRole.getName()).getRoleId());
+		roles.setName(newRole.getName());
+		roles.setDescription(newRole.getDescription());
+		Role created=roleservice.createRole(roles);
+		
+		return new ResponseEntity<String>("role created:" +created.getRoleId(), HttpStatus.OK);
+		
+	}
+	
+	@PutMapping(value="/role/edit")
+	public ResponseEntity<String> editRole(Principal principal,@RequestBody EditRole editrole){
+		
+		Role roles=new Role();
+		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
+		roles.setName(editrole.getName());
+		roles.setDescription(editrole.getDescription());
+		
+		Role edited=roleservice.updateRole(roles);
+		
+		return new ResponseEntity<String>("roles updated" +edited.getRoleId(), HttpStatus.OK);
 	}
 }
 
