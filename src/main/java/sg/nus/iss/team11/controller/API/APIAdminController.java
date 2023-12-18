@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.API.payload.NewEmployee;
+import sg.nus.iss.team11.controller.API.payload.EditEmployee;
 import sg.nus.iss.team11.controller.exception.RoleNotFound;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
@@ -81,7 +82,39 @@ public class APIAdminController {
 
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
 	}
-}
+	
+	@PostMapping(value = "/employee/edit/{id}")
+	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody EditEmployee editEmployee) {
+		LAPSUser user = userservice.findUserByUsername(principal.getName());
+		
+		LAPSUser eUser = new LAPSUser();
 
+		eUser.setUsername(editEmployee.getUsername());
+		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
+		eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
+		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
+		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
+		eUser.setMedicalLeaveEntitlement(editEmployee.getMedicalLeaveEntitlement());
+		eUser.setCompensationLeaveEntitlement(editEmployee.getCompensationLeaveEntitlement());
+
+		userservice.updateUser(eUser);
+
+		return new ResponseEntity<String>("user edited:" + editEmployee.getId(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/role")
+	public ResponseEntity<String> viewRoleList(Authentication authentication, Principal principal) {
+		List<Role> roles = roleservice.findAllRoles();
+		JSONArray rolesList = new JSONArray();
+		for (Role r : roles) {
+			JSONObject rp = new JSONObject();
+			rp.put("name", r.getName());
+			rp.put("description", r.getDescription());
+			rolesList.put(rp);
+		}
+
+		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
+	}
+}
 
 
