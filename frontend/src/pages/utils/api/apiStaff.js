@@ -48,6 +48,12 @@ let setClaimDataOnLoad = async (id, ref, setClaim) => {
   } catch (e) {}
 };
 
+let cancelLeave = (leaveId) => {
+  return axios.delete("http://localhost:8080/api/staff/leave/cancel", leaveId, {
+    headers: getJsonHeadersWithJWT(),
+  });
+}
+
 export {
   getLeaveList,
   getClaimList,
@@ -55,4 +61,5 @@ export {
   setClaimDataOnLoad,
   editClaim,
   deleteClaim,
+  cancelLeave,
 };
