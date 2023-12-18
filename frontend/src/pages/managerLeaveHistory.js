@@ -3,7 +3,7 @@ import MyNavBar from "./components/myNavBar";
 import { getLeaveHistory } from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
-import { Badge, Button } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 
@@ -33,26 +33,27 @@ function ManagerLeaveList() {
             {leaveList.map((userLeaveArray, index) => (
                 <MyTable>
                     <thead>
-                        <tr><td colSpan={8}><b>Leave Application for {namelist[index]}</b></td></tr>
+                        <tr><td colSpan={8} style={{ fontSize: '18px' }}><b>Leave Application for {namelist[index]}</b></td></tr>
                         <tr>
                             <th>No.</th>
                             <th>From Date</th>
                             <th>To Date</th>
                             <th>Type</th>
                             <th>Description</th>
+                            <th>Comment</th>
                             <th>Status</th>
-                            <th>Process</th>
                         </tr>
                     </thead>
                     <tbody>
                         {userLeaveArray.map((value, index) => (
                             <tr key={index}>
-                                <td width="10%">{value.id}</td>
+                                <td width="5%">{value.id}</td>
                                 <td width="15%">{value.fromDate}</td>
                                 <td width="15%">{value.toDate}</td>
-                                <td width="20%">{value.type}</td>
-                                <td width="20%">{value.description}</td>
-                                <td width="10%"><Badge pill bg={(() => {
+                                <td width="15%">{value.type}</td>
+                                <td width="25%">{(value.description)? value.description:"NULL"}</td>
+                                <td width="25%">{(value.comment)? value.comment: "NULL"}</td>
+                                <td width="5%"><Badge pill bg={(() => {
                                     switch (value.status.toString().toLowerCase()) {
                                         case 'approved':
                                             return "success";
@@ -68,7 +69,6 @@ function ManagerLeaveList() {
                                 })()}>
                                     {value.status}
                                 </Badge></td>
-                                <td width="10%"><Button variant="secondary" size="sm">Details</Button></td>
                             </tr>
                         ))}
                     </tbody>

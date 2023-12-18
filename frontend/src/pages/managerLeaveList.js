@@ -19,7 +19,8 @@ function ManagerLeaveList() {
                     setLeaveList(list);
                 });
         }
-    }, [])
+    }, []);
+
     const namelist = leaveList.map((userLeaveArray) => (
                 userLeaveArray[0].username.charAt(0).toUpperCase() 
                 + userLeaveArray[0].username.slice(1)))
