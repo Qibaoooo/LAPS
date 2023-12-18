@@ -26,9 +26,6 @@ function CreateUpdateAndCancelButtons({leaveapplication}){
     if (status == "APPROVED" && ( currentDate > toDate && currentDate > toDate)){
         return (
             <React.Fragment>
-                <td>
-                    <Badge>{leaveapplication.status}</Badge>
-                </td>
                 <td>   
                     <Badge bg="warning" size="sm">
                         Not Applicable
@@ -45,9 +42,6 @@ function CreateUpdateAndCancelButtons({leaveapplication}){
     else if (status == "APPROVED" && !( currentDate > toDate && currentDate > toDate)){
         return (
             <React.Fragment>
-                <td>
-                    <Badge>{leaveapplication.status}</Badge>
-                </td>
                 <td>   
                     <Badge bg="warning" size="sm">
                         Not Applicable
@@ -67,9 +61,6 @@ function CreateUpdateAndCancelButtons({leaveapplication}){
     else{
         return (
             <React.Fragment>
-                <td>
-                    <Badge>{leaveapplication.status}</Badge>
-                </td>
                 <td>   
                     <Button variant="secondary" size="sm">
                         Update
