@@ -26,4 +26,8 @@ public interface UserService {
 	List<Integer> findAllManagerId();
 	
 	int findMaxId();
+	
+	List<String> findAllManagerName();
+	
+	void incrementCompensationLeaveBy(double days, int userId);
 }

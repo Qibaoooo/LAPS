@@ -25,5 +25,8 @@ public interface UserRepository extends JpaRepository<LAPSUser, Integer> {
 	
 	@Query("SELECT MAX(u.userId) FROM LAPSUser u")
 	int findMaxId();
+	
+	@Query("SELECT DISTINCT s.username From LAPSUser s Where s.role.name='manager'")
+	List<String> findAllManagerName();
 }
 	

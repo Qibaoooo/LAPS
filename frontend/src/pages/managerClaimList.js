@@ -21,7 +21,7 @@ function ManagerClaimList() {
   const [comment, setComment] = useState("");
   const [showCommentAlert, setShowCommentAlert] = useState(false);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getClaimList()
         .then((response) => response.data)
@@ -29,7 +29,7 @@ function ManagerClaimList() {
           setClaimList(list);
         });
     }
-  }, []);
+  };
 
   const handleUpdate = () => {
     console.log("handleUpdate");
@@ -62,7 +62,7 @@ function ManagerClaimList() {
   );
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Subordinates Compensastion Claim List"></PageTitle>
       {claimList.length === 0 && (

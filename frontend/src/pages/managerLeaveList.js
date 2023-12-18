@@ -11,7 +11,7 @@ import MyStatusBadge from "./components/myStatusBadge";
 function ManagerLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
 
-  useEffect(() => {
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
       getLeaveList()
         .then((response) => response.data)
@@ -20,14 +20,15 @@ function ManagerLeaveList() {
           setLeaveList(list);
         });
     }
-  }, []);
+  };
+
   const namelist = leaveList.map(
     (userLeaveArray) =>
       userLeaveArray[0].username.charAt(0).toUpperCase() +
       userLeaveArray[0].username.slice(1)
   );
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Subordinates Leave Application List"></PageTitle>
 

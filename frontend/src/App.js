@@ -17,6 +17,7 @@ import AdminEmployeeEdit from "./pages/adminEmployeeEdit";
 import StaffClaimEdit from "pages/staffClaimEdit";
 import AdminEmployeeNew from "./pages/adminEmployeeNew";
 import ManagerClaimHistory from "pages/managerClaimHistory";
+import AdminRoleNew from "pages/adminRoleNew";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/admin/employee/new" element={<AdminEmployeeNew/>}/>
         <Route path="/admin/employee/edit" element={<AdminEmployeeEdit/>}/>
         <Route path="/admin/role" element={<AdminRoleList/>}/>
+        <Route path="/admin/role/new" element={<AdminRoleNew/>}/>
       </Routes>
     </div>
   );

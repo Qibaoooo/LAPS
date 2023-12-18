@@ -77,7 +77,7 @@ public class LeaveDateValidator implements Validator{
 		leaveDurationDays -= (numberOfHolidays + weekends);
 		
 		LeaveApplicationTypeEnum leavetype = leaveapplication.getType();
-		int leaveEntitlement = 0;
+		double leaveEntitlement = 0;
 		
 		switch(leavetype) {
 		case MedicalLeave:

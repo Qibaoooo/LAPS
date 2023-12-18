@@ -13,11 +13,19 @@ let createNewEmployee = (employee) => {
     });
   };
 
+
   let editEmployeeInfo = (employee) => {
     return axios.post("http://localhost:8080/api/admin/employee/edit/{id}", employee, {
       headers: getJsonHeadersWithJWT(),
     });
   };
+
+let getAllList = () => {
+    return axios.get("http://localhost:8080/api/admin/employee/new", {
+      headers: getJsonHeadersWithJWT(),
+    });
+  };
+
 
   let setEditDataOnLoad = async (id, ref) => {
     try {
@@ -44,5 +52,16 @@ let createNewEmployee = (employee) => {
       headers: getJsonHeadersWithJWT(),
     });
   };
+let createNewRole = (role) => {
+  return axios.post("http://localhost:8080/api/admin/role/new", role, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
 
-export { getEmployeeList,createNewEmployee,editEmployeeInfo,getRoleList,setEditDataOnLoad};
+let editRole=(role)=>{
+  return axios.put("http://localhost:8080/api/admin/role/edit", role, {
+    headers: getJsonHeadersWithJWT(),
+  })
+}
+
+export { getEmployeeList,createNewEmployee,editEmployeeInfo,getRoleList,setEditDataOnLoad,createNewRole,editRole};
