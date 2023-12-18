@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import MyStatusBadge from "./components/myStatusBadge";
+import LeaveApplication from "./components/leaveApplication";
 
 function StaffLeaveList() {
   const [leaveList, setLeaveList] = useState([]);
@@ -43,30 +44,9 @@ function StaffLeaveList() {
           </tr>
         </thead>
         <tbody>
-          {leaveList.map((value, index, array) => {
-            return (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{value.fromDate}</td>
-                <td>{value.toDate}</td>
-                <td>{value.type}</td>
-                <td>{value.description}</td>
-                <td>
-                  <MyStatusBadge status={value.status}></MyStatusBadge>
-                </td>
-                <td>
-                  <Button variant="secondary" size="sm">
-                    Update
-                  </Button>
-                </td>
-                <td>
-                  <Button variant="danger" size="sm">
-                    Cancel
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
+          {leaveList.map((value, index, array) => (
+            <LeaveApplication leaveapplication = {value} index = {index} key = {index}/>
+          ))}
         </tbody>
       </MyTable>
     </LoginCheckWrapper>

@@ -13,6 +13,7 @@ let createNewClaim = (claim) => {
   });
 };
 
+
 let editClaim = (claim) => {
   return axios.put("http://localhost:8080/api/staff/claim/edit", claim, {
     headers: getJsonHeadersWithJWT(),
@@ -41,4 +42,10 @@ let setClaimDataOnLoad = async (id, ref) => {
   }
 };
 
-export { getLeaveList, getClaimList, createNewClaim, setClaimDataOnLoad, editClaim };
+let cancelLeave = (leaveId) => {
+  return axios.delete("http://localhost:8080/api/staff/leave/cancel", leaveId, {
+    headers: getJsonHeadersWithJWT(),
+  });
+}
+
+export { getLeaveList, getClaimList, createNewClaim, setClaimDataOnLoad, editClaim, cancelLeave };
