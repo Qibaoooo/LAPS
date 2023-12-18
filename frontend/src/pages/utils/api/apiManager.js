@@ -13,6 +13,24 @@ let getLeaveHistory = () => {
   });
 };
 
+let approveLeave = (data) => {
+  return axios.post("http://localhost:8080/api/manager/leave/approve", data, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+let getEntitlementLeft = (id) => {
+  return axios.post("http://localhost:8080/api/manager/leave/checkEntitle?id="+id,null,{
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+let rejectLeave = (data) => {
+  return axios.post("http://localhost:8080/api/manager/leave/reject", data, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
 let getClaimList = () => {
   return axios.get("http://localhost:8080/api/manager/claim/list", {
     headers: getJsonHeadersWithJWT(),
@@ -44,4 +62,7 @@ export {
   approveClaim,
   rejectClaim,
   getClaimHistory,
+  approveLeave,
+  rejectLeave,
+  getEntitlementLeft
 };

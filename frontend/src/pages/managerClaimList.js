@@ -73,7 +73,7 @@ function ManagerClaimList() {
           <MyTable key={index}>
             <thead>
               <tr>
-                <td colSpan={8}>
+                <td colSpan={8} style={{ fontSize: '16px' }}>
                   <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>

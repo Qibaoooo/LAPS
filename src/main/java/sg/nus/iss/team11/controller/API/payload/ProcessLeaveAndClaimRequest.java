@@ -1,6 +1,6 @@
 package sg.nus.iss.team11.controller.API.payload;
 
-public class ProcessClaimRequest {
+public class ProcessLeaveAndClaimRequest {
 
 	private int id;
 	private String comment;
@@ -17,7 +17,7 @@ public class ProcessClaimRequest {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public ProcessClaimRequest(int id, String comment) {
+	public ProcessLeaveAndClaimRequest(int id, String comment) {
 		super();
 		this.id = id;
 		this.comment = comment;

@@ -18,4 +18,6 @@ public interface LeaveApplicationService {
 	List<LeaveApplication> findLeaveApplicationsByUserId(Integer userId);
 
 	List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId);
+	
+	List<LeaveApplication> findLeaveApplicationsApprovedByType(String type);
 }

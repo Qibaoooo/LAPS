@@ -1,9 +1,7 @@
 package sg.nus.iss.team11.controller.API;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,9 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import sg.nus.iss.team11.controller.API.payload.ProcessClaimRequest;
+import sg.nus.iss.team11.controller.API.payload.ProcessLeaveAndClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
+import sg.nus.iss.team11.controller.service.HolidayService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
@@ -40,6 +40,9 @@ public class APIManagerController {
 
 	@Autowired
 	CompensationClaimService compensationClaimService;
+
+	@Autowired
+	HolidayService holidayService;
 
 	@GetMapping(value = "/leave/list")
 	public ResponseEntity<String> viewApplicationsForApproval(Authentication authentication, Principal principal) {
@@ -100,6 +103,60 @@ public class APIManagerController {
 		leave.put("status", l.getStatus().toString());
 		leave.put("type", l.getType());
 		return leave;
+	}
+
+	@PostMapping(value = "/leave/approve")
+	public ResponseEntity<String> approveLeave(Principal principal, Authentication authentication,
+			@RequestBody ProcessLeaveAndClaimRequest processLeaveRequest) {
+
+		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
+			// TODO: further improve check to make sure the staff belongs to this manager
+			LeaveApplication leave = leaveApplicationService.findLeaveApplicationById(processLeaveRequest.getId());
+			LAPSUser applier = leave.getUser();
+			LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+			List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+			if (subordinates.contains(applier)) {
+				leave.setStatus(ApplicationStatusEnum.APPROVED);
+				leave.setComment(processLeaveRequest.getComment());
+				leaveApplicationService.updateLeaveApplication(leave);
+				return new ResponseEntity<>("approved leave " + processLeaveRequest.getId(), HttpStatus.OK);
+			}
+			return new ResponseEntity<>("You are not the manager of this staff", HttpStatus.UNAUTHORIZED);
+		}
+
+		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
+	}
+
+	@PostMapping(value = "/leave/checkEntitle")
+	public ResponseEntity<String> checkEntitlementLeft(Principal principal, Authentication authentication, @RequestParam int id) {
+		LeaveApplication appli = leaveApplicationService.findLeaveApplicationById(id);
+		LAPSUser applier = appli.getUser();
+		String type = appli.getType().toString();
+		List<LeaveApplication> typeAppli = leaveApplicationService.findLeaveApplicationsApprovedByType(type);
+		double entitle = 0, used = 0;
+		switch (type) {
+		case "MedicalLeave":
+			entitle = applier.getMedicalLeaveEntitlement();
+			break;
+		case "AnnualLeave":
+			entitle = applier.getAnnualLeaveEntitlement();
+			break;
+		case "CompensationLeave":
+			entitle = applier.getCompensationLeaveEntitlement();
+			break;
+		}
+		for (LeaveApplication a : typeAppli) {
+			used += holidayService.getEntitlement(a);
+		}
+		JSONObject res = new JSONObject();
+		if(used+holidayService.getEntitlement(appli)<entitle) {
+			res.put("result","true");
+		}
+		else {
+			res.put("result","false");
+		}
+		res.put("left",entitle-used);
+		return new ResponseEntity<>(res.toString(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/claim/list")
@@ -173,7 +230,7 @@ public class APIManagerController {
 
 	@PostMapping(value = "/claim/approve")
 	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
-			@RequestBody ProcessClaimRequest processClaimRequest) {
+			@RequestBody ProcessLeaveAndClaimRequest processClaimRequest) {
 
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
 			// TODO: further improve check to make sure the staff belongs to this manager
@@ -196,7 +253,7 @@ public class APIManagerController {
 
 	@PostMapping(value = "/claim/reject")
 	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication,
-			@RequestBody ProcessClaimRequest processClaimRequest) {
+			@RequestBody ProcessLeaveAndClaimRequest processClaimRequest) {
 
 		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
 			// TODO: further improve check to make sure the staff belongs to this manager
