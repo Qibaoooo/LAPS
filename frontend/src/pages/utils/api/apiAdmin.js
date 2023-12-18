@@ -13,4 +13,12 @@ let createNewEmployee = (employee) => {
     });
   };
 
-export { getEmployeeList,createNewEmployee};
+
+let createNewRole = (role) => {
+  return axios.post("http://localhost:8080/api/admin/role/new", role, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+
+export { getEmployeeList,createNewEmployee,createNewRole};
