@@ -13,4 +13,10 @@ let createNewEmployee = (employee) => {
     });
   };
 
-export { getEmployeeList,createNewEmployee};
+let getAllList = () => {
+    return axios.get("http://localhost:8080/api/admin/employee/new", {
+      headers: getJsonHeadersWithJWT(),
+    });
+  };
+
+export { getEmployeeList,createNewEmployee,getAllList};

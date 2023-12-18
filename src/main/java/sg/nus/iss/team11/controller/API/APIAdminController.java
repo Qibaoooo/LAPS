@@ -68,7 +68,7 @@ public class APIAdminController {
 	}
 
 	@PostMapping(value = "/employee/new")
-	public ResponseEntity<String> createNewEmployee(Principal principal, @RequestBody NewEmployee newCreateEmployee) {
+	public ResponseEntity<String> createNewEmployee(@RequestBody NewEmployee newCreateEmployee) {
 		LAPSUser nuser = new LAPSUser();
 		nuser.setUsername(newCreateEmployee.getUsername());
 		nuser.setPassword(encoder.encode(newCreateEmployee.getPassword()));
@@ -78,8 +78,38 @@ public class APIAdminController {
 		nuser.setMedicalLeaveEntitlement(newCreateEmployee.getMedicalLeaveEntitlement());
 		nuser.setCompensationLeaveEntitlement(newCreateEmployee.getCompensationLeaveEntitlement());
 		LAPSUser created = userservice.createUser(nuser);
+		if (newCreateEmployee.getRoleName().equalsIgnoreCase("manager")) {
+			created.setManagerId(created.getUserId());
+			userservice.updateUser(created);
+		}
+		if (newCreateEmployee.getRoleName().equalsIgnoreCase("admin")) {
+			created.setManagerId(0);
+			userservice.updateUser(created);
+		}
 
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
+	}
+	@GetMapping(value="/employee/new")
+	public ResponseEntity<String> viewAllList(Authentication authentication, Principal principal2){
+	JSONArray bigList=new JSONArray();
+	List<Role> roles=roleservice.findAllRoles();
+	List<String> managers=userservice.findAllManagerName();
+	JSONArray rolesList = new JSONArray();
+	JSONArray managersList=new JSONArray();
+	for (Role r : roles) {
+		JSONObject rn = new JSONObject();
+		rn.put("roleName", r.getName());
+		rolesList.put(rn);
+	}
+	for(String m:managers) {
+		JSONObject mn=new JSONObject();
+		mn.put("managerName",m);
+		managersList.put(mn);
+	}
+	bigList.put(managersList);
+	bigList.put(rolesList);
+
+	return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
 	}
 }
 
