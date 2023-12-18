@@ -20,5 +20,11 @@ let createNewRole = (role) => {
   });
 };
 
+let editRole=(role)=>{
+  return axios.put("http://localhost:8080/api/admin/role/edit", role, {
+    headers: getJsonHeadersWithJWT(),
+  })
+}
 
-export { getEmployeeList,createNewEmployee,createNewRole};
+
+export { getEmployeeList,createNewEmployee,createNewRole,editRole};
