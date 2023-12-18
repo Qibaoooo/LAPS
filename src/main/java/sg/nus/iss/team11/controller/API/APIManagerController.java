@@ -26,6 +26,7 @@ import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -182,8 +183,12 @@ public class APIManagerController {
 			claim.setComment(processClaimRequest.getComment());
 			compensationClaimService.updateCompensationClaim(claim);
 
-			return new ResponseEntity<>("approved claim " + processClaimRequest.getId(), HttpStatus.OK);
+			// increment subordinate compleave entitlement
+			userService.incrementCompensationLeaveBy(
+					(claim.getOvertimeTime() == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5,
+					claim.getUser().getUserId());
 
+			return new ResponseEntity<>("approved claim " + processClaimRequest.getId(), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
