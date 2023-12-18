@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public List<String> findAllManagerName(){
+		return userRepo.findAllManagerName();
+	}
+	
+	@Override
 	public int findMaxId() {
 		return userRepo.findMaxId();
 	}

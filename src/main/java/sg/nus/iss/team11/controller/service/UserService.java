@@ -26,4 +26,6 @@ public interface UserService {
 	List<Integer> findAllManagerId();
 	
 	int findMaxId();
+	
+	List<String> findAllManagerName();
 }
