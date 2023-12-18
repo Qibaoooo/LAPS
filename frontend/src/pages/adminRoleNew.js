@@ -46,7 +46,7 @@ function AdminRoleNew(){
     };
 
     return(
-        <LoginCheckWrapper>
+        <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={()=>{}}>
             <MyNavBar></MyNavBar>
             <PageTitle title="Create New Role"></PageTitle>
 
