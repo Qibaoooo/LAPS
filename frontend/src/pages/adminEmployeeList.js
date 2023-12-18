@@ -57,7 +57,12 @@ function AdminEmployeeList() {
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>
                 <td>
-                  <Button variant="secondary" size="sm">
+                  <Button variant="secondary" size="sm"
+                  onClick={() => {
+                    window.location.href =
+                      "/admin/employee/edit/?id=" + value.id;
+                  }}
+                  >
                     Edit
                   </Button>
                 </td>

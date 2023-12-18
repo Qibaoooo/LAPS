@@ -63,7 +63,7 @@ function HomePage() {
             )}
             {roleId === "ROLE_admin" && (
               <div className="mt-3">
-              <Card.Link href="/?"> Manage Roles </Card.Link>
+              <Card.Link href="/admin/role"> Manage Roles </Card.Link>
                 <br />
                 <Card.Link href="/admin/employee"> Manage Users </Card.Link>
               </div>
