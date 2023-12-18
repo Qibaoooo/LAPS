@@ -11,10 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +30,6 @@ import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.LAPSUser;
-import sg.nus.iss.team11.validator.LeaveDateValidator;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -104,7 +101,7 @@ public class APIStaffController {
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/claim/new")
+	@PostMapping(value = "/claims")
 	public ResponseEntity<String> createNewClaim(Principal principal, @RequestBody NewClaimRequest claimRequest) {
 
 		LAPSUser user = userService.findUserByUsername(principal.getName());
