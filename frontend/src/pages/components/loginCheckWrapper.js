@@ -13,7 +13,6 @@ function LoginCheckWrapper({ children, allowRole, runAfterCheck }) {
 
   useEffect(() => {
     if (!getUserinfoFromLocal()) {
-      console.log("login please");
       setHeaderMsg("Please login first.");
       setButtonMsg("Go To Login Page");
       setRedirectURL("/login");
