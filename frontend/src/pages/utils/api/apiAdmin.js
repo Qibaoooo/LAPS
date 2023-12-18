@@ -64,4 +64,4 @@ let editRole=(role)=>{
   })
 }
 
-export { getEmployeeList,createNewEmployee,editEmployeeInfo,getRoleList,setEditDataOnLoad,createNewRole,editRole};
+export { getEmployeeList,createNewEmployee,editEmployeeInfo,getRoleList,setEditDataOnLoad,createNewRole,editRole,getAllList};

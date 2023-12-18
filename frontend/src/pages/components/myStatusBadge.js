@@ -14,6 +14,8 @@ function MyStatusBadge({ status }) {
             return "warning";
           case "rejected":
             return "danger";
+          case "cancelled":
+            return "danger";
           default:
             return "";
         }
