@@ -117,11 +117,12 @@ public class APIStaffController {
 
 
 	
-	@DeleteMapping(value = "leave/cancel/{id}")
+	@PutMapping(value = "leave/cancel/{id}")
 	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id){
 		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
-		leaveApplicationService.removeLeaveApplication(la);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		la.setStatus(ApplicationStatusEnum.CANCELLED);
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}	
 	
 

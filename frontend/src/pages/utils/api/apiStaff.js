@@ -49,7 +49,7 @@ let setClaimDataOnLoad = async (id, ref, setClaim) => {
 };
 
 let cancelLeave = (leaveId) => {
-  return axios.delete("http://localhost:8080/api/staff/leave/cancel/" + leaveId, {
+  return axios.put("http://localhost:8080/api/staff/leave/cancel/" + leaveId, {
     headers: getJsonHeadersWithJWT(),
   });
 }

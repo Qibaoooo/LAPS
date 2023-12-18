@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge, Button} from "react-bootstrap";
 import CreateUpdateAndCancelButtons from './leaveUpdateAndCancel';
-
+import MyStatusBadge from "./myStatusBadge";
 
 function LeaveApplication({ leaveapplication, index }) {
 
@@ -13,6 +13,7 @@ function LeaveApplication({ leaveapplication, index }) {
       <td>{leaveapplication.type}</td>
       <td>{leaveapplication.description}</td>
       {console.log(typeof leaveapplication.id)}
+      <td><MyStatusBadge status = {leaveapplication.status}/></td>
       <CreateUpdateAndCancelButtons leaveapplication = {leaveapplication}/>
     </tr>
   );
