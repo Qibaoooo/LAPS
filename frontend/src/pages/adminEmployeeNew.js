@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
+import { getUserinfoFromLocal } from "./utils/userinfo";
 import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import { createNewEmployee } from "./utils/api/apiAdmin";
+import { createNewEmployee, getAllList } from "./utils/api/apiAdmin";
 import MyAlert from "./components/myAlert";
 
 function AdminEmployeeNew() {
 
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
-    const [managerName, setManagerName] = useState();
     const [roleName, setRoleName] = useState();
+    const [managerName, setManagerName] = useState();
     const [annualLeaveEntitlement, setAnnualLeaveEntitlement] = useState();
     const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState();
     const [compensationLeaveEntitlement, setCompensationLeaveEntitlement] = useState();
@@ -28,8 +29,17 @@ function AdminEmployeeNew() {
     const onInputCLE = ({ target: { value } }) => setCompensationLeaveEntitlement(value);
 
     const [validated, setValidated] = useState(false);
-
-
+    const [bigList, setBigList] = useState([]);
+    useEffect(() => {
+        if (getUserinfoFromLocal()) {
+            getAllList()
+                .then((response) => response.data)
+                .then((list) => {
+                    console.log(list);
+                    setBigList(list);
+                });
+        }
+    }, []);
     const onFormSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -95,9 +105,12 @@ function AdminEmployeeNew() {
                                 className="form-select"
                                 onChange={onInputMN}
                             >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                                <option value="WHOLEDAY">Entire Day</option>
+                                <option value="" style={{ display: "none" }}>Select Manager Name</option>
+                                {Array.isArray(bigList[0]) && bigList[0].map((value) => {
+                                    return (
+                                        <option value={value.managerName}>{value.managerName}</option>
+                                    );
+                                })}
                             </Form.Select>
                         </Form.Group>
                     </Row>
@@ -110,9 +123,12 @@ function AdminEmployeeNew() {
                                 className="form-select"
                                 onChange={onInputRN}
                             >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                                <option value="WHOLEDAY">Entire Day</option>
+                                <option value="" style={{ display: "none" }}>Select a role</option>
+                                {Array.isArray(bigList[1]) && bigList[1].map((value, index, array) => {
+                                    return (
+                                        <option value={value.roleName}>{value.roleName}</option>
+                                    );
+                                })}
                             </Form.Select>
                         </Form.Group>
                     </Row>

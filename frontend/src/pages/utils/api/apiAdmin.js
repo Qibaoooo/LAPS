@@ -13,6 +13,11 @@ let createNewEmployee = (employee) => {
     });
   };
 
+let getAllList = () => {
+    return axios.get("http://localhost:8080/api/admin/employee/new", {
+      headers: getJsonHeadersWithJWT(),
+    });
+  };
 
 let createNewRole = (role) => {
   return axios.post("http://localhost:8080/api/admin/role/new", role, {
@@ -28,3 +33,4 @@ let editRole=(role)=>{
 
 
 export { getEmployeeList,createNewEmployee,createNewRole,editRole};
+
