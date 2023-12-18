@@ -25,17 +25,31 @@ let getClaimHistory = () => {
   });
 };
 
-let approveClaim = (data) => {
-  return axios.post("http://localhost:8080/api/manager/claim/approve", data, {
+let approveClaim = (claim, comment) => {
+  let data = buildClaimData(claim, comment, "APPROVED")
+  return axios.put("http://localhost:8080/api/staff/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
 
-let rejectClaim = (data) => {
-  return axios.post("http://localhost:8080/api/manager/claim/reject", data, {
+let rejectClaim = (claim, comment) => {
+  let data = buildClaimData(claim, comment, "REJECTED")
+  return axios.put("http://localhost:8080/api/staff/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
+
+let buildClaimData = (claim, comment, status) => {
+  return {
+    description: claim.description,
+    overtimeTime: claim.time,
+    overtimeDate: claim.date,
+    id: claim.id,
+    userid: claim.userid,
+    comment: comment,
+    status: status,
+  }
+}
 
 export {
   getLeaveList,

@@ -162,6 +162,7 @@ public class APIManagerController {
 	private JSONObject buildClaimJson(CompensationClaim c) {
 		JSONObject claim = new JSONObject();
 		claim.put("id", c.getId());
+		claim.put("userid", c.getUser().getUserId());
 		claim.put("username", c.getUser().getUsername());
 		claim.put("comment", c.getComment());
 		claim.put("description", c.getDescription());
@@ -169,47 +170,6 @@ public class APIManagerController {
 		claim.put("time", c.getOvertimeTime().toString());
 		claim.put("date", c.getOverTimeDate());
 		return claim;
-	}
-
-	@PostMapping(value = "/claim/approve")
-	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
-			@RequestBody ProcessClaimRequest processClaimRequest) {
-
-		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
-			// TODO: further improve check to make sure the staff belongs to this manager
-
-			CompensationClaim claim = compensationClaimService.findCompensationClaimById(processClaimRequest.getId());
-			claim.setStatus(ApplicationStatusEnum.APPROVED);
-			claim.setComment(processClaimRequest.getComment());
-			compensationClaimService.updateCompensationClaim(claim);
-
-			// increment subordinate compleave entitlement
-			userService.incrementCompensationLeaveBy(
-					(claim.getOvertimeTime() == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5,
-					claim.getUser().getUserId());
-
-			return new ResponseEntity<>("approved claim " + processClaimRequest.getId(), HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
-	}
-
-	@PostMapping(value = "/claim/reject")
-	public ResponseEntity<String> rejectClaim(Principal principal, Authentication authentication,
-			@RequestBody ProcessClaimRequest processClaimRequest) {
-
-		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
-			// TODO: further improve check to make sure the staff belongs to this manager
-
-			CompensationClaim claim = compensationClaimService.findCompensationClaimById(processClaimRequest.getId());
-			claim.setStatus(ApplicationStatusEnum.REJECTED);
-			claim.setComment(processClaimRequest.getComment());
-			compensationClaimService.updateCompensationClaim(claim);
-
-			return new ResponseEntity<>("rejected claim " + processClaimRequest.getId(), HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
 
 }

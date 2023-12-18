@@ -34,17 +34,13 @@ function ManagerClaimList() {
   const handleUpdate = () => {
     console.log("handleUpdate");
     if (selectedAction === "APPROVE") {
-      approveClaim({ id: selectedClaim.id, comment: comment }).then(
-        (resp) => {}
-      );
+      approveClaim(selectedClaim, comment).then((resp) => {});
     } else {
       if (comment === "") {
         setShowCommentAlert(true);
         return;
       }
-      rejectClaim({ id: selectedClaim.id, comment: comment }).then(
-        (resp) => {}
-      );
+      rejectClaim(selectedClaim, comment).then((resp) => {});
     }
     window.location.reload();
   };
@@ -98,7 +94,7 @@ function ManagerClaimList() {
                   <td>
                     <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
-                  <td style={{ textAlign: "end" }}>
+                  <td style={{ textAlign:"center" }}>
                     <Button
                       variant="primary"
                       size="sm"
