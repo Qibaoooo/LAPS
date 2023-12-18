@@ -8,7 +8,7 @@ let getLeaveList = () => {
 };
 
 let createNewClaim = (claim) => {
-  return axios.post("http://localhost:8080/api/staff/claim/new", claim, {
+  return axios.post("http://localhost:8080/api/staff/claims", claim, {
     headers: getJsonHeadersWithJWT(),
   });
 };
