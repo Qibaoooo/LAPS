@@ -117,6 +117,7 @@ public class APIStaffController {
 
 
 	
+	
 	@PutMapping(value = "leave/cancel/{id}")
 	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id){
 		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
@@ -125,6 +126,21 @@ public class APIStaffController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}	
 	
+	@PutMapping(value = "/claim/edit")
+	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditClaimRequest editLeaveRequest) {
+		
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+		
+		LeaveApplication la = new LeaveApplication();
+//		la.setDescription(editLeaveRequest.getDescription());
+//		la.setFromDate(editLeaveRequest.get)
+//		
+//		
+		
+		
+		
+		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/claims")
 	public ResponseEntity<String> createNewClaim(Principal principal, @RequestBody NewClaimRequest claimRequest) {

@@ -17,7 +17,6 @@ function StaffLeaveList() {
       getLeaveList()
         .then((response) => response.data)
         .then((list) => {
-          console.log(list);
           setLeaveList(list);
         });
     }
