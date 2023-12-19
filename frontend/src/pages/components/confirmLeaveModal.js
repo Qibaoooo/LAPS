@@ -16,8 +16,7 @@ function ConfirmLeaveModal({
     action,
     handleUpdate,
     handleClose,
-    entitilementLeft,
-    entitlementResult
+    entitlementList
 }) {
     return (
         <>
@@ -46,7 +45,7 @@ function ConfirmLeaveModal({
                                     placeholder="Leave a comment here"
                                     style={{ height: "100px" }}
                                     onInput={onCommentInput}
-                                    defaultValue={entitlementResult === 'true' ? '' : 'No Enough Leave Days!'}
+                                    defaultValue={(entitlementList.result === "true") ? '' : 'No Enough Leave Entitlement!'}
                                 />
                             </FloatingLabel>
                         </Stack>
@@ -56,7 +55,7 @@ function ConfirmLeaveModal({
                         </Stack>
                         <Stack style={{ textAlign: "end" }}>
                             <span>Left Entitlement:</span>
-                            <h5 style={{}}>{entitilementLeft}</h5>
+                            <h5 style={{}}>{entitlementList.left}</h5>
                         </Stack>
                     </Stack>
                     {showCommentAlert && (
@@ -66,7 +65,7 @@ function ConfirmLeaveModal({
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    {entitlementResult === 'true' && (
+                    {((action==="REJECT")||(entitlementList.result === "true")) && (
                         <Button variant="primary" onClick={handleUpdate}>
                             Update
                         </Button>)}

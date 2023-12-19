@@ -128,6 +128,7 @@ function ManagerLeaveList() {
                                             setShowModal(true);
                                             setSelectedLeave(value);
                                             setSelectedAction("REJECT");
+                                            getEntitlement(value.id);
                                         }}
                                     >
                                         Reject
@@ -146,8 +147,7 @@ function ManagerLeaveList() {
                 handleClose={handleClose}
                 handleUpdate={handleUpdate}
                 comment={comment}
-                entitilementLeft={entitilementList.left}
-                entitilementResult={entitilementList.result}
+                entitlementList={entitilementList}
                 showCommentAlert={showCommentAlert}
                 onCommentInput={(e) => {
                     setComment(e.target.value);

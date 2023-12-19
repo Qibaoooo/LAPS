@@ -128,7 +128,8 @@ public class APIManagerController {
 	}
 
 	@PostMapping(value = "/leave/checkEntitle")
-	public ResponseEntity<String> checkEntitlementLeft(Principal principal, Authentication authentication, @RequestParam int id) {
+	public ResponseEntity<String> checkEntitlementLeft(Principal principal, Authentication authentication,
+			@RequestParam int id) {
 		LeaveApplication appli = leaveApplicationService.findLeaveApplicationById(id);
 		LAPSUser applier = appli.getUser();
 		String type = appli.getType().toString();
@@ -149,14 +150,36 @@ public class APIManagerController {
 			used += holidayService.getEntitlement(a);
 		}
 		JSONObject res = new JSONObject();
-		if(used+holidayService.getEntitlement(appli)<entitle) {
-			res.put("result","true");
+		if (used + holidayService.getEntitlement(appli) < entitle) {
+			res.put("result", "true");
+		} else {
+			res.put("result", "false");
 		}
-		else {
-			res.put("result","false");
-		}
-		res.put("left",entitle-used);
+		res.put("left", entitle - used);
 		return new ResponseEntity<>(res.toString(), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/leave/reject")
+	public ResponseEntity<String> rejectLeave(Principal principal, Authentication authentication,
+			@RequestBody ProcessLeaveAndClaimRequest processLeaveRequest) {
+
+		if (authentication.getAuthorities().toString().contains("ROLE_manager")) {
+			// TODO: further improve check to make sure the staff belongs to this manager
+			LeaveApplication leave = leaveApplicationService.findLeaveApplicationById(processLeaveRequest.getId());
+			LAPSUser applier = leave.getUser();
+			LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+			List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+			if (subordinates.contains(applier)) {
+				leave.setStatus(ApplicationStatusEnum.REJECTED);
+				leave.setComment(processLeaveRequest.getComment());
+				leaveApplicationService.updateLeaveApplication(leave);
+
+				return new ResponseEntity<>("rejected leave " + processLeaveRequest.getId(), HttpStatus.OK);
+			}
+			return new ResponseEntity<>("You are not the manager of this staff", HttpStatus.UNAUTHORIZED);
+		}
+
+		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
 
 	@GetMapping(value = "/claim/list")
