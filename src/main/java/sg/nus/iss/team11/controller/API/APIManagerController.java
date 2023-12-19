@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import sg.nus.iss.team11.controller.API.payload.GetManagerClaimsRequest;
 import sg.nus.iss.team11.controller.API.payload.ProcessLeaveAndClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.HolidayService;
@@ -251,7 +252,7 @@ public class APIManagerController {
 		claim.put("date", c.getOverTimeDate());
 		return claim;
 	}
-  
+
 	@PostMapping(value = "/claim/approve")
 	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
 			@RequestBody ProcessLeaveAndClaimRequest processClaimRequest) {
@@ -293,4 +294,37 @@ public class APIManagerController {
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
 
+	@GetMapping(value = "/claims")
+	public ResponseEntity<String> getClaims(GetManagerClaimsRequest request) {
+
+		// Need to add session-related codes, to retrieve subordinates
+		LAPSUser currentManager = userService.findUser(request.getManagerId());
+		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+
+		JSONArray claimList = new JSONArray();
+
+		for (LAPSUser u : subordinates) {
+			JSONArray userClaim = new JSONArray();
+			List<CompensationClaim> userClaimList;
+
+			if (request.getPendingClaimsOnly()) {
+				userClaimList = compensationClaimService.findCompensationClaimsToProcess(u.getUserId());
+			} else {
+				userClaimList = compensationClaimService.findCompensationClaimsByUserId(u.getUserId());
+			}
+			
+			if (userClaimList.isEmpty()) {
+				continue;
+			}
+			for (CompensationClaim c : userClaimList) {
+				userClaim.put(buildClaimJson(c));
+			}
+
+			if (!userClaim.isEmpty()) {
+				claimList.put(userClaim);
+			}
+		}
+
+		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+	}
 }
