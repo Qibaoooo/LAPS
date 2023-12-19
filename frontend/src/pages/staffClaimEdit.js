@@ -11,23 +11,25 @@ function StaffClaimEdit() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
-  const [claimDate, setClaimDate] = useState();
-  const [claimTime, setClaimTime] = useState();
-  const [description, setDescription] = useState();
+  // const [claimDate, setClaimDate] = useState();
+  // const [claimTime, setClaimTime] = useState();
+  // const [description, setDescription] = useState();
+
+  const [claim, setClaim] = useState({});
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState();
 
-  const onInputDT = ({ target: { value } }) => setClaimDate(value);
-  const onInputTM = ({ target: { value } }) => setClaimTime(value);
-  const onInputDS = ({ target: { value } }) => setDescription(value);
+  // const onInputDT = ({ target: { value } }) => setClaimDate(value);
+  // const onInputTM = ({ target: { value } }) => setClaimTime(value);
+  // const onInputDS = ({ target: { value } }) => setDescription(value);
 
   const [validated, setValidated] = useState(false);
 
   const formRef = useRef();
 
   const loadData = () => {
-    setClaimDataOnLoad(id, formRef);
+    setClaimDataOnLoad(id, formRef , setClaim);
   };
 
   const onFormSubmit = (event) => {
@@ -42,7 +44,10 @@ function StaffClaimEdit() {
         description: formRef.current.querySelector("#formDescription").value,
         overtimeTime: formRef.current.querySelector("#formTime").value,
         overtimeDate: formRef.current.querySelector("#formDate").value,
-        id: id,
+        status: "UPDATED",
+        comment: claim.comment,
+        userid: claim.userid,
+        id: claim.id,
       })
         .then((response) => {
           if (response.status == 200) {
@@ -80,7 +85,7 @@ function StaffClaimEdit() {
                 required
                 type="date"
                 placeholder="date"
-                onChange={onInputDT}
+                // onChange={onInputDT}
               />{" "}
             </Form.Group>
             <Form.Group as={Col} controlId="formTime">
@@ -88,7 +93,7 @@ function StaffClaimEdit() {
               <Form.Select
                 required
                 className="form-select"
-                onChange={onInputTM}
+                // onChange={onInputTM}
               >
                 <option value="AM">AM</option>
                 <option value="PM">PM</option>
@@ -104,7 +109,7 @@ function StaffClaimEdit() {
                 required
                 type="text"
                 placeholder="Details for your claim"
-                onChange={onInputDS}
+                // onChange={onInputDS}
               ></Form.Control>
             </Form.Group>
           </Row>

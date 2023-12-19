@@ -242,6 +242,7 @@ public class APIManagerController {
 	private JSONObject buildClaimJson(CompensationClaim c) {
 		JSONObject claim = new JSONObject();
 		claim.put("id", c.getId());
+		claim.put("userid", c.getUser().getUserId());
 		claim.put("username", c.getUser().getUsername());
 		claim.put("comment", c.getComment());
 		claim.put("description", c.getDescription());
@@ -250,7 +251,7 @@ public class APIManagerController {
 		claim.put("date", c.getOverTimeDate());
 		return claim;
 	}
-
+  
 	@PostMapping(value = "/claim/approve")
 	public ResponseEntity<String> approveClaim(Principal principal, Authentication authentication,
 			@RequestBody ProcessLeaveAndClaimRequest processClaimRequest) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
-import { getClaimList, deleteClaim } from "./utils/api/apiStaff";
+import { getClaimList, deleteClaim, editClaim } from "./utils/api/apiStaff";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import MyTable from "./components/myTable";
 import { Button } from "react-bootstrap";
@@ -12,6 +12,7 @@ import RedirectionModal from "./components/redirectionModal";
 function StaffClaimList() {
   const [claimList, setClaimList] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [chosenClaim, setChosenClaim] = useState({});
 
   const loadData = () => {
@@ -47,35 +48,53 @@ function StaffClaimList() {
             return (
               <tr key={index}>
                 <td>{claim.id}</td>
-                <td>{claim.date}</td>
-                <td>{claim.time}</td>
+                <td>{claim.overtimeDate}</td>
+                <td>{claim.overtimeTime}</td>
                 <td>{claim.description}</td>
                 <td>
                   <MyStatusBadge status={claim.status}></MyStatusBadge>
                 </td>
                 <td>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      window.location.href =
-                        "/staff/claim/edit/?id=" + claim.id;
-                    }}
-                  >
-                    Update
-                  </Button>
+                  {["APPROVED"].includes(claim.status) && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setChosenClaim(claim);
+                        setShowCancelModal(true);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  )}
                   {["APPLIED", "UPDATED"].includes(claim.status) && (
-                    <a
-                      href=""
-                      style={{ marginLeft: "10px" }}
+                    <div>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => {
+                          window.location.href =
+                            "/staff/claim/edit/?id=" + claim.id;
+                        }}
+                      >
+                        Update
+                      </Button>
+                    </div>
+                  )}
+                  {["APPLIED", "UPDATED"].includes(claim.status) && (
+                    <Button
+                      className="mt-2"
+                      variant="danger"
+                      size="sm"
                       onClick={(e) => {
                         e.preventDefault();
                         setChosenClaim(claim);
                         setShowDeleteModal(true);
                       }}
                     >
-                      delete
-                    </a>
+                      Delete
+                    </Button>
                   )}
                 </td>
               </tr>
@@ -94,6 +113,22 @@ function StaffClaimList() {
         enableCloseButton={true}
         handleClose={() => {
           setShowDeleteModal(false);
+          setChosenClaim({});
+        }}
+      ></RedirectionModal>
+      <RedirectionModal
+        show={showCancelModal}
+        handleButtonClick={() => {
+          chosenClaim.status="CANCELLED"
+          editClaim(chosenClaim);
+          window.location.reload();
+        }}
+        headerMsg={"Confirm cancel claim " + chosenClaim.id + " ?"}
+        buttonMsg={"CONFIRM"}
+        enableCloseButton={true}
+        handleClose={() => {
+          setShowCancelModal(false);
+          setChosenClaim({});
         }}
       ></RedirectionModal>
     </LoginCheckWrapper>
