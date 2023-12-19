@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getEmployeeList,deleteEmployee } from "./utils/api/apiAdmin";
+import { getEmployeeList, deleteEmployee } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button, Col, Table } from "react-bootstrap";
@@ -9,9 +9,12 @@ import MyTable from "./components/myTable";
 import RedirectionModal from "./components/redirectionModal";
 
 function AdminEmployeeList() {
+  let userinfo;
+
   const [employeeList, setEmployeeList] = useState([]);
-  const[chosenEmployee,setChosenEmployee]= useState([]);
+  const [chosenEmployee, setChosenEmployee] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [user, setUser] = useState([]);
 
   const loadData = () => {
     if (getUserinfoFromLocal()) {
@@ -21,6 +24,8 @@ function AdminEmployeeList() {
           console.log(list);
           setEmployeeList(list);
         });
+      userinfo = getUserinfoFromLocal();
+      setUser(userinfo);
     }
   };
 
@@ -59,28 +64,29 @@ function AdminEmployeeList() {
                 <td>{value.name}</td>
                 <td>{value.managerId}</td>
                 <td>{value.role}</td>
-                <td>{(value.type)?value.type:(<i> - </i>)}</td>
+                <td>{(value.type) ? value.type : (<i>NULL</i>)}</td>
                 <td>{value.annualLeaveEntitlement}</td>
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>
                 <td>
                   <Button variant="secondary" size="sm"
-                  onClick={() => {
-                    window.location.href =
-                      "/admin/employee/edit/?id=" + value.id;
-                  }}
+                    onClick={() => {
+                      window.location.href =
+                        "/admin/employee/edit/?id=" + value.id;
+                    }}
                   >
                     Edit
                   </Button>
                 </td>
                 <td>
+                  {(user.username != value.name)&&(
                   <Button variant="danger" size="sm" onClick={(e) => {
-                        e.preventDefault();
-                        setChosenEmployee(value);
-                        setShowDeleteModal(true);
-                      }}>
+                    e.preventDefault();
+                    setChosenEmployee(value);
+                    setShowDeleteModal(true);
+                  }}>
                     Delete
-                  </Button>
+                  </Button>)}
                 </td>
               </tr>
             );
