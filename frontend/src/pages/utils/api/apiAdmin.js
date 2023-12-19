@@ -68,6 +68,20 @@ let editRole = (role) => {
   });
 };
 
+let setRoleDataOnLoad = async (id, ref) => {
+  try {
+    const resp = await getRoleList();
+    const list = resp.data;
+    list.forEach((role) => {
+      if (id == role.id) {
+        console.log("found role " + "id");
+        ref.current.querySelector("#formName").value = role.roleName;
+        ref.current.querySelector("#formDescription").value = role.description;
+      }
+    });
+  } catch (e) {}
+};
+
 export {
   getEmployeeList,
   createNewEmployee,
@@ -77,4 +91,5 @@ export {
   createNewRole,
   editRole,
   getAllList,
+  setRoleDataOnLoad
 };
