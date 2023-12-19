@@ -216,6 +216,9 @@ public class APIManagerController {
 				continue;
 			}
 			
+			// only return current year history
+			userClaimList.removeIf(c -> c.getOverTimeDate().getYear() != LocalDate.now().getYear());
+			
 			for (CompensationClaim c : userClaimList) {
 				userClaim.put(c.toJsonObject());
 			}
