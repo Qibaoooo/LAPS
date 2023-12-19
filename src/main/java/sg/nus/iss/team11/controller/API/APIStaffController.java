@@ -36,6 +36,7 @@ import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)

@@ -59,12 +59,12 @@ function ManagerLeaveList() {
                                 {value.description ? (
                                     <td>{value.description}</td>
                                 ) : (
-                                    <td><i>NULL</i></td>
+                                    <td><i>-</i></td>
                                 )}
                                 {value.comment ? (
                                     <td>{value.comment}</td>
                                 ) : (
-                                    <td><i>NULL</i></td>
+                                    <td><i>-</i></td>
                                 )}
                                 <td width="7.5%">
                                     <MyStatusBadge status={value.status}></MyStatusBadge>
