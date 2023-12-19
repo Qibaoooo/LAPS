@@ -1,6 +1,9 @@
 import axios from "axios";
 import { getJsonHeadersWithJWT } from "../properties";
 
+/*
+LEAVE APPPLICATION
+*/
 let getLeaveList = () => {
   return axios.get("http://localhost:8080/api/staff/leave/list", {
     headers: getJsonHeadersWithJWT(),
@@ -11,33 +14,41 @@ let cancelLeave = (leaveId) => {
   return axios.delete("http://localhost:8080/api/staff/leave/cancel", leaveId, {
     headers: getJsonHeadersWithJWT(),
   });
-}
+};
 
 let setLeaveDataOnLoad = async (leaveId, formRef) => {
-  try{
+  try {
     const response = await getLeaveList();
     const list = response.data;
-    list.forEach(leaveData => {
+    list.forEach((leaveData) => {
       if (leaveData.id == leaveId) {
         console.log("found");
-        formRef.current.querySelector("#formFromDate").value = leaveData.fromDate;
+        formRef.current.querySelector("#formFromDate").value =
+          leaveData.fromDate;
         formRef.current.querySelector("#formToDate").value = leaveData.toDate;
         formRef.current.querySelector("#formType").value = leaveData.type;
-        formRef.current.querySelector("#formDescription").value = leaveData.description;
+        formRef.current.querySelector("#formDescription").value =
+          leaveData.description;
       }
-      });
-    
+    });
   } catch (error) {
     console.error("Error fetching leave data:", error);
   }
 };
 
 let editLeave = (leaveapplication) => {
-  return axios.put("http://localhost:8080/api/staff/leave/edit", leaveapplication, {
-    headers: getJsonHeadersWithJWT(),
-  });
-}
+  return axios.put(
+    "http://localhost:8080/api/staff/leave/edit",
+    leaveapplication,
+    {
+      headers: getJsonHeadersWithJWT(),
+    }
+  );
+};
 
+/*
+COMPENSATION CLAIM
+*/
 let createNewClaim = (claim) => {
   return axios.post("http://localhost:8080/api/staff/claims", claim, {
     headers: getJsonHeadersWithJWT(),
@@ -49,7 +60,6 @@ let getClaimList = () => {
     headers: getJsonHeadersWithJWT(),
   });
 };
-
 
 let editClaim = (claim) => {
   return axios.put("http://localhost:8080/api/staff/claims", claim, {
@@ -79,9 +89,6 @@ let setClaimDataOnLoad = async (id, ref, setClaim) => {
     });
   } catch (e) {}
 };
-
-
-
 
 export {
   getLeaveList,

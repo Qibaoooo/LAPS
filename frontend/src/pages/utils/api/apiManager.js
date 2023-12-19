@@ -2,6 +2,9 @@ import axios from "axios";
 import { getJsonHeadersWithJWT } from "../properties";
 import { getUserinfoFromLocal } from "../userinfo";
 
+/*
+LEAVE APPPLICATION
+*/
 let getLeaveList = () => {
   return axios.get("http://localhost:8080/api/manager/leave/list", {
     headers: getJsonHeadersWithJWT(),
@@ -32,6 +35,9 @@ let rejectLeave = (data) => {
   });
 };
 
+/*
+COMPENSATION CLAIM
+*/
 let getClaimList = () => {
   const data = {
     pendingClaimsOnly: true,

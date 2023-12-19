@@ -12,6 +12,7 @@ import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import ConfirmClaimModal from "./components/confirmClaimModal";
 import MyStatusBadge from "./components/myStatusBadge";
+import { sortByOvertimeDate } from "./utils/sorting";
 
 function ManagerClaimList() {
   const [claimList, setClaimList] = useState([]);
@@ -26,6 +27,9 @@ function ManagerClaimList() {
       getClaimList()
         .then((response) => response.data)
         .then((list) => {
+          list.map((userClaimArray, index) => {
+            userClaimArray.sort(sortByOvertimeDate);
+          });
           setClaimList(list);
         });
     }

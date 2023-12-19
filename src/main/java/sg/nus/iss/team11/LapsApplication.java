@@ -151,29 +151,29 @@ public class LapsApplication {
 			claimRepo.save(new CompensationClaim(tin, "cc for tin AM", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin PM", ApplicationStatusEnum.APPLIED,
-					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(11)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin AM", ApplicationStatusEnum.APPROVED,
-					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(12)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin PM", ApplicationStatusEnum.APPROVED,
-					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(13)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin WHOLEDAY", ApplicationStatusEnum.REJECTED,
-					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(14)));
 
 			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
-					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(11)));
 			claimRepo.save(new CompensationClaim(cherwah, "cc for tin cherwah", ApplicationStatusEnum.APPLIED,
-					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(12)));
 
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(10)));
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
-					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(11)));
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for tin yuenkwan", ApplicationStatusEnum.APPLIED,
-					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(10)));
+					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(12)));
 
 		};
 	}
