@@ -1,13 +1,12 @@
 package sg.nus.iss.team11.controller.API.payload;
 
-import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 
 public class EditLeaveRequest extends NewLeaveApplication{
 	private int id;
 	
-	public EditLeaveRequest(String description, LeaveApplicationTypeEnum leaveapplicationtype,
+	public EditLeaveRequest(String description, String type,
 			String fromDate, String toDate) {
-		super(description, leaveapplicationtype, fromDate,  toDate);
+		super(description, type, fromDate,  toDate);
 		
 		
 	}

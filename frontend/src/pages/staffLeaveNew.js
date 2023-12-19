@@ -1,18 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 
 function StaffLeaveNew() {
+  const [fromDate, setFromDate] = useState();
+  const [toDate, setToDate] = useState();
+  const [leaveType, setLeaveType] = useState();
+  const [description, setDescription] = useState();
+
+
   const onFormSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     
   };
 
+
+  
+  const loadData = () =>{
+    setFromDate(new Date());
+    setToDate(new Date());
+  }
+
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper
+      allowRole={["ROLE_manager", "ROLE_staff"]}
+      runAfterCheck={loadData}>
       <MyNavBar></MyNavBar>
       <PageTitle title="Create New Leave Application"></PageTitle>
 
@@ -41,7 +56,7 @@ function StaffLeaveNew() {
                 required
                 type="date"
                 placeholder="date"
-              
+                value = {fromDate}
               />{" "}
             </Form.Group>
 
@@ -51,6 +66,7 @@ function StaffLeaveNew() {
                 required
                 type="date"
                 placeholder="date"
+                value = {toDate}
               />{" "}
             </Form.Group>
           </Row>
