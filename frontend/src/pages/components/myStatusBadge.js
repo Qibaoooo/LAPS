@@ -9,9 +9,9 @@ function MyStatusBadge({ status }) {
           case "approved":
             return "success";
           case "applied":
-            return "warning";
+            return "info";
           case "updated":
-            return "warning";
+            return "info";
           case "rejected":
             return "danger";
           case "cancelled":

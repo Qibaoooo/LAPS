@@ -81,7 +81,7 @@ function ManagerClaimList() {
                 </td>
               </tr>
               <tr>
-                <th>ID</th>
+                <th>NO.</th>
                 <th>Applied By</th>
                 <th>Description</th>
                 <th>Time</th>
@@ -90,7 +90,7 @@ function ManagerClaimList() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
               {userClaimArray.map((value, index) => (
                 <tr key={index}>
                   <td width="5%">{value.id}</td>

@@ -43,28 +43,27 @@ function HomePage() {
             )}
             {roleId !== "ROLE_admin" && (
               <div>
-                <Card.Text>{`Annual Leave Entitlement: ${userDetails.annualLeaveEntitlement}`}</Card.Text>
-                <Card.Text>{`Medical Leave Entitlement: ${userDetails.medicalLeaveEntitlement}`}</Card.Text>
-                <Card.Text>{`Compensation Leave Entitlement: ${userDetails.compensationLeaveEntitlement}`}</Card.Text>
+                <Card.Text style={{ marginLeft: '60px' }}>{`Annual Leave Entitlement: ${userDetails.annualLeaveEntitlement}, ${userDetails.annualLeaveUsed} Used, ${userDetails.annualLeaveLeft} Left`}</Card.Text>
+                <Card.Text style={{ marginLeft: '50px' }}>{`Medical Leave Entitlement: ${userDetails.medicalLeaveEntitlement}, ${userDetails.medicalLeaveUsed} Used, ${userDetails.medicalLeaveLeft} Left`}</Card.Text>
+                <Card.Text>{`Compensation Leave Entitlement: ${userDetails.compensationLeaveEntitlement}, ${userDetails.compensationLeaveUsed} Used, ${userDetails.compensationLeaveLeft} Left`}</Card.Text>
               </div>
             )}
             {roleId === "ROLE_staff" && (
               <div className="mt-3">
-              <Card.Link href="/staff/leave/new"> New Leave </Card.Link>
+                <Card.Link href="/staff/leave/new"> New Leave </Card.Link>
                 <Card.Link href="/staff/claim/new"> New Claim </Card.Link>
               </div>
             )}
             {roleId === "ROLE_manager" && (
               <div className="mt-3">
                 <Card.Link href="/manager/leave/list"> View Suborinates Leave Applications </Card.Link>
-                <br />
+                <br /><br />
                 <Card.Link href="/manager/claim/list"> View Suborinates OT Claims </Card.Link>
               </div>
             )}
             {roleId === "ROLE_admin" && (
               <div className="mt-3">
-              <Card.Link href="/admin/role"> Manage Roles </Card.Link>
-                <br />
+                <Card.Link href="/admin/role"> Manage Roles </Card.Link>
                 <Card.Link href="/admin/employee"> Manage Users </Card.Link>
               </div>
             )}

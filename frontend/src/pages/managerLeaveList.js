@@ -87,7 +87,7 @@ function ManagerLeaveList() {
                             </td>
                         </tr>
                         <tr>
-                            <th width="5%">ID</th>
+                            <th width="5%">NO.</th>
                             <th width="10%">From Date</th>
                             <th width="10%">To Date</th>
                             <th width="20%">Type</th>
