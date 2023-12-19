@@ -22,6 +22,7 @@ function StaffLeaveNew() {
   const loadData = () =>{
     setFromDate(new Date());
     setToDate(new Date());
+    
   }
 
   return (
@@ -47,6 +48,8 @@ function StaffLeaveNew() {
             </Form.Group>
           </Row>
           
+
+
           <br></br>
 
           <Row className="mx-5" style={{ textAlign: "left" }}>
