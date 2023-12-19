@@ -87,29 +87,29 @@ function ManagerLeaveList() {
                             </td>
                         </tr>
                         <tr>
-                            <th>ID</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th width="5%">NO.</th>
+                            <th width="15%">From Date</th>
+                            <th width="15%">To Date</th>
+                            <th width="10%">Type</th>
+                            <th width="25%">Description</th>
+                            <th width="10%">Status</th>
+                            <th width="20%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {userLeaveArray.map((value, index) => (
                             <tr key={index}>
                                 <td width="5%">{value.id}</td>
-                                <td width="10%">{value.fromDate}</td>
-                                <td width="10%">{value.toDate}</td>
+                                <td width="15%">{value.fromDate}</td>
+                                <td width="15%">{value.toDate}</td>
                                 <td width="10%">{value.type}</td>
                                 <td width="25%">{value.description}</td>
-                                <td width="20%">
+                                <td width="10%">
                                     <MyStatusBadge status={value.status}></MyStatusBadge>
                                 </td>
                                 <td width="20%" style={{ textAlign: "center" }}>
                                         <Button
-                                            width="50%"
+                                            style={{width:"35%",marginRight: "10px" }}
                                             variant="success"
                                             size="sm"
                                             onClick={() => {
@@ -122,7 +122,7 @@ function ManagerLeaveList() {
                                             Approve
                                         </Button>
                                     <Button
-                                        width="50%"
+                                        style={{width:"35%"}}
                                         variant="danger"
                                         size="sm"
                                         onClick={() => {

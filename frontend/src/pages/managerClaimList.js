@@ -81,7 +81,7 @@ function ManagerClaimList() {
                 </td>
               </tr>
               <tr>
-                <th>ID</th>
+                <th>NO.</th>
                 <th>Applied By</th>
                 <th>Description</th>
                 <th>Time</th>
@@ -90,7 +90,7 @@ function ManagerClaimList() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
               {userClaimArray.map((value, index) => (
                 <tr key={index}>
                   <td>{value.id}</td>
@@ -103,7 +103,8 @@ function ManagerClaimList() {
                   </td>
                   <td style={{ textAlign: "center" }}>
                     <Button
-                      variant="primary"
+                      style={{width:"35%",marginRight: "10px" }}
+                      variant="success"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);
@@ -113,9 +114,9 @@ function ManagerClaimList() {
                     >
                       Approve
                     </Button>
-                    <div className="m-1"></div>
                     <Button
-                      variant="secondary"
+                      style={{width:"35%"}}
+                      variant="danger"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);

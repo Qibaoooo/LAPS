@@ -184,6 +184,7 @@ function AdminEmployeeNew() {
                             <Form.Label>Medical Leave Entitlement</Form.Label>
                             <Form.Control
                                 required
+                                defaultValue="60"
                                 type="number"
                                 placeholder="Medical Leave Entitlement"
                                 onChange={onInputMLE}
