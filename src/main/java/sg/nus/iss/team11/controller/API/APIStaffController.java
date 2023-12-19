@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
+import sg.nus.iss.team11.controller.API.payload.EditLeaveRequest;
 import sg.nus.iss.team11.controller.API.payload.NewClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
@@ -127,18 +129,19 @@ public class APIStaffController {
 	}	
 	
 	@PutMapping(value = "/leave/edit")
-	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditClaimRequest editLeaveRequest) {
+	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditLeaveRequest editLeaveRequest) {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
 		
 		LeaveApplication la = new LeaveApplication();
-//		la.setDescription(editLeaveRequest.getDescription());
-//		la.setFromDate(editLeaveRequest.get)
-//		
-//		
+		la.setDescription(editLeaveRequest.getDescription());
+		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
+		la.setToDate(LocalDate.parse(editLeaveRequest.getToDate()));
+		la.setType(editLeaveRequest.getLeaveapplicationtype());
+		la.setStatus(ApplicationStatusEnum.UPDATED);
+		la.setId(user.getUserId());
 		
-		
-		
+		leaveApplicationService.updateLeaveApplication(la);
 		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
 	}
 
