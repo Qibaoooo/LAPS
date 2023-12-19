@@ -56,14 +56,14 @@ let getClaimHistory = () => {
 
 let approveClaim = (claim, comment) => {
   let data = buildClaimData(claim, comment, "APPROVED")
-  return axios.put("http://localhost:8080/api/staff/claims", data, {
+  return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
 
 let rejectClaim = (claim, comment) => {
   let data = buildClaimData(claim, comment, "REJECTED")
-  return axios.put("http://localhost:8080/api/staff/claims", data, {
+  return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
@@ -71,8 +71,8 @@ let rejectClaim = (claim, comment) => {
 let buildClaimData = (claim, comment, status) => {
   return {
     description: claim.description,
-    overtimeTime: claim.time,
-    overtimeDate: claim.date,
+    overtimeTime: claim.overtimeTime,
+    overtimeDate: claim.overtimeDate,
     id: claim.id,
     userid: claim.userid,
     comment: comment,

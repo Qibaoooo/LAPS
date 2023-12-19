@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +33,8 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
-import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
-import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -90,35 +86,6 @@ public class APIStaffController {
 
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
-
-	@GetMapping(value = "/claims")
-	public ResponseEntity<String> getClaimList(Principal principal) {
-		LAPSUser user = userService.findUserByUsername(principal.getName());
-
-		JSONArray claimList = new JSONArray();
-
-		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
-
-//			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
-//				return;
-//			}
-
-			JSONObject claim = new JSONObject();
-			claim.put("id", c.getId());
-			claim.put("userid", c.getUser().getUserId());
-			claim.put("overtimeDate", c.getOverTimeDate().toString());
-			claim.put("overtimeTime", c.getOvertimeTime().toString());
-			claim.put("description", c.getDescription());
-			claim.put("status", c.getStatus());
-			claim.put("comment", c.getComment());
-			claimList.put(claim);
-		});
-
-		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
-	}
-
-
-	
 	
 	@PutMapping(value = "leave/cancel/{id}")
 	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id){
@@ -145,6 +112,24 @@ public class APIStaffController {
 		leaveApplicationService.updateLeaveApplication(la);
 		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/claims")
+	public ResponseEntity<String> getClaimList(Principal principal) {
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+
+		JSONArray claimList = new JSONArray();
+
+		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
+
+//			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
+//				return;
+//			}
+			
+			claimList.put(c.toJsonObject());
+		});
+
+		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+	}	
 
 	@PostMapping(value = "/claims")
 	public ResponseEntity<String> createNewClaim(Principal principal, @RequestBody NewClaimRequest claimRequest) {
@@ -177,14 +162,6 @@ public class APIStaffController {
 			}
 		}
 
-		if (Arrays.asList("APPROVED", "REJECTED").contains(newStatus)) {
-			LAPSUser manager = userService.findUser(user.getManagerId());
-			if (!principal.getName().equals(manager.getUsername())) {
-				return new ResponseEntity<String>("You are not allowed to approve/reject this claim.",
-						HttpStatus.BAD_REQUEST);
-			}
-		}
-
 		CompensationClaim claim = new CompensationClaim();
 
 		claim.setDescription(editClaimRequest.getDescription());
@@ -197,15 +174,7 @@ public class APIStaffController {
 
 		claimService.updateCompensationClaim(claim);
 
-		if (newStatus.equals("APPROVED")) {
-			incrementCompLeave(user, claim.getOvertimeTime());
-		}
-
 		return new ResponseEntity<String>("claim updated: " + editClaimRequest.getId(), HttpStatus.OK);
-	}
-
-	private void incrementCompLeave(LAPSUser user, CompensationClaimTimeEnum time) {
-		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5, user.getUserId());
 	}
 
 	@DeleteMapping(value = "/claims")

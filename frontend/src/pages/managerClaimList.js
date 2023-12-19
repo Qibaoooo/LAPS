@@ -34,15 +34,18 @@ function ManagerClaimList() {
   const handleUpdate = () => {
     console.log("handleUpdate");
     if (selectedAction === "APPROVE") {
-      approveClaim(selectedClaim, comment).then((resp) => {});
+      approveClaim(selectedClaim, comment).then((resp) => {
+        window.location.reload();
+      });
     } else {
       if (comment === "") {
         setShowCommentAlert(true);
         return;
       }
-      rejectClaim(selectedClaim, comment).then((resp) => {});
+      rejectClaim(selectedClaim, comment).then((resp) => {
+        window.location.reload();
+      });
     }
-    window.location.reload();
   };
 
   const handleClose = () => {
@@ -69,7 +72,7 @@ function ManagerClaimList() {
           <MyTable key={index}>
             <thead>
               <tr>
-                <td colSpan={8} style={{ fontSize: '16px' }}>
+                <td colSpan={8} style={{ fontSize: "16px" }}>
                   <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>
@@ -89,12 +92,12 @@ function ManagerClaimList() {
                   <td>{value.id}</td>
                   <td>{value.username}</td>
                   <td>{value.description}</td>
-                  <td>{value.time}</td>
-                  <td>{value.date}</td>
+                  <td>{value.overtimeTime}</td>
+                  <td>{value.overtimeDate}</td>
                   <td>
                     <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
-                  <td style={{ textAlign:"center" }}>
+                  <td style={{ textAlign: "center" }}>
                     <Button
                       variant="primary"
                       size="sm"
