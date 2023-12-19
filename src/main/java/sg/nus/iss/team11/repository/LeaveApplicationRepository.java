@@ -14,4 +14,7 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 
 	@Query("SELECT la from LeaveApplication la WHERE la.user.id = :userId AND la.status IN ('UPDATED', 'APPLIED')")
 	List<LeaveApplication> findLeaveApplicationsToProcess(@Param("userId") Integer userId);
+	
+	@Query("SELECT la from LeaveApplication la WHERE la.status = 'APPROVED' AND la.type = 'AnnualLeave'")
+	List<LeaveApplication> findLeaveApplicationsApprovedByType(@Param("type") String type);
 }

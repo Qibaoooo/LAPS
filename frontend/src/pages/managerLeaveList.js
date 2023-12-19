@@ -1,79 +1,160 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getLeaveList } from "./utils/api/apiManager";
+import {
+    getLeaveList,
+    approveLeave,
+    rejectLeave,
+    getEntitlementLeft
+} from "./utils/api/apiManager";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
+import ConfirmLeaveModal from "./components/confirmLeaveModal";
 import MyStatusBadge from "./components/myStatusBadge";
 
 function ManagerLeaveList() {
-  const [leaveList, setLeaveList] = useState([]);
+    const [leaveList, setLeaveList] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedLeave, setSelectedLeave] = useState({});
+    const [selectedAction, setSelectedAction] = useState("");
+    const [comment, setComment] = useState("");
+    const [showCommentAlert, setShowCommentAlert] = useState(false);
+    const [entitilementList, setEntitlementList] = useState([]);
 
-  const loadData = () => {
-    if (getUserinfoFromLocal()) {
-      getLeaveList()
-        .then((response) => response.data)
-        .then((list) => {
-          console.log(list);
-          setLeaveList(list);
-        });
-    }
-  };
+    const loadData = () => {
+        if (getUserinfoFromLocal()) {
+            getLeaveList()
+                .then((response) => response.data)
+                .then((list) => {
+                    console.log(list);
+                    setLeaveList(list);
+                });
+        }
+    };
 
-  const namelist = leaveList.map(
-    (userLeaveArray) =>
-      userLeaveArray[0].username.charAt(0).toUpperCase() +
-      userLeaveArray[0].username.slice(1)
-  );
-  return (
-    <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
-      <MyNavBar />
-      <PageTitle title="Subordinates Leave Application List"></PageTitle>
+    const getEntitlement = (id) => {
+        getEntitlementLeft(id)
+            .then((response) => response.data)
+            .then((list) => {
+                setEntitlementList(list);
+            });
+    };
 
-      {leaveList.map((userLeaveArray, index) => (
-        <MyTable>
-          <thead>
-            <tr>
-              <td colSpan={8}>
-                <b>Leave Application for {namelist[index]}</b>
-              </td>
-            </tr>
-            <tr>
-              <th>ID</th>
-              <th>From Date</th>
-              <th>To Date</th>
-              <th>Type</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Process</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userLeaveArray.map((value, index) => (
-              <tr key={index}>
-                <td width="10%">{value.id}</td>
-                <td width="15%">{value.fromDate}</td>
-                <td width="15%">{value.toDate}</td>
-                <td width="20%">{value.type}</td>
-                <td width="20%">{value.description}</td>
-                <td width="10%">
-                  <MyStatusBadge status={value.status}></MyStatusBadge>
-                </td>
-                <td width="10%">
-                  <Button variant="secondary" size="sm">
-                    Details
-                  </Button>
-                </td>
-              </tr>
+    const handleUpdate = () => {
+        console.log("handleUpdate");
+        if (selectedAction === "APPROVE") {
+            approveLeave({ id: selectedLeave.id, comment: comment }).then(
+                (resp) => { }
+            );
+        } else {
+            if (comment === "") {
+                setShowCommentAlert(true);
+                return;
+            }
+            rejectLeave({ id: selectedLeave.id, comment: comment }).then(
+                (resp) => { }
+            );
+        }
+        window.location.reload();
+    };
+
+    const handleClose = () => {
+        setShowModal(false);
+        setComment("");
+        setShowCommentAlert(false);
+    };
+
+    const namelist = leaveList.map(
+        (userLeaveArray) =>
+            userLeaveArray[0].username.charAt(0).toUpperCase() +
+            userLeaveArray[0].username.slice(1)
+    );
+    return (
+        <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
+            <MyNavBar />
+            <PageTitle title="Subordinates Leave Application List"></PageTitle>
+            {leaveList.length === 0 && (
+                <p style={{ marginTop: "100px" }}>No pending leave applications for approval.</p>
+            )}
+            {leaveList.map((userLeaveArray, index) => (
+                <MyTable>
+                    <thead>
+                        <tr>
+                            <td colSpan={8} style={{ fontSize: '16px' }}>
+                                <b>Leave Application for {namelist[index]}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {userLeaveArray.map((value, index) => (
+                            <tr key={index}>
+                                <td width="10%">{value.id}</td>
+                                <td width="15%">{value.fromDate}</td>
+                                <td width="15%">{value.toDate}</td>
+                                <td width="20%">{value.type}</td>
+                                <td width="20%">{value.description}</td>
+                                <td width="10%">
+                                    <MyStatusBadge status={value.status}></MyStatusBadge>
+                                </td>
+                                <td style={{ textAlign: "end" }}>
+                                        <Button
+                                            variant="primary"
+                                            size="sm"
+                                            onClick={() => {
+                                                setShowModal(true);
+                                                setSelectedLeave(value);
+                                                setSelectedAction("APPROVE");
+                                                getEntitlement(value.id);
+                                            }}
+                                        >
+                                            Approve
+                                        </Button>
+                                    <div className="m-1"></div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        onClick={() => {
+                                            setShowModal(true);
+                                            setSelectedLeave(value);
+                                            setSelectedAction("REJECT");
+                                            getEntitlement(value.id);
+                                        }}
+                                    >
+                                        Reject
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                    <div style={{ marginTop: "20px" }}></div>
+                </MyTable>
             ))}
-          </tbody>
-          <div style={{ marginTop: "20px" }}></div>
-        </MyTable>
-      ))}
-    </LoginCheckWrapper>
-  );
+            <ConfirmLeaveModal
+                show={showModal}
+                leave={selectedLeave}
+                action={selectedAction}
+                handleClose={handleClose}
+                handleUpdate={handleUpdate}
+                comment={comment}
+                entitlementList={entitilementList}
+                showCommentAlert={showCommentAlert}
+                onCommentInput={(e) => {
+                    setComment(e.target.value);
+                }}
+            ></ConfirmLeaveModal>
+        </LoginCheckWrapper>
+    );
 }
 
 export default ManagerLeaveList;
