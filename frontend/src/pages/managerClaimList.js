@@ -12,6 +12,7 @@ import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import ConfirmClaimModal from "./components/confirmClaimModal";
 import MyStatusBadge from "./components/myStatusBadge";
+import { sortByOvertimeDate } from "./utils/sorting";
 
 function ManagerClaimList() {
   const [claimList, setClaimList] = useState([]);
@@ -26,6 +27,9 @@ function ManagerClaimList() {
       getClaimList()
         .then((response) => response.data)
         .then((list) => {
+          list.map((userClaimArray, index) => {
+            userClaimArray.sort(sortByOvertimeDate);
+          });
           setClaimList(list);
         });
     }
@@ -34,15 +38,18 @@ function ManagerClaimList() {
   const handleUpdate = () => {
     console.log("handleUpdate");
     if (selectedAction === "APPROVE") {
-      approveClaim(selectedClaim, comment).then((resp) => {});
+      approveClaim(selectedClaim, comment).then((resp) => {
+        window.location.reload();
+      });
     } else {
       if (comment === "") {
         setShowCommentAlert(true);
         return;
       }
-      rejectClaim(selectedClaim, comment).then((resp) => {});
+      rejectClaim(selectedClaim, comment).then((resp) => {
+        window.location.reload();
+      });
     }
-    window.location.reload();
   };
 
   const handleClose = () => {
@@ -69,7 +76,7 @@ function ManagerClaimList() {
           <MyTable key={index}>
             <thead>
               <tr>
-                <td colSpan={8} style={{ fontSize: '16px' }}>
+                <td colSpan={8} style={{ fontSize: "16px" }}>
                   <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>

@@ -11,18 +11,10 @@ function StaffClaimEdit() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
-  // const [claimDate, setClaimDate] = useState();
-  // const [claimTime, setClaimTime] = useState();
-  // const [description, setDescription] = useState();
-
   const [claim, setClaim] = useState({});
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState();
-
-  // const onInputDT = ({ target: { value } }) => setClaimDate(value);
-  // const onInputTM = ({ target: { value } }) => setClaimTime(value);
-  // const onInputDS = ({ target: { value } }) => setDescription(value);
 
   const [validated, setValidated] = useState(false);
 

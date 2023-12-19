@@ -8,6 +8,7 @@ import MyTable from "./components/myTable";
 import { Button } from "react-bootstrap";
 import MyStatusBadge from "./components/myStatusBadge";
 import RedirectionModal from "./components/redirectionModal";
+import { sortByOvertimeDate } from "./utils/sorting";
 
 function StaffClaimList() {
   const [claimList, setClaimList] = useState([]);
@@ -20,6 +21,7 @@ function StaffClaimList() {
       getClaimList()
         .then((response) => response.data)
         .then((list) => {
+          list.sort(sortByOvertimeDate);
           setClaimList(list);
         });
     }

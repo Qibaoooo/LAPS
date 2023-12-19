@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +26,14 @@ import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
 import sg.nus.iss.team11.controller.API.payload.EditLeaveRequest;
 import sg.nus.iss.team11.controller.API.payload.NewClaimRequest;
+import sg.nus.iss.team11.controller.API.payload.NewLeaveApplication;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
+import sg.nus.iss.team11.controller.service.HolidayService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
-import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
-import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
@@ -56,6 +54,9 @@ public class APIStaffController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	HolidayService holidayservice;
 
 	/*
 	 * API to get the necessary info to populate new leave page.
@@ -91,6 +92,99 @@ public class APIStaffController {
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);
 	}
 
+	@PutMapping(value = "leave/cancel/{id}")
+	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id) {
+		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
+		la.setStatus(ApplicationStatusEnum.CANCELLED);
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/leave/new")
+	public ResponseEntity<String> newLeave(Principal principal, @RequestBody NewLeaveApplication newleaveapplication) {
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+
+		// Populating Leave application
+		LeaveApplication la = new LeaveApplication();
+		la.setDescription(newleaveapplication.getDescription());
+		la.setFromDate(LocalDate.parse(newleaveapplication.getFromDate()));
+		la.setToDate(LocalDate.parse(newleaveapplication.getToDate()));
+		la.setType(LeaveApplicationTypeEnum.valueOf(newleaveapplication.getLeaveapplicationtype()));
+		la.setStatus(ApplicationStatusEnum.APPLIED);
+		la.setUser(user);
+
+		leaveApplicationService.createLeaveApplication(la);
+
+		return new ResponseEntity<String>("Leave created successfully!", HttpStatus.OK);
+	}
+
+	@PutMapping(value = "/leave/edit")
+	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditLeaveRequest editLeaveRequest) {
+
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+
+		// Populating Leave application
+		LeaveApplication la = new LeaveApplication();
+		la.setDescription(editLeaveRequest.getDescription());
+		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
+		la.setToDate(LocalDate.parse(editLeaveRequest.getToDate()));
+		la.setType(LeaveApplicationTypeEnum.valueOf(editLeaveRequest.getLeaveapplicationtype()));
+		la.setStatus(ApplicationStatusEnum.UPDATED);
+		la.setId(editLeaveRequest.getId());
+		la.setUser(user);
+		List<LeaveApplication> listOfLA = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
+
+		// Checking for overlapping leave
+		for (LeaveApplication currentLa : listOfLA) {
+			if (currentLa.getId() != la.getId() && la.isOverlapping(currentLa)) {
+				System.out.println("overlapped leave");
+				return new ResponseEntity<String>(
+						"Overlapping Leave Request, please try again with another set of dates.",
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+
+		// If leave duration is less than 14 days, check for holidays and weekends
+		int leaveDays = la.countLeaveDays();
+		int numberOfHolidays = 0;
+		int weekends = 0;
+		if (leaveDays < 14) {
+			// Using repository to find the number of holidays
+			numberOfHolidays = holidayservice.getHolidayCount(la.getFromDate(), la.getToDate());
+			weekends = la.countWeekend();
+		}
+		leaveDays -= (numberOfHolidays + weekends);
+
+		// Checking if the user has enough leave
+		double leaveEntitlement = 0;
+		switch (la.getType()) {
+		case MedicalLeave:
+			leaveEntitlement = user.getMedicalLeaveEntitlement();
+			break;
+		case AnnualLeave:
+			leaveEntitlement = user.getAnnualLeaveEntitlement();
+			break;
+		case CompensationLeave:
+			leaveEntitlement = user.getCompensationLeaveEntitlement();
+			break;
+		}
+		System.out.println(leaveEntitlement);
+		System.out.println(leaveDays);
+		if (leaveDays > leaveEntitlement) {
+			return new ResponseEntity<String>("Not enough Leave Entitlement, your remaining leave for this type is "
+					+ String.valueOf((int) leaveEntitlement), HttpStatus.BAD_REQUEST);
+		}
+
+		// Checking if start date is before end date (First check done in front end)
+		if (la.getFromDate().isAfter(la.getToDate())) {
+			return new ResponseEntity<String>("Start Date is later than end date. Please try again.",
+					HttpStatus.BAD_REQUEST);
+		}
+
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/claims")
 	public ResponseEntity<String> getClaimList(Principal principal) {
 		LAPSUser user = userService.findUserByUsername(principal.getName());
@@ -98,59 +192,18 @@ public class APIStaffController {
 		JSONArray claimList = new JSONArray();
 
 		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
-
-			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
-				return;
+			if (c.getOverTimeDate().getYear() == LocalDate.now().getYear()) {
+				claimList.put(c.toJsonObject());
 			}
-
-			JSONObject claim = new JSONObject();
-			claim.put("id", c.getId());
-			claim.put("userid", c.getUser().getUserId());
-			claim.put("overtimeDate", c.getOverTimeDate().toString());
-			claim.put("overtimeTime", c.getOvertimeTime().toString());
-			claim.put("description", c.getDescription());
-			claim.put("status", c.getStatus());
-			claim.put("comment", c.getComment());
-			claimList.put(claim);
 		});
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
-	}
-
-
-	
-	
-	@PutMapping(value = "leave/cancel/{id}")
-	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id){
-		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
-		la.setStatus(ApplicationStatusEnum.CANCELLED);
-		leaveApplicationService.updateLeaveApplication(la);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}	
-	
-	@PutMapping(value = "/leave/edit")
-	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditLeaveRequest editLeaveRequest) {
-		
-		LAPSUser user = userService.findUserByUsername(principal.getName());
-		
-		// Populating Leave application 
-		LeaveApplication la = new LeaveApplication();
-		la.setDescription(editLeaveRequest.getDescription());
-		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
-		la.setToDate(LocalDate.parse(editLeaveRequest.getToDate()));
-		la.setType(editLeaveRequest.getLeaveapplicationtype());
-		la.setStatus(ApplicationStatusEnum.UPDATED);
-		la.setId(user.getUserId());
-		
-		leaveApplicationService.updateLeaveApplication(la);
-		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/claims")
 	public ResponseEntity<String> createNewClaim(Principal principal, @RequestBody NewClaimRequest claimRequest) {
 
 		LAPSUser user = userService.findUserByUsername(principal.getName());
-
 		CompensationClaim claim = new CompensationClaim();
 		claim.setDescription(claimRequest.getDescription());
 		claim.setOvertimeTime(claimRequest.getOvertimeTime());
@@ -177,14 +230,6 @@ public class APIStaffController {
 			}
 		}
 
-		if (Arrays.asList("APPROVED", "REJECTED").contains(newStatus)) {
-			LAPSUser manager = userService.findUser(user.getManagerId());
-			if (!principal.getName().equals(manager.getUsername())) {
-				return new ResponseEntity<String>("You are not allowed to approve/reject this claim.",
-						HttpStatus.BAD_REQUEST);
-			}
-		}
-
 		CompensationClaim claim = new CompensationClaim();
 
 		claim.setDescription(editClaimRequest.getDescription());
@@ -197,15 +242,7 @@ public class APIStaffController {
 
 		claimService.updateCompensationClaim(claim);
 
-		if (newStatus.equals("APPROVED")) {
-			incrementCompLeave(user, claim.getOvertimeTime());
-		}
-
 		return new ResponseEntity<String>("claim updated: " + editClaimRequest.getId(), HttpStatus.OK);
-	}
-
-	private void incrementCompLeave(LAPSUser user, CompensationClaimTimeEnum time) {
-		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5, user.getUserId());
 	}
 
 	@DeleteMapping(value = "/claims")
