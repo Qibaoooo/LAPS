@@ -99,9 +99,9 @@ public class APIStaffController {
 
 		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
 
-			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
-				return;
-			}
+//			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
+//				return;
+//			}
 
 			JSONObject claim = new JSONObject();
 			claim.put("id", c.getId());
