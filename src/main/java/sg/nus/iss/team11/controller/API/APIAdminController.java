@@ -184,6 +184,16 @@ public class APIAdminController {
 
 		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
 	}
+	
+	@DeleteMapping(value="/role")
+	public ResponseEntity<String>deleteRole(@RequestParam String roleId){
+		 try {
+		      roleservice.deleteRoleById(roleId);
+		   } catch (Exception e) {
+		      return new ResponseEntity<String>("can't delete role!", HttpStatus.INTERNAL_SERVER_ERROR);
+		   }
+		return new ResponseEntity<String>("role deleted: " + roleId, HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/role/new")
 	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole) {
@@ -200,7 +210,9 @@ public class APIAdminController {
 	@PutMapping(value = "/role/edit")
 	public ResponseEntity<String> editRole(Principal principal, @RequestBody EditRole editrole) {
 
-		Role roles = new Role();
+		Role role0=roleservice.findRole(editrole.getRoleId());
+		
+		Role roles=new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
 		roles.setName(editrole.getName());
 		roles.setDescription(editrole.getDescription());

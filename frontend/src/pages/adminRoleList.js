@@ -6,13 +6,13 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
+import { deleteRole} from "./utils/api/apiAdmin";
+import RedirectionModal from "./components/redirectionModal";
 
 function AdminRoleList() {
   const [roleList, setRoleList] = useState([]);
-
-  useEffect(() => {
-    
-  }, []);
+  const[chosenRole,setChosenRole]= useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const loadData = () => {
     if (getUserinfoFromLocal()) {
@@ -69,6 +69,22 @@ function AdminRoleList() {
           })}
         </tbody>
       </MyTable>
+      <RedirectionModal
+        show={showDeleteModal}
+        handleButtonClick={() => {
+          deleteRole(chosenRole.name).then((r) => {
+            window.location.reload();
+          });
+        }}
+        headerMsg={"Confirm delete role " + chosenRole.Id + " ?"}
+        buttonMsg={"DELETE"}
+        enableCloseButton={true}
+        handleClose={() => {
+          setShowDeleteModal(false);
+          setChosenRole({});
+        }}
+      ></RedirectionModal>
+
     </LoginCheckWrapper>
   );
 }
