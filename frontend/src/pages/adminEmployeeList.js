@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getEmployeeList } from "./utils/api/apiAdmin";
+import { getEmployeeList,deleteEmployee } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Badge, Button, Col, Table } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
+import RedirectionModal from "./components/redirectionModal";
 
 function AdminEmployeeList() {
   const [employeeList, setEmployeeList] = useState([]);
+  const[chosenEmployee,setChosenEmployee]= useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const loadData = () => {
     if (getUserinfoFromLocal()) {
@@ -71,7 +74,11 @@ function AdminEmployeeList() {
                   </Button>
                 </td>
                 <td>
-                  <Button variant="danger" size="sm">
+                  <Button variant="danger" size="sm" onClick={(e) => {
+                        e.preventDefault();
+                        setChosenEmployee(value);
+                        setShowDeleteModal(true);
+                      }}>
                     Delete
                   </Button>
                 </td>
@@ -80,6 +87,21 @@ function AdminEmployeeList() {
           })}
         </tbody>
       </MyTable>
+      <RedirectionModal
+        show={showDeleteModal}
+        handleButtonClick={() => {
+          deleteEmployee(chosenEmployee.name).then((r) => {
+            window.location.reload();
+          });
+        }}
+        headerMsg={"Confirm delete employee " + chosenEmployee.Id + " ?"}
+        buttonMsg={"DELETE"}
+        enableCloseButton={true}
+        handleClose={() => {
+          setShowDeleteModal(false);
+          setChosenEmployee({});
+        }}
+      ></RedirectionModal>
     </LoginCheckWrapper>
   );
 }
