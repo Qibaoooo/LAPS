@@ -133,6 +133,7 @@ public class APIStaffController {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
 		
+		// Populating Leave application 
 		LeaveApplication la = new LeaveApplication();
 		la.setDescription(editLeaveRequest.getDescription());
 		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
