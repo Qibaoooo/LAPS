@@ -105,8 +105,9 @@ function StaffClaimList() {
       <RedirectionModal
         show={showDeleteModal}
         handleButtonClick={() => {
-          deleteClaim(chosenClaim);
-          window.location.reload();
+          deleteClaim(chosenClaim).then((r) => {
+            window.location.reload();
+          });
         }}
         headerMsg={"Confirm delete claim " + chosenClaim.id + " ?"}
         buttonMsg={"DELETE"}
@@ -119,9 +120,10 @@ function StaffClaimList() {
       <RedirectionModal
         show={showCancelModal}
         handleButtonClick={() => {
-          chosenClaim.status="CANCELLED"
-          editClaim(chosenClaim);
-          window.location.reload();
+          chosenClaim.status = "CANCELLED";
+          editClaim(chosenClaim).then((r) => {
+            window.location.reload();
+          });
         }}
         headerMsg={"Confirm cancel claim " + chosenClaim.id + " ?"}
         buttonMsg={"CONFIRM"}
