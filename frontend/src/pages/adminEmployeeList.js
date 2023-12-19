@@ -36,22 +36,22 @@ function AdminEmployeeList() {
       <MyTable>
         <thead>
           <tr>
-            <th>User Id</th>
-            <th>User Name</th>
-            <th>Manager Id</th>
-            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="5%">User Id</th>
+            <th width="5%">User Name</th>
+            <th width="5%">Manager Id</th>
+            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
               Role
             </th>
-            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="15%" style={{ textAlign: "center", verticalAlign: "middle" }}>
               Type
             </th>
-            <th>Annual Leave Entitlement</th>
-            <th>Medical Leave Entitlement</th>
-            <th>Compensation Leave Entitlement</th>
-            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="15%">Annual Leave Entitlement</th>
+            <th width="15%">Medical Leave Entitlement</th>
+            <th width="20%">Compensation Leave Entitlement</th>
+            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
               Edit
             </th>
-            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
               Delete
             </th>
           </tr>
@@ -69,7 +69,7 @@ function AdminEmployeeList() {
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>
                 <td>
-                  <Button variant="secondary" size="sm"
+                  <Button variant="warning" size="sm" style={{ width: '100%' }}
                     onClick={() => {
                       window.location.href =
                         "/admin/employee/edit/?id=" + value.id;
@@ -80,7 +80,8 @@ function AdminEmployeeList() {
                 </td>
                 <td>
                   {(user.username != value.name)&&(
-                  <Button variant="danger" size="sm" onClick={(e) => {
+                  <Button variant="danger" size="sm" style={{ width: '100%' }}
+                    onClick={(e) => {
                     e.preventDefault();
                     setChosenEmployee(value);
                     setShowDeleteModal(true);
