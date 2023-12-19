@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getJsonHeadersWithJWT } from "../properties";
+import { getUserinfoFromLocal } from "../userinfo";
 
 let getLeaveList = () => {
   return axios.get("http://localhost:8080/api/manager/leave/list", {
@@ -32,27 +33,37 @@ let rejectLeave = (data) => {
 };
 
 let getClaimList = () => {
-  return axios.get("http://localhost:8080/api/manager/claim/list", {
+  const data = {
+    pendingClaimsOnly: true,
+    managerId: getUserinfoFromLocal().id
+  }
+  return axios.get("http://localhost:8080/api/manager/claims", {
+    params: data,
     headers: getJsonHeadersWithJWT(),
   });
 };
 
 let getClaimHistory = () => {
-  return axios.get("http://localhost:8080/api/manager/claim/history", {
+  const data = {
+    pendingClaimsOnly: false,
+    managerId: getUserinfoFromLocal().id
+  }
+  return axios.get("http://localhost:8080/api/manager/claims", {
+    params: data,
     headers: getJsonHeadersWithJWT(),
   });
 };
 
 let approveClaim = (claim, comment) => {
   let data = buildClaimData(claim, comment, "APPROVED")
-  return axios.put("http://localhost:8080/api/staff/claims", data, {
+  return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
 
 let rejectClaim = (claim, comment) => {
   let data = buildClaimData(claim, comment, "REJECTED")
-  return axios.put("http://localhost:8080/api/staff/claims", data, {
+  return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
@@ -60,8 +71,8 @@ let rejectClaim = (claim, comment) => {
 let buildClaimData = (claim, comment, status) => {
   return {
     description: claim.description,
-    overtimeTime: claim.time,
-    overtimeDate: claim.date,
+    overtimeTime: claim.overtimeTime,
+    overtimeDate: claim.overtimeDate,
     id: claim.id,
     userid: claim.userid,
     comment: comment,

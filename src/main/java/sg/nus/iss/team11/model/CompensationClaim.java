@@ -2,6 +2,7 @@ package sg.nus.iss.team11.model;
 
 import java.time.LocalDate;
 
+import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -42,6 +43,19 @@ public class CompensationClaim {
 	@Column(name = "overtime_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate overtimeDate;
+	
+	public JSONObject toJsonObject() {
+		JSONObject json = new JSONObject();
+		json.put("id", this.getId());
+		json.put("userid", this.getUser().getUserId());
+		json.put("username", this.getUser().getUsername());
+		json.put("overtimeDate", this.getOverTimeDate().toString());
+		json.put("overtimeTime", this.getOvertimeTime().toString());
+		json.put("description", this.getDescription());
+		json.put("status", this.getStatus());
+		json.put("comment", this.getComment());
+		return json;
+	}
 	
 	public CompensationClaim() {}
 
