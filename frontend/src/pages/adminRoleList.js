@@ -11,18 +11,22 @@ function AdminRoleList() {
   const [roleList, setRoleList] = useState([]);
 
   useEffect(() => {
+    
+  }, []);
+
+  const loadData = () => {
     if (getUserinfoFromLocal()) {
-        getRoleList()
+      getRoleList()
         .then((response) => response.data)
         .then((list) => {
           console.log(list);
           setRoleList(list);
         });
     }
-  }, []);
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title={"Role List"}></PageTitle>
       <MyTable>
