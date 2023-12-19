@@ -48,6 +48,37 @@ let setClaimDataOnLoad = async (id, ref, setClaim) => {
   } catch (e) {}
 };
 
+let cancelLeave = (leaveId) => {
+  return axios.put("http://localhost:8080/api/staff/leave/cancel/" + leaveId, {}, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+let setLeaveDataOnLoad = async (leaveId, formRef) => {
+  try{
+    const response = await getLeaveList();
+    const list = response.data;
+    list.forEach(leaveData => {
+      if (leaveData.id == leaveId) {
+        console.log("found");
+        formRef.current.querySelector("#formFromDate").value = leaveData.fromDate;
+        formRef.current.querySelector("#formToDate").value = leaveData.toDate;
+        formRef.current.querySelector("#formType").value = leaveData.type;
+        formRef.current.querySelector("#formDescription").value = leaveData.description;
+      }
+      });
+    
+  } catch (error) {
+    console.error("Error fetching leave data:", error);
+  }
+};
+
+let editLeave = (leaveapplication) => {
+  return axios.put("http://localhost:8080/api/staff/leave/edit", leaveapplication, {
+    headers: getJsonHeadersWithJWT(),
+  });
+}
+
 export {
   getLeaveList,
   getClaimList,
@@ -55,4 +86,7 @@ export {
   setClaimDataOnLoad,
   editClaim,
   deleteClaim,
+  cancelLeave,
+  setLeaveDataOnLoad,
+  editLeave,
 };

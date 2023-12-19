@@ -103,6 +103,7 @@ public class LeaveDateValidator implements Validator{
 		for(LeaveApplication la:userleaveapplications) {
 			if(leaveapplication.isOverlapping(la)) {
 				errors.rejectValue("toDate","error.dates", "Current leave application is overlapping with other leave application between: " + String.valueOf(la.getFromDate()) + " to " + String.valueOf(la.getToDate()));
+				break;
 			};
 		}
 		

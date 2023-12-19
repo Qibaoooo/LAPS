@@ -1,5 +1,6 @@
 package sg.nus.iss.team11.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,9 @@ public class StaffController {
 
 		List<LeaveApplication> laList = leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId());
 		model.addAttribute("laList", laList);
-
+		
+		// Adding current date to the model
+		model.addAttribute("currentDate", LocalDate.now());
 		return "staff-leave-application-list";
 	}
 

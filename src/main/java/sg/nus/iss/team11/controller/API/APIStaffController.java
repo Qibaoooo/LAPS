@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
+import sg.nus.iss.team11.controller.API.payload.EditLeaveRequest;
 import sg.nus.iss.team11.controller.API.payload.NewClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
@@ -34,6 +37,8 @@ import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
+import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -110,6 +115,35 @@ public class APIStaffController {
 		});
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+	}
+
+
+	
+	
+	@PutMapping(value = "leave/cancel/{id}")
+	public ResponseEntity<String> cancelLeave(Authentication authentication, @PathVariable("id") int id){
+		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(id);
+		la.setStatus(ApplicationStatusEnum.CANCELLED);
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}	
+	
+	@PutMapping(value = "/leave/edit")
+	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditLeaveRequest editLeaveRequest) {
+		
+		LAPSUser user = userService.findUserByUsername(principal.getName());
+		
+		// Populating Leave application 
+		LeaveApplication la = new LeaveApplication();
+		la.setDescription(editLeaveRequest.getDescription());
+		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
+		la.setToDate(LocalDate.parse(editLeaveRequest.getToDate()));
+		la.setType(editLeaveRequest.getLeaveapplicationtype());
+		la.setStatus(ApplicationStatusEnum.UPDATED);
+		la.setId(user.getUserId());
+		
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/claims")
