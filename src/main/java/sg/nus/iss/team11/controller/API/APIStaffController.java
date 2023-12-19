@@ -32,6 +32,7 @@ import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
 import sg.nus.iss.team11.model.LAPSUser;
 
 @Controller
@@ -92,12 +93,19 @@ public class APIStaffController {
 		JSONArray claimList = new JSONArray();
 
 		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
+
+			if (c.getStatus() == ApplicationStatusEnum.DELETED) {
+				return;
+			}
+
 			JSONObject claim = new JSONObject();
 			claim.put("id", c.getId());
-			claim.put("date", c.getOverTimeDate().toString());
-			claim.put("time", c.getOvertimeTime().toString());
+			claim.put("userid", c.getUser().getUserId());
+			claim.put("overtimeDate", c.getOverTimeDate().toString());
+			claim.put("overtimeTime", c.getOvertimeTime().toString());
 			claim.put("description", c.getDescription());
 			claim.put("status", c.getStatus());
+			claim.put("comment", c.getComment());
 			claimList.put(claim);
 		});
 
@@ -123,35 +131,67 @@ public class APIStaffController {
 
 	@PutMapping(value = "/claims")
 	public ResponseEntity<String> editClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
-		
-		LAPSUser user = userService.findUserByUsername(principal.getName());
-		
+
+		LAPSUser user = userService.findUser(editClaimRequest.getUserid());
+
+		String newStatus = editClaimRequest.getStatus().toString();
+
+		if (Arrays.asList("DELETED", "CANCELLED").contains(newStatus)) {
+			if (!principal.getName().equals(user.getUsername())) {
+				return new ResponseEntity<String>("You are not allowed to delete/cancel this claim.",
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+
+		if (Arrays.asList("APPROVED", "REJECTED").contains(newStatus)) {
+			LAPSUser manager = userService.findUser(user.getManagerId());
+			if (!principal.getName().equals(manager.getUsername())) {
+				return new ResponseEntity<String>("You are not allowed to approve/reject this claim.",
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+
 		CompensationClaim claim = new CompensationClaim();
+
 		claim.setDescription(editClaimRequest.getDescription());
 		claim.setOvertimeTime(editClaimRequest.getOvertimeTime());
 		claim.setOverTimeDate(LocalDate.parse(editClaimRequest.getOvertimeDate()));
-		claim.setStatus(ApplicationStatusEnum.UPDATED);
-		claim.setUser(user);
+		claim.setComment(editClaimRequest.getComment());
+		claim.setStatus(editClaimRequest.getStatus());
 		claim.setId(editClaimRequest.getId());
+		claim.setUser(user);
 
 		claimService.updateCompensationClaim(claim);
-		
+
+		if (newStatus.equals("APPROVED")) {
+			incrementCompLeave(user, claim.getOvertimeTime());
+		}
+
 		return new ResponseEntity<String>("claim updated: " + editClaimRequest.getId(), HttpStatus.OK);
 	}
-	
+
+	private void incrementCompLeave(LAPSUser user, CompensationClaimTimeEnum time) {
+		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5, user.getUserId());
+	}
+
 	@DeleteMapping(value = "/claims")
 	public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
-		
+
 		LAPSUser user = userService.findUserByUsername(principal.getName());
-		
+
 		List<CompensationClaim> userClaims = claimService.findCompensationClaimsByUserId(user.getUserId());
-		
-		Optional<CompensationClaim> claim = userClaims.stream().filter(c -> c.getId() == editClaimRequest.getId()).findFirst();
-		
+
+		Optional<CompensationClaim> claim = userClaims.stream().filter(c -> c.getId() == editClaimRequest.getId())
+				.findFirst();
+
 		if (claim == null) {
 			return new ResponseEntity<String>("You are not allowed to delete this claim.", HttpStatus.BAD_REQUEST);
 		} else {
-			claimService.removeCompensationClaim(claim.get());
+//			claimService.removeCompensationClaim(claim.get());
+			// instead of really deleting, we set the status as deleted
+			CompensationClaim updated = claim.get();
+			updated.setStatus(ApplicationStatusEnum.DELETED);
+			claimService.updateCompensationClaim(updated);
 			return new ResponseEntity<String>("claim deleted: " + editClaimRequest.getId(), HttpStatus.OK);
 		}
 	}

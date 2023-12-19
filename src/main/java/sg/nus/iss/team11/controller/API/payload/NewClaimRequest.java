@@ -6,6 +6,7 @@ public class NewClaimRequest {
 	private String overtimeDate;
 	private CompensationClaimTimeEnum overtimeTime;
 	private String description;
+	
 	public NewClaimRequest(String overtimeDate, CompensationClaimTimeEnum overtimeTime, String description) {
 		super();
 		this.overtimeDate = overtimeDate;
