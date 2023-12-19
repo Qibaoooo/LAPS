@@ -50,8 +50,8 @@ function ManagerClaimHistory() {
             {userLeaveArray.map((claim, index) => (
               <tr key={index}>
                 <td>{claim.id}</td>
-                <td>{claim.date}</td>
-                <td>{claim.time}</td>
+                <td>{claim.overtimeDate}</td>
+                <td>{claim.overtimeTime}</td>
                 <td>{claim.description}</td>
                 <td>
                   <MyStatusBadge status={claim.status}></MyStatusBadge>
