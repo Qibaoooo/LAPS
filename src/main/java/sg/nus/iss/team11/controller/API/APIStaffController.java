@@ -116,7 +116,7 @@ public class APIStaffController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}	
 	
-	@PutMapping(value = "/claim/edit")
+	@PutMapping(value = "/leave/edit")
 	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditClaimRequest editLeaveRequest) {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
