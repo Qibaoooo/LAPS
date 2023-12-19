@@ -93,17 +93,18 @@ function ManagerClaimList() {
             <tbody>
               {userClaimArray.map((value, index) => (
                 <tr key={index}>
-                  <td>{value.id}</td>
-                  <td>{value.username}</td>
-                  <td>{value.description}</td>
-                  <td>{value.overtimeTime}</td>
-                  <td>{value.overtimeDate}</td>
-                  <td>
+                  <td width="5%">{value.id}</td>
+                  <td width="10%">{value.username}</td>
+                  <td width="25%">{value.description}</td>
+                  <td width="5%">{value.time}</td>
+                  <td width="15%">{value.date}</td>
+                  <td width="20%">
                     <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
-                  <td style={{ textAlign: "center" }}>
+                  <td width="20%" style={{ textAlign:"center" }}>
                     <Button
-                      variant="primary"
+                      style={{ width: '40%' , marginRight:'5px'}}
+                      variant="success"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);
@@ -113,9 +114,9 @@ function ManagerClaimList() {
                     >
                       Approve
                     </Button>
-                    <div className="m-1"></div>
                     <Button
-                      variant="secondary"
+                      style={{ width: '40%' }}
+                      variant="danger"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);
