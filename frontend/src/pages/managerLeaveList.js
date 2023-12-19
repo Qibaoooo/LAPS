@@ -99,17 +99,18 @@ function ManagerLeaveList() {
                     <tbody>
                         {userLeaveArray.map((value, index) => (
                             <tr key={index}>
-                                <td width="10%">{value.id}</td>
-                                <td width="15%">{value.fromDate}</td>
-                                <td width="15%">{value.toDate}</td>
-                                <td width="20%">{value.type}</td>
-                                <td width="20%">{value.description}</td>
-                                <td width="10%">
+                                <td width="5%">{value.id}</td>
+                                <td width="10%">{value.fromDate}</td>
+                                <td width="10%">{value.toDate}</td>
+                                <td width="10%">{value.type}</td>
+                                <td width="25%">{value.description}</td>
+                                <td width="20%">
                                     <MyStatusBadge status={value.status}></MyStatusBadge>
                                 </td>
-                                <td style={{ textAlign: "end" }}>
+                                <td width="20%" style={{ textAlign: "center" }}>
                                         <Button
-                                            variant="primary"
+                                            width="50%"
+                                            variant="success"
                                             size="sm"
                                             onClick={() => {
                                                 setShowModal(true);
@@ -120,9 +121,9 @@ function ManagerLeaveList() {
                                         >
                                             Approve
                                         </Button>
-                                    <div className="m-1"></div>
                                     <Button
-                                        variant="secondary"
+                                        width="50%"
+                                        variant="danger"
                                         size="sm"
                                         onClick={() => {
                                             setShowModal(true);

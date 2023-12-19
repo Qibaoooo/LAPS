@@ -26,14 +26,35 @@ function ConfirmLeaveModal({
                 </Modal.Header>
                 <Table style={{ maxWidth: "80%" }}>
                     <tbody >
-                        {Object.keys(leave).map((v) => {
-                            return (
-                                <tr>
-                                    <td>{v.toUpperCase()}</td>
-                                    <td>{leave[v]}</td>
-                                </tr>
-                            );
-                        })}
+                        <tr>
+                            <td>ID</td>
+                            <td>{leave.id}</td>
+                        </tr>
+                        <tr>
+                            <td>NAME</td>
+                            <td>{leave && leave.username && 
+                            (leave.username.charAt(0).toUpperCase() + leave.username.slice(1))}</td>
+                        </tr>
+                        <tr>
+                            <td>TYPE</td>
+                            <td>{leave.type}</td>
+                        </tr>
+                        <tr>
+                            <td>FROM</td>
+                            <td>{leave.fromDate}</td>
+                        </tr>
+                        <tr>
+                            <td>TO</td>
+                            <td>{leave.toDate}</td>
+                        </tr>
+                        <tr>
+                            <td>DESCRIPTION</td>
+                            <td>{leave.description}</td>
+                        </tr>
+                        <tr>
+                            <td>STATUS</td>
+                            <td>{leave.status}</td>
+                        </tr>
                     </tbody>
                 </Table>
                 <Modal.Body>
@@ -50,11 +71,9 @@ function ConfirmLeaveModal({
                             </FloatingLabel>
                         </Stack>
                         <Stack style={{ textAlign: "end" }}>
-                            <span>Action:</span>
+                            <span style={{ textAlign: "left" }}>Action:</span>
                             <h5 style={{}}>{action}</h5>
-                        </Stack>
-                        <Stack style={{ textAlign: "end" }}>
-                            <span>Left Entitlement:</span>
+                            <span style={{ textAlign: "left" }}>Entitlement Left:</span>
                             <h5 style={{}}>{entitlementList.left}</h5>
                         </Stack>
                     </Stack>
@@ -65,7 +84,7 @@ function ConfirmLeaveModal({
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    {((action==="REJECT")||(entitlementList.result === "true")) && (
+                    {((action === "REJECT") || (entitlementList.result === "true")) && (
                         <Button variant="primary" onClick={handleUpdate}>
                             Update
                         </Button>)}
