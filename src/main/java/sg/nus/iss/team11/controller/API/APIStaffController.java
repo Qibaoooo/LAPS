@@ -3,6 +3,7 @@ package sg.nus.iss.team11.controller.API;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
+import sg.nus.iss.team11.controller.API.payload.EditLeaveRequest;
 import sg.nus.iss.team11.controller.API.payload.NewClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
@@ -117,18 +118,19 @@ public class APIStaffController {
 	}	
 	
 	@PutMapping(value = "/leave/edit")
-	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditClaimRequest editLeaveRequest) {
+	public ResponseEntity<String> editLeave(Principal principal, @RequestBody EditLeaveRequest editLeaveRequest) {
 		
 		LAPSUser user = userService.findUserByUsername(principal.getName());
 		
 		LeaveApplication la = new LeaveApplication();
-//		la.setDescription(editLeaveRequest.getDescription());
-//		la.setFromDate(editLeaveRequest.get)
-//		
-//		
+		la.setDescription(editLeaveRequest.getDescription());
+		la.setFromDate(LocalDate.parse(editLeaveRequest.getFromDate()));
+		la.setToDate(LocalDate.parse(editLeaveRequest.getToDate()));
+		la.setType(editLeaveRequest.getLeaveapplicationtype());
+		la.setStatus(ApplicationStatusEnum.UPDATED);
+		la.setId(user.getUserId());
 		
-		
-		
+		leaveApplicationService.updateLeaveApplication(la);
 		return new ResponseEntity<String>("leave updated: " + editLeaveRequest.getId(), HttpStatus.OK);
 	}
 
