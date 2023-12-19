@@ -2,6 +2,7 @@ package sg.nus.iss.team11.controller.API;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,11 +32,15 @@ import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.API.payload.EditRole;
 import sg.nus.iss.team11.controller.API.payload.NewEmployee;
 import sg.nus.iss.team11.controller.API.payload.NewRole;
+import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
 import sg.nus.iss.team11.controller.API.payload.EditEmployee;
 import sg.nus.iss.team11.controller.exception.RoleNotFound;
+import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
+import sg.nus.iss.team11.model.ApplicationStatusEnum;
+import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.Role;
@@ -51,8 +57,10 @@ public class APIAdminController {
 	PasswordEncoder encoder;
 	@Autowired
 	RoleService roleservice;
-
-	
+	@Autowired
+	LeaveApplicationService leaveapplicationservice;
+	@Autowired
+	CompensationClaimService compensationclaimservice;
 
 	@GetMapping(value = "/employee")
 	public ResponseEntity<String> viewEmployeeList(Authentication authentication, Principal principal) {
@@ -73,6 +81,24 @@ public class APIAdminController {
 
 		return new ResponseEntity<>(employeesList.toString(), HttpStatus.OK);
 	}
+
+	@DeleteMapping(value = "/employee")
+	public ResponseEntity<String> deleteEmployee(Principal principal, @RequestParam String username) {
+
+		LAPSUser user = userservice.findUserByUsername(username);
+
+		List<LeaveApplication> applis = user.getLeaveApplications();
+		for (LeaveApplication la : applis) {
+			leaveapplicationservice.removeLeaveApplication(la);
+		}
+		List<CompensationClaim> cclaims = user.getCompensationClaim();
+		for(CompensationClaim cc:cclaims) {
+			compensationclaimservice.removeCompensationClaim(cc);
+		}
+		userservice.removeUser(user);
+		return new ResponseEntity<String>("Employee deleted: " + username, HttpStatus.OK);
+	}
+
 
 	@PostMapping(value = "/employee/new")
 	public ResponseEntity<String> createNewEmployee(@RequestBody NewEmployee newCreateEmployee) {
@@ -101,34 +127,34 @@ public class APIAdminController {
 
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
 	}
-  
-  @GetMapping(value="/employee/new")
-	public ResponseEntity<String> viewAllList(Authentication authentication, Principal principal2){
-	JSONArray bigList=new JSONArray();
-	List<Role> roles=roleservice.findAllRoles();
-	List<String> managers=userservice.findAllManagerName();
-	JSONArray rolesList = new JSONArray();
-	JSONArray managersList=new JSONArray();
-	for (Role r : roles) {
-		JSONObject rn = new JSONObject();
-		rn.put("roleName", r.getName());
-		rolesList.put(rn);
-	}
-	for(String m:managers) {
-		JSONObject mn=new JSONObject();
-		mn.put("managerName",m);
-		managersList.put(mn);
-	}
-	bigList.put(managersList);
-	bigList.put(rolesList);
 
-	return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
+	@GetMapping(value = "/employee/new")
+	public ResponseEntity<String> viewAllList(Authentication authentication, Principal principal2) {
+		JSONArray bigList = new JSONArray();
+		List<Role> roles = roleservice.findAllRoles();
+		List<String> managers = userservice.findAllManagerName();
+		JSONArray rolesList = new JSONArray();
+		JSONArray managersList = new JSONArray();
+		for (Role r : roles) {
+			JSONObject rn = new JSONObject();
+			rn.put("roleName", r.getName());
+			rolesList.put(rn);
+		}
+		for (String m : managers) {
+			JSONObject mn = new JSONObject();
+			mn.put("managerName", m);
+			managersList.put(mn);
+		}
+		bigList.put(managersList);
+		bigList.put(rolesList);
+
+		return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/employee/edit/{id}")
 	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody EditEmployee editEmployee) {
 		LAPSUser user = userservice.findUserByUsername(principal.getName());
-		
+
 		LAPSUser eUser = new LAPSUser();
 
 		eUser.setUsername(editEmployee.getUsername());
@@ -156,32 +182,31 @@ public class APIAdminController {
 			rolesList.put(rp);
 		}
 
-		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);}
-    
-    @PostMapping(value="/role/new")
-	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole){
-		Role roles=new Role();
+		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/role/new")
+	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole) {
+		Role roles = new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(newRole.getName()).getRoleId());
 		roles.setName(newRole.getName());
 		roles.setDescription(newRole.getDescription());
-		Role created=roleservice.createRole(roles);
-		
-		return new ResponseEntity<String>("role created:" +created.getRoleId(), HttpStatus.OK);
-		
+		Role created = roleservice.createRole(roles);
+
+		return new ResponseEntity<String>("role created:" + created.getRoleId(), HttpStatus.OK);
+
 	}
-	
-	@PutMapping(value="/role/edit")
-	public ResponseEntity<String> editRole(Principal principal,@RequestBody EditRole editrole){
-		
-		Role roles=new Role();
+
+	@PutMapping(value = "/role/edit")
+	public ResponseEntity<String> editRole(Principal principal, @RequestBody EditRole editrole) {
+
+		Role roles = new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
 		roles.setName(editrole.getName());
 		roles.setDescription(editrole.getDescription());
-		
-		Role edited=roleservice.updateRole(roles);
-		
-		return new ResponseEntity<String>("roles updated" +edited.getRoleId(), HttpStatus.OK);
+
+		Role edited = roleservice.updateRole(roles);
+
+		return new ResponseEntity<String>("roles updated" + edited.getRoleId(), HttpStatus.OK);
 	}
 }
-
-

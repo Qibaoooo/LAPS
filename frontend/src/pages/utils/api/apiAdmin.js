@@ -13,6 +13,12 @@ let createNewEmployee = (employee) => {
   });
 };
 
+let deleteEmployee = (employee) => {
+    return axios.delete("http://localhost:8080/api/admin/employee?username="+employee, {
+      headers: getJsonHeadersWithJWT(),
+    });
+  };
+
 let editEmployeeInfo = (employee) => {
   return axios.post(
     "http://localhost:8080/api/admin/employee/edit/{id}",
@@ -85,6 +91,7 @@ let setRoleDataOnLoad = async (id, ref) => {
 export {
   getEmployeeList,
   createNewEmployee,
+  deleteEmployee,
   editEmployeeInfo,
   getRoleList,
   setEditDataOnLoad,
