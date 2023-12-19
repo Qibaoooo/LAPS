@@ -21,8 +21,19 @@ function AdminRoleList() {
     }
   }, []);
 
+  const loadData = () => {
+    if (getUserinfoFromLocal()) {
+      getRoleList()
+        .then((response) => response.data)
+        .then((list) => {
+          console.log(list);
+          setRoleList(list);
+        });
+    }
+  };
+
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title={"Role List"}></PageTitle>
       <MyTable>

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import MyNavBar from "./components/myNavBar";
+import { getEmployeeList } from "./utils/api/apiAdmin";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
@@ -19,6 +20,7 @@ function AdminEmployeeEdit() {
     const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState();
     const [compensationLeaveEntitlement, setCompensationLeaveEntitlement] = useState();
 
+    const [setEdit] = useState({});
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState();
 
@@ -69,8 +71,12 @@ function AdminEmployeeEdit() {
         }
     };
 
+    const loadData = () => {
+        setEditDataOnLoad(id, formRef , setEdit);
+      };
+
     return (
-        <LoginCheckWrapper>
+        <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
             <MyNavBar></MyNavBar>
             <PageTitle title="Edit New Employee"></PageTitle>
             
