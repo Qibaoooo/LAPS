@@ -11,14 +11,7 @@ function AdminRoleList() {
   const [roleList, setRoleList] = useState([]);
 
   useEffect(() => {
-    if (getUserinfoFromLocal()) {
-        getRoleList()
-        .then((response) => response.data)
-        .then((list) => {
-          console.log(list);
-          setRoleList(list);
-        });
-    }
+    
   }, []);
 
   const loadData = () => {
