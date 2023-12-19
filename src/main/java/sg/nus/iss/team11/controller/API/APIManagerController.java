@@ -183,62 +183,62 @@ public class APIManagerController {
 		return new ResponseEntity<>("You are not a manager", HttpStatus.UNAUTHORIZED);
 	}
 
-	@GetMapping(value = "/claim/list")
-	public ResponseEntity<String> getClaimsForApproval(Authentication authentication, Principal principal) {
-
-		// Need to add session-related codes, to retrieve subordinates
-		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
-		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
-
-		JSONArray claimList = new JSONArray();
-
-		for (LAPSUser u : subordinates) {
-			JSONArray userClaim = new JSONArray();
-			List<CompensationClaim> userClaimList = compensationClaimService
-					.findCompensationClaimsToProcess(u.getUserId());
-			if (userClaimList.isEmpty()) {
-				continue;
-			}
-			for (CompensationClaim c : userClaimList) {
-				userClaim.put(buildClaimJson(c));
-
-			}
-
-			if (!userClaim.isEmpty()) {
-				claimList.put(userClaim);
-			}
-		}
-
-		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/claim/history")
-	public ResponseEntity<String> getClaimsHistory(Authentication authentication, Principal principal) {
-
-		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
-		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
-
-		JSONArray claimList = new JSONArray();
-
-		for (LAPSUser u : subordinates) {
-			JSONArray userClaim = new JSONArray();
-			List<CompensationClaim> userClaimList = compensationClaimService
-					.findCompensationClaimsByUserId(u.getUserId());
-			if (userClaimList.isEmpty()) {
-				continue;
-			}
-
-			for (CompensationClaim c : userClaimList) {
-				userClaim.put(buildClaimJson(c));
-			}
-
-			if (!userClaim.isEmpty()) {
-				claimList.put(userClaim);
-			}
-		}
-
-		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
-	}
+//	@GetMapping(value = "/claim/list")
+//	public ResponseEntity<String> getClaimsForApproval(Authentication authentication, Principal principal) {
+//
+//		// Need to add session-related codes, to retrieve subordinates
+//		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+//		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+//
+//		JSONArray claimList = new JSONArray();
+//
+//		for (LAPSUser u : subordinates) {
+//			JSONArray userClaim = new JSONArray();
+//			List<CompensationClaim> userClaimList = compensationClaimService
+//					.findCompensationClaimsToProcess(u.getUserId());
+//			if (userClaimList.isEmpty()) {
+//				continue;
+//			}
+//			for (CompensationClaim c : userClaimList) {
+//				userClaim.put(buildClaimJson(c));
+//
+//			}
+//
+//			if (!userClaim.isEmpty()) {
+//				claimList.put(userClaim);
+//			}
+//		}
+//
+//		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+//	}
+//
+//	@GetMapping(value = "/claim/history")
+//	public ResponseEntity<String> getClaimsHistory(Authentication authentication, Principal principal) {
+//
+//		LAPSUser currentManager = userService.findUserByUsername(principal.getName());
+//		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+//
+//		JSONArray claimList = new JSONArray();
+//
+//		for (LAPSUser u : subordinates) {
+//			JSONArray userClaim = new JSONArray();
+//			List<CompensationClaim> userClaimList = compensationClaimService
+//					.findCompensationClaimsByUserId(u.getUserId());
+//			if (userClaimList.isEmpty()) {
+//				continue;
+//			}
+//
+//			for (CompensationClaim c : userClaimList) {
+//				userClaim.put(buildClaimJson(c));
+//			}
+//
+//			if (!userClaim.isEmpty()) {
+//				claimList.put(userClaim);
+//			}
+//		}
+//
+//		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
+//	}
 
 	private JSONObject buildClaimJson(CompensationClaim c) {
 		JSONObject claim = new JSONObject();
@@ -299,7 +299,13 @@ public class APIManagerController {
 
 		// Need to add session-related codes, to retrieve subordinates
 		LAPSUser currentManager = userService.findUser(request.getManagerId());
-		List<LAPSUser> subordinates = userService.findSubordinates(currentManager.getUserId());
+		List<LAPSUser> subordinates;
+		try {
+			subordinates = userService.findSubordinates(currentManager.getUserId());
+		} catch (Exception e) {
+			return new ResponseEntity<>("failed to get subordinates under managerid " + request.getManagerId(),
+					HttpStatus.BAD_REQUEST);
+		}
 
 		JSONArray claimList = new JSONArray();
 
@@ -312,7 +318,7 @@ public class APIManagerController {
 			} else {
 				userClaimList = compensationClaimService.findCompensationClaimsByUserId(u.getUserId());
 			}
-			
+
 			if (userClaimList.isEmpty()) {
 				continue;
 			}
