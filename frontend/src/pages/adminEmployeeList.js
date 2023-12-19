@@ -34,6 +34,9 @@ function AdminEmployeeList() {
             <th style={{ textAlign: "center", verticalAlign: "middle" }}>
               Role
             </th>
+            <th style={{ textAlign: "center", verticalAlign: "middle" }}>
+              Type
+            </th>
             <th>Annual Leave Entitlement</th>
             <th>Medical Leave Entitlement</th>
             <th>Compensation Leave Entitlement</th>
@@ -53,6 +56,7 @@ function AdminEmployeeList() {
                 <td>{value.name}</td>
                 <td>{value.managerId}</td>
                 <td>{value.role}</td>
+                <td>{(value.type)?value.type:(<i>NULL</i>)}</td>
                 <td>{value.annualLeaveEntitlement}</td>
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>

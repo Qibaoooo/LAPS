@@ -1,20 +1,24 @@
 package sg.nus.iss.team11.controller.API.payload;
 
+import sg.nus.iss.team11.model.EmployeeTypeEnum;
+
 public class NewEmployee {
 	private String username;
 	private String password;
 	private String managerName;
 	private String roleName;
+	private EmployeeTypeEnum type;
 	private int annualLeaveEntitlement;
 	private int medicalLeaveEntitlement;
 	private int compensationLeaveEntitlement;
-	public NewEmployee(String username, String password, String managerName, String roleName, int annualLeaveEntitlement,
+	public NewEmployee(String username, String password, String managerName, EmployeeTypeEnum type, String roleName, int annualLeaveEntitlement,
 			int medicalLeaveEntitlement, int compensationLeaveEntitlement) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.managerName = managerName;
 		this.roleName = roleName;
+		this.type= type;
 		this.annualLeaveEntitlement = annualLeaveEntitlement;
 		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
 		this.compensationLeaveEntitlement = compensationLeaveEntitlement;
@@ -61,6 +65,11 @@ public class NewEmployee {
 	public void setCompensationLeaveEntitlement(int compensationLeaveEntitlement) {
 		this.compensationLeaveEntitlement = compensationLeaveEntitlement;
 	}
+	public EmployeeTypeEnum getType() {
+		return type;
+	}
+	public void setType(EmployeeTypeEnum type) {
+		this.type = type;
+	}
 	
-
 }

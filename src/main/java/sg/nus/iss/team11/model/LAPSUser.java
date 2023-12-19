@@ -3,7 +3,10 @@ package sg.nus.iss.team11.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,6 +31,10 @@ public class LAPSUser {
 	private int annualLeaveEntitlement;
 	private int medicalLeaveEntitlement;
 	private double compensationLeaveEntitlement;
+	
+	@Column(name = "type", columnDefinition = "ENUM('Administrative', 'Professional')")
+	@Enumerated(EnumType.STRING)
+	private EmployeeTypeEnum type;
 
 	@ManyToOne
 	private Role role;
@@ -61,6 +68,19 @@ public class LAPSUser {
 		super();
 		this.username = username;
 		this.password = password;
+	}
+
+	public LAPSUser(@NotBlank(message = "Username is required") String username,
+			@NotBlank(message = "Password is required") String password, int annualLeaveEntitlement,
+			int medicalLeaveEntitlement, double compensationLeaveEntitlement, EmployeeTypeEnum type, Role role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.annualLeaveEntitlement = annualLeaveEntitlement;
+		this.medicalLeaveEntitlement = medicalLeaveEntitlement;
+		this.compensationLeaveEntitlement = compensationLeaveEntitlement;
+		this.type = type;
+		this.role = role;
 	}
 
 	public LAPSUser() {
@@ -150,6 +170,14 @@ public class LAPSUser {
 
 	public void setCompensationClaim(List<CompensationClaim> compensationClaim) {
 		this.compensationClaim = compensationClaim;
+	}
+
+	public EmployeeTypeEnum getType() {
+		return type;
+	}
+
+	public void setType(EmployeeTypeEnum type) {
+		this.type = type;
 	}
 
 }

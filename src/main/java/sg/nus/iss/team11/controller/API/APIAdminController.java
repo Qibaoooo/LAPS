@@ -64,6 +64,7 @@ public class APIAdminController {
 			ep.put("name", e.getUsername());
 			ep.put("managerId", e.getManagerId());
 			ep.put("role", e.getRole().getName());
+			ep.put("type", e.getType());
 			ep.put("annualLeaveEntitlement", e.getAnnualLeaveEntitlement());
 			ep.put("medicalLeaveEntitlement", e.getMedicalLeaveEntitlement());
 			ep.put("compensationLeaveEntitlement", e.getCompensationLeaveEntitlement());
@@ -80,6 +81,7 @@ public class APIAdminController {
 		nuser.setPassword(encoder.encode(newCreateEmployee.getPassword()));
 		nuser.setManagerId(userservice.findUserByUsername(newCreateEmployee.getManagerName()).getUserId());
 		nuser.setRole(roleservice.findRoleByRoleName(newCreateEmployee.getRoleName()));
+		nuser.setType(newCreateEmployee.getType());
 		nuser.setAnnualLeaveEntitlement(newCreateEmployee.getAnnualLeaveEntitlement());
 		nuser.setMedicalLeaveEntitlement(newCreateEmployee.getMedicalLeaveEntitlement());
 		nuser.setCompensationLeaveEntitlement(newCreateEmployee.getCompensationLeaveEntitlement());
@@ -88,8 +90,12 @@ public class APIAdminController {
 			created.setManagerId(created.getUserId());
 			userservice.updateUser(created);
 		}
-		if (newCreateEmployee.getRoleName().equalsIgnoreCase("admin")) {
+		if (newCreateEmployee.getRoleName().equalsIgnoreCase("administrator")) {
+			created.setType(null);
 			created.setManagerId(0);
+			created.setAnnualLeaveEntitlement(0);
+			created.setMedicalLeaveEntitlement(0);
+			created.setCompensationLeaveEntitlement(0);
 			userservice.updateUser(created);
 		}
 
@@ -129,6 +135,7 @@ public class APIAdminController {
 		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
 		eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
 		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
+		eUser.setType(editEmployee.getType());
 		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
 		eUser.setMedicalLeaveEntitlement(editEmployee.getMedicalLeaveEntitlement());
 		eUser.setCompensationLeaveEntitlement(editEmployee.getCompensationLeaveEntitlement());

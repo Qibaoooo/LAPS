@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
+import sg.nus.iss.team11.model.EmployeeTypeEnum;
 import sg.nus.iss.team11.model.Holiday;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
@@ -60,6 +61,10 @@ public class LapsApplication {
 			tin.setAnnualLeaveEntitlement(14);
 			cherwah.setAnnualLeaveEntitlement(14);
 			yuenkwan.setAnnualLeaveEntitlement(14);
+			tin.setType(EmployeeTypeEnum.Professional);
+			cherwah.setType(EmployeeTypeEnum.Professional);
+			yuenkwan.setType(EmployeeTypeEnum.Professional);
+			esther.setType(EmployeeTypeEnum.Administrative);
 			userRepo.flush();
 			
 			// Adding Holidays
