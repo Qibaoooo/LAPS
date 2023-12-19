@@ -1,18 +1,16 @@
 package sg.nus.iss.team11.controller.API.payload;
 
-import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
-
 public class NewLeaveApplication {
 	private String description;
-	private LeaveApplicationTypeEnum leaveapplicationtype;
+	private String leaveapplicationtype;
 	private String fromDate;
 	private String toDate;
 	
-	public NewLeaveApplication(String description, LeaveApplicationTypeEnum leaveapplicationtype,
+	public NewLeaveApplication(String description, String type,
 			String fromDate, String toDate) {
 		super();
 		this.description = description;
-		this.leaveapplicationtype = leaveapplicationtype;
+		this.leaveapplicationtype = type;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 	}
@@ -23,14 +21,6 @@ public class NewLeaveApplication {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public LeaveApplicationTypeEnum getLeaveapplicationtype() {
-		return leaveapplicationtype;
-	}
-
-	public void setLeaveapplicationtype(LeaveApplicationTypeEnum leaveapplicationtype) {
-		this.leaveapplicationtype = leaveapplicationtype;
 	}
 
 	public String getFromDate() {
@@ -47,6 +37,14 @@ public class NewLeaveApplication {
 
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
+	}
+
+	public String getLeaveapplicationtype() {
+		return leaveapplicationtype;
+	}
+
+	public void setLeaveapplicationtype(String leaveapplicationtype) {
+		this.leaveapplicationtype = leaveapplicationtype;
 	}
 	
 	
