@@ -59,7 +59,7 @@ function AdminEmployeeList() {
                 <td>{value.name}</td>
                 <td>{value.managerId}</td>
                 <td>{value.role}</td>
-                <td>{(value.type)?value.type:(<i>NULL</i>)}</td>
+                <td>{(value.type)?value.type:(<i> - </i>)}</td>
                 <td>{value.annualLeaveEntitlement}</td>
                 <td>{value.medicalLeaveEntitlement}</td>
                 <td>{value.compensationLeaveEntitlement}</td>
