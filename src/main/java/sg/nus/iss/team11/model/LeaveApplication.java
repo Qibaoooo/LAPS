@@ -2,7 +2,7 @@ package sg.nus.iss.team11.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -156,8 +156,8 @@ public class LeaveApplication {
 	}
 	
 	public int countLeaveDays() {
-		Period period = Period.between(this.getFromDate(), this.getToDate());
-        return period.getDays();
+		int period = (int) ChronoUnit.DAYS.between(this.getFromDate(), this.getToDate());
+        return period + 1;
 	}
 	
 	

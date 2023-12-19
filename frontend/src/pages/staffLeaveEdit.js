@@ -40,6 +40,11 @@ function StaffLeaveEdit() {
       event.stopPropagation();
       setValidated(true);
     } else {
+      if (fromDate >= toDate) {
+        setAlertMsg("The start date must be before the end date. Please try again.");
+        setShowAlert(true);
+        return; // Stop the form submission
+      }
       editLeave({ 
         fromDate: formRef.current.querySelector("#formFromDate").value,
         toDate: formRef.current.querySelector("#formToDate").value,
@@ -54,8 +59,15 @@ function StaffLeaveEdit() {
           }
         })
         .catch((error) => {
-          setAlertMsg("Error, please try again.");
-          setShowAlert(true);
+          if (error.response && error.response.status === 400) {
+            // Handle 400 response
+            setAlertMsg(JSON.stringify(error.response.data));
+            setShowAlert(true);
+          } else {
+            // Handle other errors
+            setAlertMsg("Error, please try again.");
+            setShowAlert(true);
+          }
         });
     }
   };
@@ -124,7 +136,7 @@ function StaffLeaveEdit() {
 
         <Button type="submit">Submit</Button>
       </Form>
-      <MyAlert showAlert={showAlert} variant="info" msg1="Result:" msg2={alertMsg} handleClose={() => setShowAlert(false)}></MyAlert>
+      <MyAlert showAlert={showAlert} variant="info" msg1="Result:" msg2={alertMsg} handleCLose={() => setShowAlert(false)}></MyAlert>
     </LoginCheckWrapper>
   );
 }

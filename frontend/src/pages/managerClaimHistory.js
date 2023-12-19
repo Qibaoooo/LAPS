@@ -6,6 +6,7 @@ import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import { getClaimHistory } from "./utils/api/apiManager";
 import MyStatusBadge from "./components/myStatusBadge";
+import { sortByOvertimeDate } from "./utils/sorting";
 
 function ManagerClaimHistory() {
   const [claimList, setClaimList] = useState([]);
@@ -15,7 +16,9 @@ function ManagerClaimHistory() {
       getClaimHistory()
         .then((response) => response.data)
         .then((list) => {
-          console.log(list);
+          list.map((userClaimArray, index) => {
+            userClaimArray.sort(sortByOvertimeDate);
+          });
           setClaimList(list);
         });
     }
@@ -29,8 +32,8 @@ function ManagerClaimHistory() {
     <LoginCheckWrapper allowRole={["ROLE_manager"]} runAfterCheck={loadData}>
       <MyNavBar />
       <PageTitle title="Subordinates OT Claim History"></PageTitle>
-      {claimList.map((userLeaveArray, index) => (
-        <MyTable>
+      {claimList.map((userClaimArray, index) => (
+        <MyTable key={index}>
           <thead>
             <tr>
               <td colSpan={8}>
@@ -47,11 +50,11 @@ function ManagerClaimHistory() {
             </tr>
           </thead>
           <tbody>
-            {userLeaveArray.map((claim, index) => (
+            {userClaimArray.map((claim, index) => (
               <tr key={index}>
                 <td>{claim.id}</td>
-                <td>{claim.date}</td>
-                <td>{claim.time}</td>
+                <td>{claim.overtimeDate}</td>
+                <td>{claim.overtimeTime}</td>
                 <td>{claim.description}</td>
                 <td>
                   <MyStatusBadge status={claim.status}></MyStatusBadge>
