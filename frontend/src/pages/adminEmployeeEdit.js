@@ -17,6 +17,9 @@ function AdminEmployeeEdit() {
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState();
     const [bigList, setBigList] = useState([]);
+    const [roleName, setRoleName] = useState("");
+    const onInputRN = ({ target: { value } }) => setRoleName(value);
+
 
     const [validated, setValidated] = useState(false);
 
@@ -30,10 +33,18 @@ function AdminEmployeeEdit() {
             event.stopPropagation();
             setValidated(true);
         } else {
+            let managerName;
+            try {
+                managerName = formRef.current.querySelector("#formManager").value
+            } catch (error) {
+                console.log("No managerName set.")
+            }
+      
+      
             editEmployeeInfo({
                 username: formRef.current.querySelector("#formUserName").value,
                 password: formRef.current.querySelector("#formPassword").value,
-                managerName: formRef.current.querySelector("#formManager").value,
+                managerName: managerName,
                 roleName: formRef.current.querySelector("#formRole").value,
                 type: formRef.current.querySelector("#formType").value,
                 annualLeaveEntitlement: formRef.current.querySelector("#formAnnual").value,
@@ -63,8 +74,10 @@ function AdminEmployeeEdit() {
             });
         
         // pre-fill all available fields
-        setEditDataOnLoad(id, formRef);
-    };
+        setEditDataOnLoad(id, formRef).then((r) => {
+            setRoleName(formRef.current.querySelector("#formRole").value);
+          });
+          };
 
     return (
         <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
@@ -92,6 +105,8 @@ function AdminEmployeeEdit() {
                             />{" "}
                         </Form.Group>
                     </Row>
+                    {roleName !== "Manager" && roleName !== "Admin" && (
+                    <div>
                     <br></br>
                     <Row className="mx-5" style={{ textAlign: "left" }}>
                         <Form.Group as={Col} controlId="formManager">
@@ -111,6 +126,8 @@ function AdminEmployeeEdit() {
                             </Form.Select>
                         </Form.Group>
                     </Row>
+                    </div>
+                    )}
                     <br></br>
                     <Row className="mx-5" style={{ textAlign: "left" }}>
                         <Form.Group as={Col} controlId="formRole">
@@ -118,6 +135,7 @@ function AdminEmployeeEdit() {
                             <Form.Select
                                 required
                                 className="form-select"
+                                onInput={onInputRN}
                             >
                                 {Array.isArray(bigList[1]) &&
                                     bigList[1].map((value, index, array) => {

@@ -43,8 +43,7 @@ let setEditDataOnLoad = async (id, ref) => {
     const resp = await getEmployeeList();
     const list = resp.data;
     console.log("here " + id)
-
-
+    
     list.forEach((employee) => {
       if (id == employee.id) {
         console.log("found employee " + "id" + " under current user");
