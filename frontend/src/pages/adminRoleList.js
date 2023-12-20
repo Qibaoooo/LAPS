@@ -8,6 +8,7 @@ import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import { deleteRole} from "./utils/api/apiAdmin";
 import RedirectionModal from "./components/redirectionModal";
+import { click } from "@testing-library/user-event/dist/click";
 
 function AdminRoleList() {
   const [roleList, setRoleList] = useState([]);
@@ -47,6 +48,7 @@ function AdminRoleList() {
                 <td>
                   <Button variant="secondary" size="sm"
                   onClick={() => {
+                    // console.log(rp)
                     window.location.href =
                       "/admin/role/edit/?id=" + rp.id;
                   }}

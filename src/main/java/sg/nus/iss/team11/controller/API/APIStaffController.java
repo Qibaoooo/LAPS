@@ -192,9 +192,7 @@ public class APIStaffController {
 		JSONArray claimList = new JSONArray();
 
 		claimService.findCompensationClaimsByUserId(user.getUserId()).forEach((c) -> {
-			if (c.getOverTimeDate().getYear() == LocalDate.now().getYear()) {
-				claimList.put(c.toJsonObject());
-			}
+			claimList.put(c.toJsonObject());
 		});
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
@@ -27,6 +27,7 @@ function StaffClaimList() {
     }
   };
 
+
   return (
     <LoginCheckWrapper
       allowRole={["ROLE_manager", "ROLE_staff"]}
@@ -34,10 +35,10 @@ function StaffClaimList() {
     >
       <MyNavBar></MyNavBar>
       <PageTitle title={"Compensation Claim List"}></PageTitle>
-      <MyTable>
+      <MyTable >
         <thead>
           <tr>
-            <th>id</th>
+            <th>NO.</th>
             <th>date</th>
             <th>time</th>
             <th>description</th>
@@ -45,7 +46,7 @@ function StaffClaimList() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
           {claimList.map((claim, index) => {
             return (
               <tr key={index}>
@@ -71,8 +72,8 @@ function StaffClaimList() {
                     </Button>
                   )}
                   {["APPLIED", "UPDATED"].includes(claim.status) && (
-                    <div>
                       <Button
+                        style={{marginRight:"10px"}}
                         variant="secondary"
                         size="sm"
                         onClick={() => {
@@ -82,11 +83,9 @@ function StaffClaimList() {
                       >
                         Update
                       </Button>
-                    </div>
                   )}
                   {["APPLIED", "UPDATED"].includes(claim.status) && (
                     <Button
-                      className="mt-2"
                       variant="danger"
                       size="sm"
                       onClick={(e) => {

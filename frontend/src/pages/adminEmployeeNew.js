@@ -6,8 +6,10 @@ import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { createNewEmployee, getAllList } from "./utils/api/apiAdmin";
 import MyAlert from "./components/myAlert";
+import { useNavigate } from 'react-router';
 
 function AdminEmployeeNew() {
+    const navigate = useNavigate();
     const [userName, setUserName] = useState();
     const [password, setPassword] = useState();
     const [roleName, setRoleName] = useState();
@@ -184,6 +186,7 @@ function AdminEmployeeNew() {
                             <Form.Label>Medical Leave Entitlement</Form.Label>
                             <Form.Control
                                 required
+                                defaultValue="60"
                                 type="number"
                                 placeholder="Medical Leave Entitlement"
                                 onChange={onInputMLE}
@@ -211,7 +214,10 @@ function AdminEmployeeNew() {
                 variant="info"
                 msg1="Result:"
                 msg2={alertMsg}
-                handleCLose={() => setShowAlert(false)}
+                handleCLose={() => {
+                    setShowAlert(false);
+                    navigate('/admin/employee');
+                }}
             ></MyAlert>
         </LoginCheckWrapper>
     );

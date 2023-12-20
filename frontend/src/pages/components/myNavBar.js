@@ -20,7 +20,7 @@ function MyNavBar(props) {
   const [showManagerMenu, setShowManagerMenu] = useState(false);
   const [showaAdminMenu, setShowAdminMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
-  const [user, setUser] = useState("guest");
+  const [user, setUser] = useState("Please Login!");
 
   useEffect(() => {
     if (getColorMode()) {
@@ -50,7 +50,7 @@ function MyNavBar(props) {
       setShowStaffMenu(true);
       setShowManagerMenu(true);
     }
-    if (user === "guest") {
+    if (user === "Please Login!") {
       setUser(userinfo.username);
     }
   }, []);
@@ -159,7 +159,7 @@ function MyNavBar(props) {
           </Button>
         </OverlayTrigger>
         <h6 className="mx-3" href="">
-          hello, {user}
+          Hello, {user}
         </h6>
         {!showLogin && (
           <h6 onClick={handleLogout}>

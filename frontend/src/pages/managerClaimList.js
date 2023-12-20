@@ -73,15 +73,15 @@ function ManagerClaimList() {
       )}
       {claimList.map((userClaimArray, index) => (
         <div>
-          <MyTable key={index}>
-            <thead>
-              <tr>
+          <MyTable key={index} foldable={true}>
+            <thead >
+              <tr style={{ position:"sticky", top: "0px"}}>
                 <td colSpan={8} style={{ fontSize: "16px" }}>
                   <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>
               <tr>
-                <th>ID</th>
+                <th>NO.</th>
                 <th>Applied By</th>
                 <th>Description</th>
                 <th>Time</th>
@@ -90,20 +90,21 @@ function ManagerClaimList() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
               {userClaimArray.map((value, index) => (
                 <tr key={index}>
-                  <td>{value.id}</td>
-                  <td>{value.username}</td>
-                  <td>{value.description}</td>
-                  <td>{value.overtimeTime}</td>
-                  <td>{value.overtimeDate}</td>
-                  <td>
+                  <td width="5%">{value.id}</td>
+                  <td width="10%">{value.username}</td>
+                  <td width="25%">{value.description}</td>
+                  <td width="5%">{value.time}</td>
+                  <td width="15%">{value.date}</td>
+                  <td width="20%">
                     <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
-                  <td style={{ textAlign: "center" }}>
+                  <td width="20%" style={{ textAlign:"center" }}>
                     <Button
-                      variant="primary"
+                      style={{ width: '40%' , marginRight:'5px'}}
+                      variant="success"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);
@@ -113,9 +114,9 @@ function ManagerClaimList() {
                     >
                       Approve
                     </Button>
-                    <div className="m-1"></div>
                     <Button
-                      variant="secondary"
+                      style={{ width: '40%' }}
+                      variant="danger"
                       size="sm"
                       onClick={() => {
                         setShowModal(true);

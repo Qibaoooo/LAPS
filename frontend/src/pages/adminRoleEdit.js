@@ -60,8 +60,9 @@ function AdminRoleEdit(){
 
  return(
     <LoginCheckWrapper
-         allowRole={["ROLE_admin"]}
-         runAfterCheck={loadData}
+        
+        allowRole={["ROLE_admin"]}
+        runAfterCheck={loadData}
     >
         <MyNavBar></MyNavBar>
         <PageTitle title="Edit Role"></PageTitle>
