@@ -191,17 +191,22 @@ public class APIAdminController {
 		 try {
 		      roleservice.deleteRoleById(id);
 		   } catch (Exception e) {
-		      return new ResponseEntity<String>("can't delete role!", HttpStatus.INTERNAL_SERVER_ERROR);
+		      return new ResponseEntity<String>("can't delete role! It still has users assigned.", HttpStatus.BAD_REQUEST);
 		   }
 		return new ResponseEntity<String>("role deleted: " + id, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/role/new")
 	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole) {
-		Role roles = new Role();
-		roles.setName(newRole.getName());
-		roles.setDescription(newRole.getDescription());
-		Role created = roleservice.createRole(roles);
+
+		// init a new Role
+		Role role = new Role();
+		
+		role.setName(newRole.getName());
+		role.setDescription(newRole.getDescription());
+		role.setRoleId(newRole.getName().toLowerCase());
+		
+		Role created = roleservice.createRole(role);
 
 		return new ResponseEntity<String>("role created: " + created.getRoleId(), HttpStatus.OK);
 	}

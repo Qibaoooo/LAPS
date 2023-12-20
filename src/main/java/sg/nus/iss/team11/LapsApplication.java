@@ -45,7 +45,7 @@ public class LapsApplication {
 			userRepo.deleteAll();
 			roleRepo.deleteAll();
 
-			Role adminRole = roleRepo.save(new Role("admin", "Administrator", "System administrator"));
+			Role adminRole = roleRepo.save(new Role("admin", "Admin", "System administrator"));
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 

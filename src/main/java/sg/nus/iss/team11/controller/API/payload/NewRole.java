@@ -4,6 +4,7 @@ import java.util.List;
 
 import sg.nus.iss.team11.model.LAPSUser;
 
+// just for http request
 public class NewRole {
 	private String roleId;
 	private String name;
@@ -12,7 +13,6 @@ public class NewRole {
 	
 	public NewRole(String roldId, String name, String description) {
 		super();
-		this.roleId=roleId;
 		this.name=name;
 		this.description=description;
 	}

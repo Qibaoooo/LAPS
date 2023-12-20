@@ -29,9 +29,8 @@ function AdminRoleNew(){
           setValidated(true);
         } else {
             createNewRole({
-                rolename: name,
+                name: name,
                 description: description,
-
             }).then((response)=>{
                 if (response.status == 200) {
                     console.log(JSON.stringify(response.data));

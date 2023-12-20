@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
 import RedirectionModal from "./components/redirectionModal";
+import MyAlert from "./components/myAlert";
 
 function AdminRoleList() {
   let userinfo;
@@ -15,6 +16,8 @@ function AdminRoleList() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState([]);
   const [chosenRole, setChosenRole] = useState([]);
+  const [deleteRespMsg, setDeleteRespMsg] = useState("");
+  const [showDeleteNsg, setShowDeleteMsg] = useState(false);
 
   /*useEffect(() => {
     
@@ -65,7 +68,7 @@ function AdminRoleList() {
                 </td>
                 <td>
                   {(user.rolename != rp.name)&&(
-                  <Button variant="danger" size="sm" style={{ width: '100%' }}
+                  <Button variant="danger" size="sm"
                     onClick={(e) => {
                     e.preventDefault();
                     setChosenRole(rp);
@@ -82,8 +85,13 @@ function AdminRoleList() {
       <RedirectionModal
         show={showDeleteModal}
         handleButtonClick={() => {
-          deleteRole(chosenRole.id).then((r) => {
+          deleteRole(chosenRole.id).then((resp) => {
             window.location.reload();
+          }).catch((e)=>{
+            // console.log(e.response.data)
+            setDeleteRespMsg(e.response.data)
+            setShowDeleteMsg(true)
+            setShowDeleteModal(false)
           });
         }}
         headerMsg={"Confirm delete role " + chosenRole.name + " ?"}
@@ -94,6 +102,13 @@ function AdminRoleList() {
           setChosenRole({});
         }}
       ></RedirectionModal>
+      <MyAlert
+      variant="warning"
+      msg1="Delete failed"
+      msg2={deleteRespMsg}
+      showAlert={showDeleteNsg}
+      handleCLose={()=>{setShowDeleteMsg(false)}}
+      ></MyAlert>
     </LoginCheckWrapper>
   );
 }
