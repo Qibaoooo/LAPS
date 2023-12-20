@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+.expanding {
+  width: 15px;
+  height: 15px;
+  transform: rotateX(180deg);
+  transition: all .2s ease-in-out;
+}
+
+.expanding:hover {
+  color: chartreuse;
+  transform: rotateX(180deg) scale(1.1);
+}
+
+.folding {
+  width: 15px;
+  height: 15px;
+  transition: all .2s ease-in-out;
+}
+
+.folding:hover {
+  color: chartreuse;
+  transform: scale(1.1);
+}

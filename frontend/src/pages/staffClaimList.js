@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
@@ -27,6 +27,7 @@ function StaffClaimList() {
     }
   };
 
+
   return (
     <LoginCheckWrapper
       allowRole={["ROLE_manager", "ROLE_staff"]}
@@ -34,7 +35,7 @@ function StaffClaimList() {
     >
       <MyNavBar></MyNavBar>
       <PageTitle title={"Compensation Claim List"}></PageTitle>
-      <MyTable>
+      <MyTable >
         <thead>
           <tr>
             <th>NO.</th>
