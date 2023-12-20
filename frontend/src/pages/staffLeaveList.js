@@ -21,6 +21,10 @@ function StaffLeaveList() {
         });
     }
   };
+  
+  const handleDelete = (applicationId) => {
+    setLeaveList(leaveList.filter(app => app.id !== applicationId));
+  };
 
   return (
     <LoginCheckWrapper
@@ -43,7 +47,11 @@ function StaffLeaveList() {
         </thead>
         <tbody>
           {leaveList.map((value, index, array) => (
-            <LeaveApplication leaveapplication = {value} index = {index} key = {index}/>
+            <LeaveApplication 
+            leaveapplication = {value} 
+            index = {index} 
+            key = {value.id}
+            onDelete={() => handleDelete(value.id)}/>
           ))}
         </tbody>
       </MyTable>

@@ -52,6 +52,20 @@ let editLeave = (leaveapplication) => {
   );
 };
 
+let deleteLeave = (leavepplicationId, methodRequest) => {
+  return axios.put(
+    "http://localhost:8080/api/staff/leaves",
+    {},
+    {
+      headers: getJsonHeadersWithJWT(),
+      params: {
+        leaveId: leavepplicationId, // Assuming leaveapplication has an 'id' property
+        methodRequest: methodRequest
+      }
+    }
+  );
+}
+
 /*
 COMPENSATION CLAIM
 */
@@ -102,6 +116,7 @@ export {
   cancelLeave,
   setLeaveDataOnLoad,
   editLeave,
+  deleteLeave,
   getClaimList,
   createNewClaim,
   setClaimDataOnLoad,

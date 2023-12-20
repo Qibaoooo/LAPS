@@ -3,7 +3,7 @@ import { Badge, Button} from "react-bootstrap";
 import CreateUpdateAndCancelButtons from './leaveUpdateAndCancel';
 import MyStatusBadge from "./myStatusBadge";
 
-function LeaveApplication({ leaveapplication: initialLeaveApplication, index }) {
+function LeaveApplication({ leaveapplication: initialLeaveApplication, index, onDelete }) {
   const [leaveapplication, setLeaveApplication] = useState(initialLeaveApplication);
 
   const handleCancel = () => {
@@ -11,7 +11,7 @@ function LeaveApplication({ leaveapplication: initialLeaveApplication, index }) 
     setLeaveApplication({ ...leaveapplication, status: "Cancelled" });
   };
 
-
+  if(leaveapplication.status != "DELETED"){
   return (
     <tr key={index}>
       <td>{index + 1}</td>
@@ -20,9 +20,10 @@ function LeaveApplication({ leaveapplication: initialLeaveApplication, index }) 
       <td>{leaveapplication.type}</td>
       <td>{leaveapplication.description}</td>
       <td><MyStatusBadge status = {leaveapplication.status}/></td>
-      <CreateUpdateAndCancelButtons leaveapplication = {leaveapplication} onCancel = {handleCancel}/>
+      <CreateUpdateAndCancelButtons leaveapplication = {leaveapplication} onCancel = {handleCancel} onDelete={onDelete}/>
     </tr>
   );
+  }
 }
 
 export default LeaveApplication;

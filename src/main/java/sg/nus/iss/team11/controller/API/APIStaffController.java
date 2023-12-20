@@ -104,15 +104,15 @@ public class APIStaffController {
 	
 	
 	@PutMapping(value = "leaves")
-	public ResponseEntity<String> cancelLeave(Principal principal, @RequestParam int leaveId, @RequestParam String methodRequest) {
-		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(leaveId);
-		if (methodRequest.equalsIgnoreCase("cancelled") ) {
+	public ResponseEntity<String> cancelLeave(Principal principal, @RequestParam String leaveId, @RequestParam String methodRequest) {
+		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(Integer.parseInt(leaveId));
+		if (methodRequest.equalsIgnoreCase("cancell") ) {
 			la.setStatus(ApplicationStatusEnum.CANCELLED);
 			leaveApplicationService.updateLeaveApplication(la);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
-		else if (methodRequest.equalsIgnoreCase("deleted")) {
+		else if (methodRequest.equalsIgnoreCase("delete")) {
 		// If payload.request == Delete
 		la.setStatus(ApplicationStatusEnum.DELETED);
 		leaveApplicationService.updateLeaveApplication(la);
@@ -255,7 +255,7 @@ public class APIStaffController {
 		
 		// Checking for overlapping leave
 		for (LeaveApplication currentLa : listOfLA) {
-			if (currentLa.getId() != la.getId() && la.isOverlapping(currentLa)) {
+			if (currentLa.getId() != la.getId() && la.isOverlapping(currentLa) && currentLa.getStatus() != ApplicationStatusEnum.DELETED) {
 				return Optional.of("Overlapping Leave Request, please try again with another set of dates.");
 			}
 		}
