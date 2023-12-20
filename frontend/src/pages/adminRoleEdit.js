@@ -6,9 +6,10 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import MyAlert from "./components/myAlert";
 import { editRole, setRoleDataOnLoad } from "./utils/api/apiAdmin";
 import { useSearchParams } from "react-router-dom";
-
+import { useNavigate } from 'react-router';
 
 function AdminRoleEdit(){
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
 
@@ -106,7 +107,10 @@ function AdminRoleEdit(){
         variant="info"
         msg1="Result:"
         msg2={alertMsg}
-        handleCLose={() => setShowAlert(false)}
+        handleCLose={() => {
+          setShowAlert(false);
+          navigate('/admin/role');
+      }}
       ></MyAlert>
     </LoginCheckWrapper>
    );

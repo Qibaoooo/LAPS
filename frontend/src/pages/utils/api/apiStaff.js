@@ -10,6 +10,12 @@ let getLeaveList = () => {
   });
 };
 
+let createLeave = (leaveapplication) => {
+  return axios.post("http://localhost:8080/api/staff/leave/new", leaveapplication, {
+    headers: getJsonHeadersWithJWT(),
+  });
+}
+
 let cancelLeave = (leaveId) => {
   return axios.put("http://localhost:8080/api/staff/leave/cancel/"+ leaveId,{}, {
     headers: getJsonHeadersWithJWT(),
@@ -92,6 +98,7 @@ let setClaimDataOnLoad = async (id, ref, setClaim) => {
 
 export {
   getLeaveList,
+  createLeave,
   cancelLeave,
   setLeaveDataOnLoad,
   editLeave,

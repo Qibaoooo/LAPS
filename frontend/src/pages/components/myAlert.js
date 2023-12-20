@@ -13,7 +13,7 @@ function MyAlert({ variant, msg1, msg2, showAlert, handleCLose }) {
               onClick={handleCLose}
               variant={`outline-${variant}`}
             >
-              Close
+              Return to List Page
             </Button>
           </div>
         </Alert>
