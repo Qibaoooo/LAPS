@@ -200,13 +200,11 @@ public class APIAdminController {
 	@PostMapping(value = "/role/new")
 	public ResponseEntity<String> createNewRole(Principal principal, @RequestBody NewRole newRole) {
 		Role roles = new Role();
-		roles.setRoleId(roleservice.findRoleByRoleName(newRole.getName()).getRoleId());
 		roles.setName(newRole.getName());
 		roles.setDescription(newRole.getDescription());
 		Role created = roleservice.createRole(roles);
 
 		return new ResponseEntity<String>("role created: " + created.getRoleId(), HttpStatus.OK);
-
 	}
 
 	@PutMapping(value = "/role/edit")
