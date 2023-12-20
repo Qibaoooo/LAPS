@@ -1,6 +1,7 @@
 package sg.nus.iss.team11;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +58,11 @@ public class LapsApplication {
 			final LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", encoder.encode("password"), staffRole));
 			final LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", encoder.encode("password"), staffRole));
 
-			tin.setAnnualLeaveEntitlement(14);
-			cherwah.setAnnualLeaveEntitlement(14);
-			yuenkwan.setAnnualLeaveEntitlement(14);
+			Arrays.asList(tin, cherwah, yuenkwan, esther).forEach(user->{
+				user.setAnnualLeaveEntitlement(14);
+				user.setCompensationLeaveEntitlement(10);
+				user.setMedicalLeaveEntitlement(60);
+			});
 			tin.setType(EmployeeTypeEnum.Professional);
 			cherwah.setType(EmployeeTypeEnum.Professional);
 			yuenkwan.setType(EmployeeTypeEnum.Professional);
@@ -124,23 +127,23 @@ public class LapsApplication {
 
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for rest", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().plusDays(30), LocalDate.now().plusDays(34)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(60),
 					LocalDate.now().minusDays(59)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(58),
 					LocalDate.now().minusDays(57)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(56),
 					LocalDate.now().minusDays(55)));
 
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(30),
 					LocalDate.now().minusDays(29)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(28),
 					LocalDate.now().minusDays(27)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(26),
 					LocalDate.now().minusDays(25)));
 

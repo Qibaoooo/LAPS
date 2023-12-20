@@ -4,7 +4,7 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { getUserDetails } from "./utils/api/apiUserDetails";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import MyTable from "./components/myTable";
-import { Card, Col } from "react-bootstrap";
+import { Card, Col, Table } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 
 function HomePage() {
@@ -17,7 +17,10 @@ function HomePage() {
     if (infoLocal) {
       getUserDetails()
         .then((resp) => resp.data)
-        .then((data) => setUserDetails(data));
+        .then((data) => {
+          console.log(data)
+          setUserDetails(data);
+        });
 
       if (roleId !== infoLocal.roleId) {
         setRoleId(infoLocal.roleId);
@@ -43,9 +46,60 @@ function HomePage() {
             )}
             {roleId !== "ROLE_admin" && (
               <div>
-                <Card.Text style={{ marginLeft: '60px' }}>{`Annual Leave Entitlement: ${userDetails.annualLeaveEntitlement}, ${userDetails.annualLeaveUsed} Used, ${userDetails.annualLeaveLeft} Left`}</Card.Text>
-                <Card.Text style={{ marginLeft: '50px' }}>{`Medical Leave Entitlement: ${userDetails.medicalLeaveEntitlement}, ${userDetails.medicalLeaveUsed} Used, ${userDetails.medicalLeaveLeft} Left`}</Card.Text>
-                <Card.Text>{`Compensation Leave Entitlement: ${userDetails.compensationLeaveEntitlement}, ${userDetails.compensationLeaveUsed} Used, ${userDetails.compensationLeaveLeft} Left`}</Card.Text>
+                <Table className="homeTable" bordered>
+                  <thead>
+                    <tr>
+                      <td>Type</td>
+                      <td>Available</td>
+                      <td>Used</td>
+                      <td>Yearly Entitlement</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{}}>
+                      <td style={{ textAlign: "right" }}>
+                        <Card.Text>{`Annual Leave Entitlement:`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.annualLeaveUsed}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.annualLeaveLeft}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.annualLeaveEntitlement}`}</Card.Text>
+                      </td>
+                    </tr>
+                    <tr style={{}}>
+                      <td style={{ textAlign: "right" }}>
+                        <Card.Text>{`Medical Leave Entitlement:`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.medicalLeaveUsed}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.medicalLeaveLeft}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.medicalLeaveEntitlement}`}</Card.Text>
+                      </td>
+                    </tr>
+                    <tr style={{}}>
+                      <td style={{ textAlign: "right" }}>
+                        <Card.Text>{`Compensation Leave Entitlement:`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.compensationLeaveUsed}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.compensationLeaveLeft}`}</Card.Text>
+                      </td>
+                      <td>
+                        <Card.Text>{`${userDetails.compensationLeaveEntitlement}`}</Card.Text>
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
               </div>
             )}
             {roleId === "ROLE_staff" && (
@@ -56,9 +110,16 @@ function HomePage() {
             )}
             {roleId === "ROLE_manager" && (
               <div className="mt-3">
-                <Card.Link href="/manager/leave/list"> View Suborinates Leave Applications </Card.Link>
-                <br /><br />
-                <Card.Link href="/manager/claim/list"> View Suborinates OT Claims </Card.Link>
+                <Card.Link href="/manager/leave/list">
+                  {" "}
+                  View Suborinates Leave Applications{" "}
+                </Card.Link>
+                <br />
+                <br />
+                <Card.Link href="/manager/claim/list">
+                  {" "}
+                  View Suborinates OT Claims{" "}
+                </Card.Link>
               </div>
             )}
             {roleId === "ROLE_admin" && (
