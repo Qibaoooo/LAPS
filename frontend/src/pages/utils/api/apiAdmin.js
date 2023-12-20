@@ -61,6 +61,7 @@ let setEditDataOnLoad = async (id, ref) => {
         })
         ref.current.querySelector("#formManager").value = managerName;
         ref.current.querySelector("#formRole").value = employee.role;
+        ref.current.querySelector("#formType").value = employee.type;
         ref.current.querySelector("#formAnnual").value =
           employee.annualLeaveEntitlement;
         ref.current.querySelector("#formMedical").value =

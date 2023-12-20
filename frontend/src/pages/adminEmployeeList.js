@@ -34,42 +34,42 @@ function AdminEmployeeList() {
       <MyNavBar />
       <PageTitle title="Employee List"></PageTitle>
       <MyTable>
-        <thead>
+        <thead style={{textAlign: "center", verticalAlign: "middle"}}>
           <tr>
             <th width="5%">User Id</th>
             <th width="5%">User Name</th>
             <th width="5%">Manager Id</th>
-            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="10%">
               Role
             </th>
-            <th width="15%" style={{ textAlign: "center", verticalAlign: "middle" }}>
+            <th width="8%">
               Type
             </th>
             <th width="15%">Annual Leave Entitlement</th>
             <th width="15%">Medical Leave Entitlement</th>
-            <th width="20%">Compensation Leave Entitlement</th>
-            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
-              Edit
-            </th>
-            <th width="10%" style={{ textAlign: "center", verticalAlign: "middle" }}>
-              Delete
+            <th width="17%">Compensation Leave Entitlement</th>
+            <th width="20%">
+              Actions
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{textAlign: "center", verticalAlign: "middle"}}>
           {employeeList.map((value, index, array) => {
             return (
               <tr key={index}>
                 <td>{value.id}</td>
                 <td>{value.name}</td>
-                <td>{value.managerId}</td>
+                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.managerId}</td>
                 <td>{value.role}</td>
-                <td>{(value.type) ? value.type : (<i>NULL</i>)}</td>
-                <td>{value.annualLeaveEntitlement}</td>
-                <td>{value.medicalLeaveEntitlement}</td>
-                <td>{value.compensationLeaveEntitlement}</td>
+                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.type}</td>
+                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.annualLeaveEntitlement}</td>
+                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.medicalLeaveEntitlement}</td>
+                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.compensationLeaveEntitlement}</td>
                 <td>
-                  <Button variant="warning" size="sm" style={{ width: '100%' }}
+                  <Button 
+                    variant="warning"
+                    size="sm"
+                    style={{ width: '40%', marginRight:'5px'}}
                     onClick={() => {
                       window.location.href =
                         "/admin/employee/edit/?id=" + value.id;
@@ -77,17 +77,18 @@ function AdminEmployeeList() {
                   >
                     Edit
                   </Button>
-                </td>
-                <td>
-                  {(user.username != value.name)&&(
-                  <Button variant="danger" size="sm" style={{ width: '100%' }}
-                    onClick={(e) => {
-                    e.preventDefault();
-                    setChosenEmployee(value);
-                    setShowDeleteModal(true);
-                  }}>
-                    Delete
-                  </Button>)}
+                  {(user.username != value.name) && (
+                    <Button 
+                      variant="danger"
+                      size="sm"
+                      style={{ width: '40%' }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setChosenEmployee(value);
+                        setShowDeleteModal(true);
+                      }}>
+                      Delete
+                    </Button>)}
                 </td>
               </tr>
             );
