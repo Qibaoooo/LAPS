@@ -4,7 +4,7 @@ import { getEmployeeList } from "./utils/api/apiAdmin";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import { editEmployeeInfo, setEditDataOnLoad } from "./utils/api/apiAdmin";
+import { editEmployeeInfo, setEditDataOnLoad, getAllList } from "./utils/api/apiAdmin";
 import { useSearchParams } from "react-router-dom";
 import MyAlert from "./components/myAlert";
 
@@ -20,9 +20,9 @@ function AdminEmployeeEdit() {
     const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState();
     const [compensationLeaveEntitlement, setCompensationLeaveEntitlement] = useState();
 
-    const [setEdit] = useState({});
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState();
+    const [bigList, setBigList] = useState([]);
 
     const onInputUN = ({ target: { value } }) => setUserName(value);
     const onInputPW = ({ target: { value } }) => setPassword(value);
@@ -36,10 +36,6 @@ function AdminEmployeeEdit() {
 
     const formRef = useRef();
 
-    useEffect(() => {
-        setEditDataOnLoad(id, formRef);
-      }, []);
-
     const onFormSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -49,7 +45,7 @@ function AdminEmployeeEdit() {
             setValidated(true);
         } else {
             editEmployeeInfo({
-                userName: formRef.current.querySelector("#formUserName").value,
+                username: formRef.current.querySelector("#formUserName").value,
                 password: formRef.current.querySelector("#formPassword").value,
                 managerName: formRef.current.querySelector("#formManager").value,
                 roleName: formRef.current.querySelector("#formRole").value,
@@ -57,7 +53,6 @@ function AdminEmployeeEdit() {
                 medicalLeaveEntitlement: formRef.current.querySelector("#formMedical").value,
                 compensationLeaveEntitlement: formRef.current.querySelector("#formCompensation").value,
                 id: id
-
             }).then((response) => {
                 if (response.status == 200) {
                     console.log(JSON.stringify(response.data));
@@ -72,14 +67,23 @@ function AdminEmployeeEdit() {
     };
 
     const loadData = () => {
-        setEditDataOnLoad(id, formRef , setEdit);
-      };
+        // get options for manager field
+        getAllList()
+            .then((response) => response.data)
+            .then((list) => {
+                console.log(list);
+                setBigList(list);
+            });
+        
+        // pre-fill all available fields
+        setEditDataOnLoad(id, formRef);
+    };
 
     return (
         <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
             <MyNavBar></MyNavBar>
             <PageTitle title="Edit New Employee"></PageTitle>
-            
+
 
             <Form noValidate validated={validated} onSubmit={onFormSubmit} ref={formRef}>
                 <Col md="6" className="mx-auto">
@@ -97,7 +101,7 @@ function AdminEmployeeEdit() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="password"
                                 placeholder="password"
                                 onChange={onInputPW}
                             />{" "}
@@ -112,10 +116,14 @@ function AdminEmployeeEdit() {
                                 className="form-select"
                                 onChange={onInputMN}
                             >
-                                <option value="esther">esther</option>
-                                <option value="cherwah">cherwah</option>
-                                <option value="yuenkwan">yuenkwan</option>
-                                <option value="tin">tin</option>
+                                {Array.isArray(bigList[0]) &&
+                                    bigList[0].map((value, index) => {
+                                        return (
+                                            <option key={index} value={value.managerName}>
+                                                {value.managerName}
+                                            </option>
+                                        );
+                                    })}
                             </Form.Select>
                         </Form.Group>
                     </Row>
@@ -128,9 +136,12 @@ function AdminEmployeeEdit() {
                                 className="form-select"
                                 onChange={onInputRN}
                             >
-                                <option value="manager">manager</option>
-                                <option value="staff">staff</option>
-                                <option value="adminUser">adminUser</option>
+                                {Array.isArray(bigList[1]) &&
+                                    bigList[1].map((value, index, array) => {
+                                        return (
+                                            <option key={index} value={value.roleName}>{value.roleName}</option>
+                                        );
+                                    })}
                             </Form.Select>
                         </Form.Group>
                     </Row>

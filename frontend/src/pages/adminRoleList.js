@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyNavBar from "./components/myNavBar";
 import { getRoleList, deleteRole } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
@@ -6,9 +6,7 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import MyTable from "./components/myTable";
-import { deleteRole} from "./utils/api/apiAdmin";
 import RedirectionModal from "./components/redirectionModal";
-import { click } from "@testing-library/user-event/dist/click";
 
 function AdminRoleList() {
   let userinfo;
@@ -84,7 +82,7 @@ function AdminRoleList() {
       <RedirectionModal
         show={showDeleteModal}
         handleButtonClick={() => {
-          deleteRole(chosenRole.name).then((r) => {
+          deleteRole(chosenRole.id).then((r) => {
             window.location.reload();
           });
         }}

@@ -68,9 +68,10 @@ public class APIAdminController {
 		JSONArray employeesList = new JSONArray();
 		for (LAPSUser e : employees) {
 			JSONObject ep = new JSONObject();
-			ep.put("Id", e.getUserId());
+			ep.put("id", e.getUserId());
 			ep.put("name", e.getUsername());
 			ep.put("managerId", e.getManagerId());
+//			ep.put("managerName", userservice.findUser(e.getManagerId()).getu);
 			ep.put("role", e.getRole().getName());
 			ep.put("type", e.getType());
 			ep.put("annualLeaveEntitlement", e.getAnnualLeaveEntitlement());
@@ -151,7 +152,7 @@ public class APIAdminController {
 		return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/employee/edit/{id}")
+	@PostMapping(value = "/employee/edit")
 	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody EditEmployee editEmployee) {
 		LAPSUser user = userservice.findUserByUsername(principal.getName());
 
@@ -187,13 +188,13 @@ public class APIAdminController {
 	}
 	
 	@DeleteMapping(value="/role")
-	public ResponseEntity<String>deleteRole(@RequestParam String roleId){
+	public ResponseEntity<String>deleteRole(@RequestParam String id){
 		 try {
-		      roleservice.deleteRoleById(roleId);
+		      roleservice.deleteRoleById(id);
 		   } catch (Exception e) {
 		      return new ResponseEntity<String>("can't delete role!", HttpStatus.INTERNAL_SERVER_ERROR);
 		   }
-		return new ResponseEntity<String>("role deleted: " + roleId, HttpStatus.OK);
+		return new ResponseEntity<String>("role deleted: " + id, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/role/new")

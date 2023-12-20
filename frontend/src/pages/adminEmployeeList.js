@@ -60,7 +60,7 @@ function AdminEmployeeList() {
           {employeeList.map((value, index, array) => {
             return (
               <tr key={index}>
-                <td>{value.Id}</td>
+                <td>{value.id}</td>
                 <td>{value.name}</td>
                 <td>{value.managerId}</td>
                 <td>{value.role}</td>

@@ -7,6 +7,8 @@ let getEmployeeList = () => {
   });
 };
 
+
+
 let createNewEmployee = (employee) => {
   return axios.post("http://localhost:8080/api/admin/employee/new", employee, {
     headers: getJsonHeadersWithJWT(),
@@ -14,14 +16,15 @@ let createNewEmployee = (employee) => {
 };
 
 let deleteEmployee = (employee) => {
-    return axios.delete("http://localhost:8080/api/admin/employee?username="+employee, {
-      headers: getJsonHeadersWithJWT(),
-    });
-  };
+  return axios.delete("http://localhost:8080/api/admin/employee?username=" + employee, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
 
 let editEmployeeInfo = (employee) => {
+  console.log(employee)
   return axios.post(
-    "http://localhost:8080/api/admin/employee/edit/{id}",
+    "http://localhost:8080/api/admin/employee/edit",
     employee,
     {
       headers: getJsonHeadersWithJWT(),
@@ -39,13 +42,25 @@ let setEditDataOnLoad = async (id, ref) => {
   try {
     const resp = await getEmployeeList();
     const list = resp.data;
+    console.log("here " + id)
+
+
     list.forEach((employee) => {
       if (id == employee.id) {
         console.log("found employee " + "id" + " under current user");
-        ref.current.querySelector("#formUserName").value = employee.userName;
+        console.log(employee)
+        ref.current.querySelector("#formUserName").value = employee.name;
         ref.current.querySelector("#formPassword").value = employee.password;
-        ref.current.querySelector("#formManager").value = employee.managerName;
-        ref.current.querySelector("#formRole").value = employee.roleName;
+        // find manager name
+        let managerId = employee.managerId
+        let managerName = ""
+        list.forEach(e => {
+          if (e.id == managerId) {
+            managerName = e.name
+          }
+        })
+        ref.current.querySelector("#formManager").value = managerName;
+        ref.current.querySelector("#formRole").value = employee.role;
         ref.current.querySelector("#formAnnual").value =
           employee.annualLeaveEntitlement;
         ref.current.querySelector("#formMedical").value =
@@ -54,7 +69,7 @@ let setEditDataOnLoad = async (id, ref) => {
           employee.compensationLeaveEntitlement;
       }
     });
-  } catch (e) {}
+  } catch (e) { }
 };
 
 let getRoleList = () => {
@@ -69,7 +84,7 @@ let createNewRole = (role) => {
 };
 
 let deleteRole = (role) => {
-  return axios.delete("http://localhost:8080/api/admin/role?username="+role, {},{
+  return axios.delete("http://localhost:8080/api/admin/role?id=" + role, {
     headers: getJsonHeadersWithJWT(),
   });
 };
@@ -77,12 +92,6 @@ let deleteRole = (role) => {
 
 let editRole = (role) => {
   return axios.put("http://localhost:8080/api/admin/role/edit", role, {
-    headers: getJsonHeadersWithJWT(),
-  });
-};
-
-let deleteRole = (role) => {
-  return axios.delete("http://localhost:8080/api/admin/role/delete",role, {
     headers: getJsonHeadersWithJWT(),
   });
 };
@@ -99,7 +108,7 @@ let setRoleDataOnLoad = async (id, ref, setRole) => {
         ref.current.querySelector("#formDescription").value = role.description;
       }
     });
-  } catch (e) {}
+  } catch (e) { }
 };
 
 export {
@@ -113,6 +122,5 @@ export {
   deleteRole,
   editRole,
   getAllList,
-  setRoleDataOnLoad,
-  deleteRole
+  setRoleDataOnLoad
 };
