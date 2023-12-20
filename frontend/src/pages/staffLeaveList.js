@@ -32,7 +32,7 @@ function StaffLeaveList() {
       <MyTable>
         <thead>
           <tr>
-            <th>#</th>
+            <th>NO.</th>
             <th>From Date</th>
             <th>To Date</th>
             <th>Type</th>
