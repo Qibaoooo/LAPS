@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyNavBar from "./components/myNavBar";
-import { getRoleList } from "./utils/api/apiAdmin";
+import { getRoleList, deleteRole } from "./utils/api/apiAdmin";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { Button } from "react-bootstrap";
@@ -11,9 +11,16 @@ import RedirectionModal from "./components/redirectionModal";
 import { click } from "@testing-library/user-event/dist/click";
 
 function AdminRoleList() {
+  let userinfo;
+
   const [roleList, setRoleList] = useState([]);
-  const[chosenRole,setChosenRole]= useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [user, setUser] = useState([]);
+  const [chosenRole, setChosenRole] = useState([]);
+
+  /*useEffect(() => {
+    
+  }, []);*/
 
   const loadData = () => {
     if (getUserinfoFromLocal()) {
@@ -23,6 +30,8 @@ function AdminRoleList() {
           console.log(list);
           setRoleList(list);
         });
+        userinfo = getUserinfoFromLocal();
+        setUser(userinfo);
     }
   };
 
@@ -57,14 +66,15 @@ function AdminRoleList() {
                   </Button>
                 </td>
                 <td>
-                  <Button variant="danger" size="sm"
-                  onClick={() => {
-                    window.location.href =
-                      "/admin/delete/?id=" + rp.id;
-                  }}
-                  >
+                  {(user.rolename != rp.name)&&(
+                  <Button variant="danger" size="sm" style={{ width: '100%' }}
+                    onClick={(e) => {
+                    e.preventDefault();
+                    setChosenRole(rp);
+                    setShowDeleteModal(true);
+                  }}>
                     Delete
-                  </Button>
+                  </Button>)}
                 </td>
               </tr>
             );
@@ -78,7 +88,7 @@ function AdminRoleList() {
             window.location.reload();
           });
         }}
-        headerMsg={"Confirm delete role " + chosenRole.Id + " ?"}
+        headerMsg={"Confirm delete role " + chosenRole.name + " ?"}
         buttonMsg={"DELETE"}
         enableCloseButton={true}
         handleClose={() => {
@@ -86,7 +96,6 @@ function AdminRoleList() {
           setChosenRole({});
         }}
       ></RedirectionModal>
-
     </LoginCheckWrapper>
   );
 }

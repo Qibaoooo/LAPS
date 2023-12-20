@@ -68,6 +68,13 @@ let createNewRole = (role) => {
   });
 };
 
+let deleteRole = (role) => {
+  return axios.delete("http://localhost:8080/api/admin/role?username="+role, {},{
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+
 let editRole = (role) => {
   return axios.put("http://localhost:8080/api/admin/role/edit", role, {
     headers: getJsonHeadersWithJWT(),
@@ -103,6 +110,7 @@ export {
   getRoleList,
   setEditDataOnLoad,
   createNewRole,
+  deleteRole,
   editRole,
   getAllList,
   setRoleDataOnLoad,
