@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Modal,
     Button,
@@ -16,8 +16,14 @@ function ConfirmLeaveModal({
     action,
     handleUpdate,
     handleClose,
-    entitlementList
+    entitlementList,
+    setComment,
+    comment,
 }) {
+    useEffect(()=>{
+        (entitlementList.result === "true") ? setComment("") : setComment("Not Enough Leave Entitlement!");        
+    },[])
+
     return (
         <>
             <Modal show={show}>
@@ -66,7 +72,7 @@ function ConfirmLeaveModal({
                                     placeholder="Leave a comment here"
                                     style={{ height: "100px" }}
                                     onInput={onCommentInput}
-                                    defaultValue={(entitlementList.result === "true") ? '' : 'No Enough Leave Entitlement!'}
+                                    defaultValue={comment}
                                 />
                             </FloatingLabel>
                         </Stack>

@@ -153,6 +153,7 @@ function ManagerLeaveList() {
                 onCommentInput={(e) => {
                     setComment(e.target.value);
                 }}
+                setComment={setComment}
             ></ConfirmLeaveModal>
         </LoginCheckWrapper>
     );
