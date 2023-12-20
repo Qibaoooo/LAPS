@@ -57,8 +57,8 @@ function HomePage() {
                   </thead>
                   <tbody>
                     <tr style={{}}>
-                      <td style={{ textAlign: "right" }}>
-                        <Card.Text>{`Annual Leave Entitlement:`}</Card.Text>
+                      <td style={{  }}>
+                        <Card.Text>{`Annual Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.annualLeaveUsed}`}</Card.Text>
@@ -71,8 +71,8 @@ function HomePage() {
                       </td>
                     </tr>
                     <tr style={{}}>
-                      <td style={{ textAlign: "right" }}>
-                        <Card.Text>{`Medical Leave Entitlement:`}</Card.Text>
+                      <td style={{  }}>
+                        <Card.Text>{`Medical Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.medicalLeaveUsed}`}</Card.Text>
@@ -85,8 +85,8 @@ function HomePage() {
                       </td>
                     </tr>
                     <tr style={{}}>
-                      <td style={{ textAlign: "right" }}>
-                        <Card.Text>{`Compensation Leave Entitlement:`}</Card.Text>
+                      <td style={{  }}>
+                        <Card.Text>{`Compensation Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.compensationLeaveUsed}`}</Card.Text>
