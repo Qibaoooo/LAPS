@@ -78,10 +78,11 @@ let setRoleDataOnLoad = async (id, ref) => {
   try {
     const resp = await getRoleList();
     const list = resp.data;
+    // console.log(list)
     list.forEach((role) => {
       if (id == role.id) {
         console.log("found role " + "id");
-        ref.current.querySelector("#formName").value = role.roleName;
+        ref.current.querySelector("#formName").value = role.name;
         ref.current.querySelector("#formDescription").value = role.description;
       }
     });

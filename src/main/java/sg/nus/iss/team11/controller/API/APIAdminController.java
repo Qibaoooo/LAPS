@@ -179,6 +179,7 @@ public class APIAdminController {
 			JSONObject rp = new JSONObject();
 			rp.put("name", r.getName());
 			rp.put("description", r.getDescription());
+			rp.put("id", r.getRoleId());
 			rolesList.put(rp);
 		}
 
@@ -193,7 +194,7 @@ public class APIAdminController {
 		roles.setDescription(newRole.getDescription());
 		Role created = roleservice.createRole(roles);
 
-		return new ResponseEntity<String>("role created:" + created.getRoleId(), HttpStatus.OK);
+		return new ResponseEntity<String>("role created: " + created.getRoleId(), HttpStatus.OK);
 
 	}
 
@@ -207,6 +208,6 @@ public class APIAdminController {
 
 		Role edited = roleservice.updateRole(roles);
 
-		return new ResponseEntity<String>("roles updated" + edited.getRoleId(), HttpStatus.OK);
+		return new ResponseEntity<String>("roles updated: " + edited.getRoleId(), HttpStatus.OK);
 	}
 }
