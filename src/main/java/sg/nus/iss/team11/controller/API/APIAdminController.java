@@ -71,7 +71,6 @@ public class APIAdminController {
 			ep.put("id", e.getUserId());
 			ep.put("name", e.getUsername());
 			ep.put("managerId", e.getManagerId());
-//			ep.put("managerName", userservice.findUser(e.getManagerId()).getu);
 			ep.put("role", e.getRole().getName());
 			ep.put("type", e.getType());
 			ep.put("annualLeaveEntitlement", e.getAnnualLeaveEntitlement());
@@ -156,7 +155,7 @@ public class APIAdminController {
 	public ResponseEntity<String> editEmployeeInfo(Principal principal, @RequestBody EditEmployee editEmployee) {
 		LAPSUser user = userservice.findUserByUsername(principal.getName());
 
-		LAPSUser eUser = new LAPSUser();
+		LAPSUser eUser = userservice.findUser(editEmployee.getId());
 
 		eUser.setUsername(editEmployee.getUsername());
 		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
