@@ -214,8 +214,6 @@ public class APIAdminController {
 	@PutMapping(value = "/role/edit")
 	public ResponseEntity<String> editRole(Principal principal, @RequestBody EditRole editrole) {
 
-		Role role0=roleservice.findRole(editrole.getRoleId());
-		
 		Role roles=new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
 		roles.setName(editrole.getName());
