@@ -73,14 +73,14 @@ function ManagerClaimList() {
       )}
       {claimList.map((userClaimArray, index) => (
         <div>
-          <MyTable key={index}>
-            <thead>
-              <tr>
+          <MyTable key={index} foldable={true}>
+            <thead >
+              <tr style={{ position:"sticky", top: "0px"}}>
                 <td colSpan={8} style={{ fontSize: "16px" }}>
                   <b>Compensation Claim for {namelist[index]}</b>
                 </td>
               </tr>
-              <tr>
+              <tr style={{ position:"sticky", top: "55px"}}>
                 <th>ID</th>
                 <th>Applied By</th>
                 <th>Description</th>
