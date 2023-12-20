@@ -101,7 +101,7 @@ function AdminEmployeeList() {
             window.location.reload();
           });
         }}
-        headerMsg={"Confirm delete employee " + chosenEmployee.Id + " ?"}
+        headerMsg={"Confirm delete employee " + chosenEmployee.name + " ?"}
         buttonMsg={"DELETE"}
         enableCloseButton={true}
         handleClose={() => {

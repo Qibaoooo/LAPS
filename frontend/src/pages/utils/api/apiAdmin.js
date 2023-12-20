@@ -15,8 +15,8 @@ let createNewEmployee = (employee) => {
   });
 };
 
-let deleteEmployee = (employee) => {
-  return axios.delete("http://localhost:8080/api/admin/employee?username=" + employee, {
+let deleteEmployee = (employeeName) => {
+  return axios.delete("http://localhost:8080/api/admin/employee?username=" + employeeName, {
     headers: getJsonHeadersWithJWT(),
   });
 };
