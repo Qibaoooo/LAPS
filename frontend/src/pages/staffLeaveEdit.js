@@ -40,7 +40,7 @@ function StaffLeaveEdit() {
       event.stopPropagation();
       setValidated(true);
     } else {
-      if (fromDate >= toDate) {
+      if (fromDate > toDate) {
         setAlertMsg("The start date must be before the end date. Please try again.");
         setShowAlert(true);
         return; // Stop the form submission
