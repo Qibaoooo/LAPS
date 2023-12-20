@@ -162,7 +162,7 @@ public class LeaveApplication {
 	
 	
 	public boolean isOverlapping(LeaveApplication la) {
-	    return fromDate.isBefore(la.getToDate()) && la.getFromDate().isBefore(toDate) || (fromDate.isEqual(la.getFromDate()) && toDate.isEqual(la.getToDate()));
+	    return fromDate.isBefore(la.getToDate()) && la.getFromDate().isBefore(toDate) || (fromDate.isEqual(la.getFromDate()) || toDate.isEqual(la.getToDate()));
 	}
 
 

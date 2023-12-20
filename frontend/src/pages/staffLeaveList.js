@@ -38,8 +38,7 @@ function StaffLeaveList() {
             <th>Type</th>
             <th>Description</th>
             <th>Status</th>
-            <th>Update</th>
-            <th>Cancel</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>

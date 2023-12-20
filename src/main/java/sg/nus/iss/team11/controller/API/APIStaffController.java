@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -99,6 +100,27 @@ public class APIStaffController {
 		la.setStatus(ApplicationStatusEnum.CANCELLED);
 		leaveApplicationService.updateLeaveApplication(la);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+	@PutMapping(value = "leaves")
+	public ResponseEntity<String> cancelLeave(Principal principal, @RequestParam int leaveId, @RequestParam String methodRequest) {
+		LeaveApplication la = leaveApplicationService.findLeaveApplicationById(leaveId);
+		if (methodRequest.equalsIgnoreCase("cancelled") ) {
+			la.setStatus(ApplicationStatusEnum.CANCELLED);
+			leaveApplicationService.updateLeaveApplication(la);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		
+		else if (methodRequest.equalsIgnoreCase("deleted")) {
+		// If payload.request == Delete
+		la.setStatus(ApplicationStatusEnum.DELETED);
+		leaveApplicationService.updateLeaveApplication(la);
+		return new ResponseEntity<>(HttpStatus.OK);
+		}
+		
+	
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PostMapping(value = "/leave/new")
