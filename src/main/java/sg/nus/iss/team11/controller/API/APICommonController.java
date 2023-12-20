@@ -58,9 +58,11 @@ public class APICommonController {
 		userJson.put("annualLeaveLeft", user.getAnnualLeaveEntitlement() - aUsed);
 		userJson.put("compensationLeaveLeft", user.getCompensationLeaveEntitlement() - cUsed);
 		userJson.put("medicalLeaveLeft", user.getMedicalLeaveEntitlement() - mUsed);
-		if (user.getRole().getRoleId().equals("staff")) {
+		if (user.getRole().getRoleId().equals("staff") && user.getManagerId() > 0) {
 			String manager = userService.findUser(user.getManagerId()).getUsername();
 			userJson.put("manager", manager);
+		} else {
+			userJson.put("manager", "No Manager");
 		}
 		userJson.put("role", user.getRole().getName());
 		userJson.put("username", user.getUsername().toUpperCase());

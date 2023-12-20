@@ -92,13 +92,12 @@ public class APIAdminController {
 			leaveapplicationservice.removeLeaveApplication(la);
 		}
 		List<CompensationClaim> cclaims = user.getCompensationClaim();
-		for(CompensationClaim cc:cclaims) {
+		for (CompensationClaim cc : cclaims) {
 			compensationclaimservice.removeCompensationClaim(cc);
 		}
 		userservice.removeUser(user);
 		return new ResponseEntity<String>("Employee deleted: " + username, HttpStatus.OK);
 	}
-
 
 	@PostMapping(value = "/employee/new")
 	public ResponseEntity<String> createNewEmployee(@RequestBody NewEmployee newCreateEmployee) {
@@ -159,7 +158,13 @@ public class APIAdminController {
 
 		eUser.setUsername(editEmployee.getUsername());
 		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
-		eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
+		
+		if (editEmployee.getManagerName() != null && !editEmployee.getManagerName().equals("")) {
+			eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
+		} else {
+			eUser.setManagerId(0);
+		}
+		
 		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
 		eUser.setType(editEmployee.getType());
 		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
@@ -185,14 +190,15 @@ public class APIAdminController {
 
 		return new ResponseEntity<>(rolesList.toString(), HttpStatus.OK);
 	}
-	
-	@DeleteMapping(value="/role")
-	public ResponseEntity<String>deleteRole(@RequestParam String id){
-		 try {
-		      roleservice.deleteRoleById(id);
-		   } catch (Exception e) {
-		      return new ResponseEntity<String>("can't delete role! It still has users assigned.", HttpStatus.BAD_REQUEST);
-		   }
+
+	@DeleteMapping(value = "/role")
+	public ResponseEntity<String> deleteRole(@RequestParam String id) {
+		try {
+			roleservice.deleteRoleById(id);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("can't delete role! It still has users assigned.",
+					HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<String>("role deleted: " + id, HttpStatus.OK);
 	}
 
@@ -201,11 +207,11 @@ public class APIAdminController {
 
 		// init a new Role
 		Role role = new Role();
-		
+
 		role.setName(newRole.getName());
 		role.setDescription(newRole.getDescription());
 		role.setRoleId(newRole.getName().toLowerCase());
-		
+
 		Role created = roleservice.createRole(role);
 
 		return new ResponseEntity<String>("role created: " + created.getRoleId(), HttpStatus.OK);
@@ -214,9 +220,9 @@ public class APIAdminController {
 	@PutMapping(value = "/role/edit")
 	public ResponseEntity<String> editRole(Principal principal, @RequestBody EditRole editrole) {
 
-		Role role0=roleservice.findRole(editrole.getRoleId());
-		
-		Role roles=new Role();
+		Role role0 = roleservice.findRole(editrole.getRoleId());
+
+		Role roles = new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
 		roles.setName(editrole.getName());
 		roles.setDescription(editrole.getDescription());
