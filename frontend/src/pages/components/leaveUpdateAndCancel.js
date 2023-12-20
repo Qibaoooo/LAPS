@@ -9,6 +9,7 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
     const currentDate = Date.now();
 
     const [isCancelled, setIsCancelled] = useState(false);
+    
 
     useEffect(() => {
         const cancelled = localStorage.getItem(`cancelled-${leaveapplication.id}`);
@@ -19,6 +20,8 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
 
 
     const handleCancelCalls = async() => {
+        const isConfirmed = window.confirm("Are you sure you want to cancel this leave application?");
+        if(isConfirmed){
         try{
             const response = await cancelLeave(leaveapplication.id.toString());
             console.log(response);
@@ -31,6 +34,7 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
         catch (e){
             console.log(e);
         }
+    }
     };
 
     if (status === "APPROVED" && ( currentDate > fromDate && currentDate > toDate)){
