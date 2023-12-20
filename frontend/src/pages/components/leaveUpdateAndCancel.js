@@ -1,15 +1,15 @@
 import React, {useState, useEffect } from 'react'
 import { Badge, Button } from "react-bootstrap";
-import {cancelLeave} from "../utils/api/apiStaff";
+import {cancelLeave,deleteLeave} from "../utils/api/apiStaff";
 
-function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
+function CreateUpdateAndCancelButtons({leaveapplication, onCancel, onDelete }){
     const status = leaveapplication.status;
     const toDate = Date.parse(leaveapplication.toDate);
     const fromDate = Date.parse(leaveapplication.fromDate);
     const currentDate = Date.now();
 
     const [isCancelled, setIsCancelled] = useState(false);
-    
+    const [isDeleted, setIsDeleted] = useState(false);
 
     useEffect(() => {
         const cancelled = localStorage.getItem(`cancelled-${leaveapplication.id}`);
@@ -36,6 +36,23 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
         }
     }
     };
+
+    const handleDeleteCalls = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this leave application?");
+        if (isConfirmed) {
+          try{
+            const response = await deleteLeave(leaveapplication.id.toString(),"delete");
+            if (response.status === 200){
+                onDelete(); // Calling the onDelete function passed from the parent
+
+            }
+          }
+          catch(e){
+            console.log(e);
+          }
+        }
+    };
+
 
     if (status === "APPROVED" && ( currentDate > fromDate && currentDate > toDate) ||  status === "CANCELLED"){
         return (
@@ -76,9 +93,13 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel}){
                     )
                 }  
                 {isCancelled ? (<Badge bg="warning" size="sm">Not Applicable</Badge>) : (
-                    <Button variant="danger" size="sm" onClick={handleCancelCalls}>Cancel</Button>
+                    <>
+                        <Button variant="danger" size="sm" style={{marginRight: '10px'}} onClick={handleCancelCalls}>Cancel</Button>
+                        <Button variant="danger" size="sm" onClick={handleDeleteCalls}>Delete</Button>
+                    </>
                     )
                 }
+                
                 </td>
             </React.Fragment>
         );

@@ -66,6 +66,10 @@ function StaffLeaveNew() {
     }
   }};
 
+  const closeButton = () => {
+    setShowAlert(false)
+    window.location.href = "list";
+  }
 
   return (
     <LoginCheckWrapper
@@ -138,7 +142,7 @@ function StaffLeaveNew() {
         variant="info"
         msg1="Result:"
         msg2={alertMsg}
-        handleCLose={() => setShowAlert(false)}
+        handleCLose={closeButton}
       ></MyAlert>
     </LoginCheckWrapper>
   );
