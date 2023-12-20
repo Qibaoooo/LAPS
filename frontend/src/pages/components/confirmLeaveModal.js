@@ -20,11 +20,6 @@ function ConfirmLeaveModal({
   setComment,
   comment,
 }) {
-  useEffect(() => {
-    entitlementList.result === "true"
-      ? setComment("")
-      : setComment("Not Enough Leave Entitlement!");
-  }, []);
 
   return (
     <>

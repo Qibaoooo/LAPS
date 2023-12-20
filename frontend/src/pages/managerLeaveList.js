@@ -35,10 +35,16 @@ function ManagerLeaveList() {
     };
 
     const getEntitlement = (id) => {
-        getEntitlementLeft(id)
+        return getEntitlementLeft(id)
             .then((response) => response.data)
             .then((list) => {
+                // console.log("setEntitlementList: "+JSON.stringify(list))
                 setEntitlementList(list);
+                if (list.result === "false") {
+                  setComment("Not Enough Leave Entitlement!")
+                } else {
+                  setComment("")
+                }
             });
     };
 
@@ -126,10 +132,10 @@ function ManagerLeaveList() {
                                         variant="danger"
                                         size="sm"
                                         onClick={() => {
+                                            getEntitlement(value.id)
                                             setShowModal(true);
                                             setSelectedLeave(value);
                                             setSelectedAction("REJECT");
-                                            getEntitlement(value.id);
                                         }}
                                     >
                                         Reject
