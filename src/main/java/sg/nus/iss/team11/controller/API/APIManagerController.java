@@ -29,6 +29,7 @@ import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
 import sg.nus.iss.team11.model.CompensationClaimTimeEnum;
@@ -138,7 +139,8 @@ public class APIManagerController {
 		LeaveApplication appli = leaveApplicationService.findLeaveApplicationById(id);
 		LAPSUser applier = appli.getUser();
 		String type = appli.getType().toString();
-		List<LeaveApplication> typeAppli = leaveApplicationService.findLeaveApplicationsApprovedByType(type);
+		LeaveApplicationTypeEnum enumType = LeaveApplicationTypeEnum.valueOf(type);		
+		List<LeaveApplication> typeAppli = leaveApplicationService.findLeaveApplicationsApprovedByType(enumType);
 		double entitle = 0, used = 0;
 		switch (type) {
 		case "MedicalLeave":

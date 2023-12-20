@@ -53,12 +53,12 @@ public class LapsApplication {
 			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", encoder.encode("password"), adminRole));
 			LAPSUser esther = userRepo.save(new LAPSUser("esther", encoder.encode("password"), managerRole));
 
-			// Testing for tin
+			// INIT LAPSUser
 			final LAPSUser tin = userRepo.save(new LAPSUser("tin", encoder.encode("password"), staffRole));
 			final LAPSUser cherwah = userRepo.save(new LAPSUser("cherwah", encoder.encode("password"), staffRole));
 			final LAPSUser yuenkwan = userRepo.save(new LAPSUser("yuenkwan", encoder.encode("password"), staffRole));
 
-			Arrays.asList(tin, cherwah, yuenkwan, esther).forEach(user->{
+			Arrays.asList(tin, cherwah, yuenkwan, esther).forEach(user -> {
 				user.setAnnualLeaveEntitlement(14);
 				user.setCompensationLeaveEntitlement(10);
 				user.setMedicalLeaveEntitlement(60);
@@ -105,17 +105,23 @@ public class LapsApplication {
 			holidayRepo.save(new Holiday(LocalDate.of(2024, 10, 31), "Deepavali"));
 			holidayRepo.save(new Holiday(LocalDate.of(2024, 12, 25), "Christmas Day"));
 
+			// SET MANAGERS
 			userRepo.save(tin.setManager(esther));
 			userRepo.save(cherwah.setManager(esther));
 			userRepo.save(yuenkwan.setManager(esther));
 			userRepo.save(esther.setManager(esther));
+
+			// cherwah used 3 days this year
 			leaveRepo.save(new LeaveApplication(cherwah, "Let me leave", ApplicationStatusEnum.UPDATED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
-			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(cherwah, null, ApplicationStatusEnum.REJECTED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 
+			// esther used 3 days this year
+			leaveRepo.save(new LeaveApplication(esther, "Leave anytime I want", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+
+			// tin
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
@@ -125,28 +131,32 @@ public class LapsApplication {
 			leaveRepo.save(new LeaveApplication(cherwah, "annual leave for cherwah", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.MedicalLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 
+			// tin used 3 days next year
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for rest", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().plusDays(30), LocalDate.now().plusDays(34)));
+
 			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(60),
 					LocalDate.now().minusDays(59)));
 			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(58),
 					LocalDate.now().minusDays(57)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(56),
-					LocalDate.now().minusDays(55)));
-
 			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(30),
 					LocalDate.now().minusDays(29)));
 			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(28),
 					LocalDate.now().minusDays(27)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
+
+			// tin used 2 days this year
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPROVED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(56),
+					LocalDate.now().minusDays(55)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(26),
 					LocalDate.now().minusDays(25)));
 
+			// CLAIMS
 			claimRepo.save(new CompensationClaim(tin, "cc for tin AM", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(0)));
 			claimRepo.save(new CompensationClaim(tin, "cc for tin PM", ApplicationStatusEnum.APPLIED,
@@ -160,7 +170,6 @@ public class LapsApplication {
 						CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(4)));
 
 			});
-
 			claimRepo.save(new CompensationClaim(cherwah, "cc for cherwah", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(0)));
 			claimRepo.save(new CompensationClaim(cherwah, "cc for cherwah", ApplicationStatusEnum.APPLIED,
@@ -172,7 +181,6 @@ public class LapsApplication {
 						CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(4)));
 
 			});
-			
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for yuenkwan", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.AM, LocalDate.now().plusDays(0)));
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for yuenkwan", ApplicationStatusEnum.APPLIED,
@@ -180,11 +188,11 @@ public class LapsApplication {
 			claimRepo.save(new CompensationClaim(yuenkwan, "cc for yuenkwan", ApplicationStatusEnum.APPLIED,
 					CompensationClaimTimeEnum.WHOLEDAY, LocalDate.now().plusDays(2)));
 			IntStream.range(0, 20).forEach(i -> {
-				claimRepo.save(new CompensationClaim(yuenkwan, "cc for yuenkwan No. " + i, ApplicationStatusEnum.APPLIED,
-						CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(4)));
+				claimRepo.save(new CompensationClaim(yuenkwan, "cc for yuenkwan No. " + i,
+						ApplicationStatusEnum.APPLIED, CompensationClaimTimeEnum.PM, LocalDate.now().plusDays(4)));
 
 			});
-			
+
 		};
 	}
 

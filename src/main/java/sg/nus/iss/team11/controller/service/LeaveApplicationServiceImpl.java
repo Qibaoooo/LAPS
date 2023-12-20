@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 import sg.nus.iss.team11.repository.LeaveApplicationRepository;
 
 @Service
@@ -50,7 +51,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	}
 	
 	@Override
-	public List<LeaveApplication> findLeaveApplicationsApprovedByType(String type){
+	public List<LeaveApplication> findLeaveApplicationsApprovedByType(LeaveApplicationTypeEnum type){
 		return leaveRepo.findLeaveApplicationsApprovedByType(type);
 	}
 

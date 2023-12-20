@@ -55,7 +55,8 @@ function MyNavBar(props) {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault()
     localStorage.removeItem("userinfo");
     window.location.href = "/login";
   };

@@ -3,6 +3,7 @@ package sg.nus.iss.team11.controller.service;
 import java.util.List;
 
 import sg.nus.iss.team11.model.LeaveApplication;
+import sg.nus.iss.team11.model.LeaveApplicationTypeEnum;
 
 public interface LeaveApplicationService {
 	List<LeaveApplication> findAllLeaveApplications();
@@ -19,5 +20,5 @@ public interface LeaveApplicationService {
 
 	List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId);
 	
-	List<LeaveApplication> findLeaveApplicationsApprovedByType(String type);
+	List<LeaveApplication> findLeaveApplicationsApprovedByType(LeaveApplicationTypeEnum type);
 }

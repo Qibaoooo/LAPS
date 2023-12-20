@@ -9,27 +9,77 @@ import PageTitle from "./components/pageTitle";
 
 function HomePage() {
   const [userDetails, setUserDetails] = useState([]);
-  const [showLeaves, setShowLeaves] = useState(false);
+  const [showYear, setShowYear] = useState("Current");
   const [roleId, setRoleId] = useState("");
+  const [available, setAvailable] = useState({});
+  const [used, setUsed] = useState({});
 
-  useEffect(() => {
+  const loadData = () => {
     let infoLocal = getUserinfoFromLocal();
     if (infoLocal) {
       getUserDetails()
         .then((resp) => resp.data)
         .then((data) => {
-          console.log(data)
+          console.log(data);
           setUserDetails(data);
+          setUsed({
+            annual: data.annualLeaveUsed,
+            medical: data.medicalLeaveUsed,
+            comp: data.compensationLeaveUsed,
+          });
+          setAvailable({
+            annual: data.annualLeaveLeft,
+            medical: data.medicalLeaveLeft,
+            comp: data.compensationLeaveLeft,
+          });
         });
 
       if (roleId !== infoLocal.roleId) {
         setRoleId(infoLocal.roleId);
       }
     }
-  }, []);
+  };
+
+  const handleClickToggle = (e) => {
+    e.preventDefault();
+    if (showYear === "Current") {
+      setDataForNextYear()
+    } else {
+      setDataForCurrentYear()
+    }
+    // console.log(showYear);
+  };
+
+  const setDataForNextYear = () => {
+    setShowYear("Next");
+    setUsed({
+      annual: userDetails.annualLeaveUsedNextYear,
+      medical: userDetails.medicalLeaveUsedNextYear,
+      comp: userDetails.compensationLeaveUsedNextYear,
+    });
+    setAvailable({
+      annual: userDetails.annualLeaveLeftNextYear,
+      medical: userDetails.medicalLeaveLeftNextYear,
+      comp: userDetails.compensationLeaveLeftNextYear,
+    });
+  };
+
+  const setDataForCurrentYear = () => {
+    setShowYear("Current");
+    setUsed({
+      annual: userDetails.annualLeaveUsed,
+      medical: userDetails.medicalLeaveUsed,
+      comp: userDetails.compensationLeaveUsed,
+    });
+    setAvailable({
+      annual: userDetails.annualLeaveLeft,
+      medical: userDetails.medicalLeaveLeft,
+      comp: userDetails.compensationLeaveLeft,
+    });
+  };
 
   return (
-    <LoginCheckWrapper>
+    <LoginCheckWrapper runAfterCheck={loadData}>
       <MyNavBar></MyNavBar>
       <PageTitle title="Home Page"></PageTitle>
       <div className="d-flex justify-content-center">
@@ -49,50 +99,58 @@ function HomePage() {
                 <Table className="homeTable" bordered>
                   <thead>
                     <tr>
+                      <td colSpan="4">
+                        <p>Showing {showYear} Year Data</p>
+                        <a href="" onClick={handleClickToggle}>
+                          toggle
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
                       <td>Type</td>
-                      <td>Available</td>
                       <td>Used</td>
+                      <td>Available</td>
                       <td>Yearly Entitlement</td>
                     </tr>
                   </thead>
                   <tbody>
                     <tr style={{}}>
-                      <td style={{  }}>
+                      <td style={{}}>
                         <Card.Text>{`Annual Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.annualLeaveUsed}`}</Card.Text>
+                        <Card.Text>{used.annual}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.annualLeaveLeft}`}</Card.Text>
+                        <Card.Text>{available.annual}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.annualLeaveEntitlement}`}</Card.Text>
                       </td>
                     </tr>
                     <tr style={{}}>
-                      <td style={{  }}>
+                      <td style={{}}>
                         <Card.Text>{`Medical Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.medicalLeaveUsed}`}</Card.Text>
+                        <Card.Text>{used.medical}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.medicalLeaveLeft}`}</Card.Text>
+                        <Card.Text>{available.medical}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.medicalLeaveEntitlement}`}</Card.Text>
                       </td>
                     </tr>
                     <tr style={{}}>
-                      <td style={{  }}>
+                      <td style={{}}>
                         <Card.Text>{`Compensation Leave Entitlement`}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.compensationLeaveUsed}`}</Card.Text>
+                        <Card.Text>{used.comp}</Card.Text>
                       </td>
                       <td>
-                        <Card.Text>{`${userDetails.compensationLeaveLeft}`}</Card.Text>
+                        <Card.Text>{available.comp}</Card.Text>
                       </td>
                       <td>
                         <Card.Text>{`${userDetails.compensationLeaveEntitlement}`}</Card.Text>

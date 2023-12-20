@@ -23,8 +23,10 @@ function LoginCheckWrapper({ children, allowRole, runAfterCheck }) {
     // if user is logged in already, we check role.
     if (!allowRole) {
       // no allowRole supplied, allow user.
+      runAfterCheck();
       return;
     }
+    
     if (!allowRole.includes(getUserinfoFromLocal().roleId)) {
       setHeaderMsg("You are not authorized.");
       setButtonMsg("Go To Home Page");
