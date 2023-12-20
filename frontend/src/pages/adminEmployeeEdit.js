@@ -7,30 +7,16 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import { editEmployeeInfo, setEditDataOnLoad, getAllList } from "./utils/api/apiAdmin";
 import { useSearchParams } from "react-router-dom";
 import MyAlert from "./components/myAlert";
+import { useNavigate } from 'react-router';
 
 function AdminEmployeeEdit() {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
-
-    const [userName, setUserName] = useState();
-    const [password, setPassword] = useState();
-    const [managerName, setManagerName] = useState();
-    const [roleName, setRoleName] = useState();
-    const [annualLeaveEntitlement, setAnnualLeaveEntitlement] = useState();
-    const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState();
-    const [compensationLeaveEntitlement, setCompensationLeaveEntitlement] = useState();
 
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState();
     const [bigList, setBigList] = useState([]);
-
-    const onInputUN = ({ target: { value } }) => setUserName(value);
-    const onInputPW = ({ target: { value } }) => setPassword(value);
-    const onInputMN = ({ target: { value } }) => setManagerName(value);
-    const onInputRN = ({ target: { value } }) => setRoleName(value);
-    const onInputALE = ({ target: { value } }) => setAnnualLeaveEntitlement(value);
-    const onInputMLE = ({ target: { value } }) => setMedicalLeaveEntitlement(value);
-    const onInputCLE = ({ target: { value } }) => setCompensationLeaveEntitlement(value);
 
     const [validated, setValidated] = useState(false);
 
@@ -49,6 +35,7 @@ function AdminEmployeeEdit() {
                 password: formRef.current.querySelector("#formPassword").value,
                 managerName: formRef.current.querySelector("#formManager").value,
                 roleName: formRef.current.querySelector("#formRole").value,
+                type: formRef.current.querySelector("#formType").value,
                 annualLeaveEntitlement: formRef.current.querySelector("#formAnnual").value,
                 medicalLeaveEntitlement: formRef.current.querySelector("#formMedical").value,
                 compensationLeaveEntitlement: formRef.current.querySelector("#formCompensation").value,
@@ -82,7 +69,7 @@ function AdminEmployeeEdit() {
     return (
         <LoginCheckWrapper allowRole={["ROLE_admin"]} runAfterCheck={loadData}>
             <MyNavBar></MyNavBar>
-            <PageTitle title="Edit New Employee"></PageTitle>
+            <PageTitle title="Edit Employee"></PageTitle>
 
 
             <Form noValidate validated={validated} onSubmit={onFormSubmit} ref={formRef}>
@@ -94,7 +81,6 @@ function AdminEmployeeEdit() {
                                 required
                                 type="text"
                                 placeholder="user name"
-                                onChange={onInputUN}
                             />{" "}
                         </Form.Group>
                         <Form.Group as={Col} controlId="formPassword">
@@ -103,7 +89,6 @@ function AdminEmployeeEdit() {
                                 required
                                 type="password"
                                 placeholder="password"
-                                onChange={onInputPW}
                             />{" "}
                         </Form.Group>
                     </Row>
@@ -114,7 +99,6 @@ function AdminEmployeeEdit() {
                             <Form.Select
                                 required
                                 className="form-select"
-                                onChange={onInputMN}
                             >
                                 {Array.isArray(bigList[0]) &&
                                     bigList[0].map((value, index) => {
@@ -134,7 +118,6 @@ function AdminEmployeeEdit() {
                             <Form.Select
                                 required
                                 className="form-select"
-                                onChange={onInputRN}
                             >
                                 {Array.isArray(bigList[1]) &&
                                     bigList[1].map((value, index, array) => {
@@ -147,13 +130,28 @@ function AdminEmployeeEdit() {
                     </Row>
                     <br></br>
                     <Row className="mx-5" style={{ textAlign: "left" }}>
+                        <Form.Group as={Col} controlId="formType">
+                            <Form.Label>Type</Form.Label>
+                            <Form.Select
+                                required
+                                className="form-select"
+                            >
+                                <option value="" style={{ display: "none" }}>
+                                    Select a type
+                                </option>
+                                <option value="Administrative">Administrative</option>
+                                <option value="Professional">Professional</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Row>
+                    <br></br>
+                    <Row className="mx-5" style={{ textAlign: "left" }}>
                         <Form.Group as={Col} controlId="formAnnual">
                             <Form.Label>Annual Leave Entitlement</Form.Label>
                             <Form.Control
                                 required
                                 type="number"
                                 placeholder="Annual Leave Entitlement"
-                                onChange={onInputALE}
                             ></Form.Control>
                         </Form.Group>
                     </Row>
@@ -165,7 +163,6 @@ function AdminEmployeeEdit() {
                                 required
                                 type="number"
                                 placeholder="Medical Leave Entitlement"
-                                onChange={onInputMLE}
                             />{" "}
                         </Form.Group>
                     </Row>
@@ -177,7 +174,6 @@ function AdminEmployeeEdit() {
                                 required
                                 type="number"
                                 placeholder="Compensation Leave Entitlement"
-                                onChange={onInputCLE}
                             />{" "}
                         </Form.Group>
                     </Row>
@@ -190,7 +186,10 @@ function AdminEmployeeEdit() {
                 variant="info"
                 msg1="Result:"
                 msg2={alertMsg}
-                handleCLose={() => setShowAlert(false)}
+                handleCLose={() => {
+                    setShowAlert(false);
+                    navigate('/admin/employee');
+                }}
             ></MyAlert>
         </LoginCheckWrapper>
     );
