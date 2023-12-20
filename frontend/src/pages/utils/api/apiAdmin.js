@@ -74,7 +74,13 @@ let editRole = (role) => {
   });
 };
 
-let setRoleDataOnLoad = async (id, ref) => {
+let deleteRole = (role) => {
+  return axios.delete("http://localhost:8080/api/admin/role/delete",role, {
+    headers: getJsonHeadersWithJWT(),
+  });
+};
+
+let setRoleDataOnLoad = async (id, ref, setRole) => {
   try {
     const resp = await getRoleList();
     const list = resp.data;
@@ -99,5 +105,6 @@ export {
   createNewRole,
   editRole,
   getAllList,
-  setRoleDataOnLoad
+  setRoleDataOnLoad,
+  deleteRole
 };
