@@ -65,6 +65,10 @@ public class APIManagerController {
 			if (userLAList.isEmpty()) {
 				continue;
 			}
+
+			userLAList = leaveApplicationService.filterForYear(userLAList,
+					Arrays.asList(LocalDate.now().getYear(), LocalDate.now().plusYears(1).getYear()));
+
 			for (LeaveApplication l : userLAList) {
 				userLeave.put(buildLeave(l));
 			}
