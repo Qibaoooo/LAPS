@@ -19,6 +19,7 @@ function CommonLeaveList() {
     const [year, setYear] = useState(currentDate.getFullYear());
     
     useEffect(() => {
+        console.log("!!!CommonLeaveList useEffect RUN")
         if (month && year) {
           loadData(year, month);
         }
@@ -49,7 +50,7 @@ function CommonLeaveList() {
     return (
     <LoginCheckWrapper
         allowRole={["ROLE_manager", "ROLE_staff"]}
-        runAfterCheck={loadData}
+        runAfterCheck={()=>{}}
     >
         <MyNavBar />
         <PageTitle title="Staff Leave Application List"></PageTitle>
