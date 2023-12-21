@@ -89,9 +89,9 @@ public class APIManagerController {
 			if (userLAList.isEmpty()) {
 				continue;
 			}
-			
+
 			userLAList = leaveApplicationService.onlyBeforeToday(userLAList);
-			
+
 			for (LeaveApplication l : userLAList) {
 				userLeave.put(buildLeave(l));
 			}
@@ -142,7 +142,7 @@ public class APIManagerController {
 		LeaveApplication appli = leaveApplicationService.findLeaveApplicationById(id);
 		LAPSUser applier = appli.getUser();
 		String type = appli.getType().toString();
-		LeaveApplicationTypeEnum enumType = LeaveApplicationTypeEnum.valueOf(type);		
+		LeaveApplicationTypeEnum enumType = LeaveApplicationTypeEnum.valueOf(type);
 		List<LeaveApplication> typeAppli = leaveApplicationService.findLeaveApplicationsApprovedByType(enumType);
 		double entitle = 0, used = 0;
 		switch (type) {
@@ -220,10 +220,18 @@ public class APIManagerController {
 			if (userClaimList.isEmpty()) {
 				continue;
 			}
-			
-			// only return history, not anything in future
-			userClaimList = compensationClaimService.onlyBeforeToday(userClaimList);
-			
+
+			if (!request.getPendingClaimsOnly()) {
+				// if not getPendingClaimsOnly, it's requesting history.
+				// so we only return history, not anything in future
+				userClaimList = compensationClaimService.onlyBeforeToday(userClaimList);
+			} else {
+				// else, it's requesting claims to be processed.
+				// we return this and next year data
+				userClaimList = compensationClaimService.filterForYear(userClaimList,
+						Arrays.asList(LocalDate.now().getYear(), LocalDate.now().plusYears(1).getYear()));
+			}
+
 			for (CompensationClaim c : userClaimList) {
 				userClaim.put(c.toJsonObject());
 			}
@@ -235,13 +243,13 @@ public class APIManagerController {
 
 		return new ResponseEntity<>(claimList.toString(), HttpStatus.OK);
 	}
-	
+
 	@PutMapping(value = "/claims")
 	public ResponseEntity<String> editClaim(Principal principal, @RequestBody EditClaimRequest editClaimRequest) {
-		
+
 		// user is the logged-in manager.
 		LAPSUser user = userService.findUserByUsername(principal.getName());
-		
+
 		LAPSUser claimOwner = userService.findUser(editClaimRequest.getUserid());
 
 		String newStatus = editClaimRequest.getStatus().toString();
@@ -273,6 +281,7 @@ public class APIManagerController {
 	}
 
 	private void incrementCompLeave(LAPSUser user, CompensationClaimTimeEnum time) {
-		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5, user.getUserId());
+		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5,
+				user.getUserId());
 	}
 }

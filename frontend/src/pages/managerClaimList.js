@@ -96,8 +96,8 @@ function ManagerClaimList() {
                   <td width="5%">{value.id}</td>
                   <td width="10%">{value.username}</td>
                   <td width="25%">{value.description}</td>
-                  <td width="5%">{value.time}</td>
-                  <td width="15%">{value.date}</td>
+                  <td width="5%">{value.overtimeTime}</td>
+                  <td width="15%">{value.overtimeDate}</td>
                   <td width="20%">
                     <MyStatusBadge status={value.status}></MyStatusBadge>
                   </td>
