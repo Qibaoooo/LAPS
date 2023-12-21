@@ -19,4 +19,8 @@ public interface CompensationClaimService {
 
 	List<CompensationClaim> findCompensationClaimsToProcess(Integer userId);
 
+	List<CompensationClaim> filterForYear(List<CompensationClaim> claims, List<Integer> years);
+
+	List<CompensationClaim> onlyBeforeToday(List<CompensationClaim> claims);
+
 }

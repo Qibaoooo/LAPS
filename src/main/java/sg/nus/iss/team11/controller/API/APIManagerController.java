@@ -89,6 +89,9 @@ public class APIManagerController {
 			if (userLAList.isEmpty()) {
 				continue;
 			}
+			
+			userLAList = leaveApplicationService.onlyBeforeToday(userLAList);
+			
 			for (LeaveApplication l : userLAList) {
 				userLeave.put(buildLeave(l));
 			}
@@ -218,8 +221,8 @@ public class APIManagerController {
 				continue;
 			}
 			
-			// only return current year history
-			userClaimList.removeIf(c -> c.getOverTimeDate().getYear() != LocalDate.now().getYear());
+			// only return history, not anything in future
+			userClaimList = compensationClaimService.onlyBeforeToday(userClaimList);
 			
 			for (CompensationClaim c : userClaimList) {
 				userClaim.put(c.toJsonObject());

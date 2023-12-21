@@ -21,4 +21,8 @@ public interface LeaveApplicationService {
 	List<LeaveApplication> findLeaveApplicationsToProcess(Integer userId);
 	
 	List<LeaveApplication> findLeaveApplicationsApprovedByType(LeaveApplicationTypeEnum type);
+
+	List<LeaveApplication> filterForYear(List<LeaveApplication> leaves, List<Integer> years);
+
+	List<LeaveApplication> onlyBeforeToday(List<LeaveApplication> leaves);
 }

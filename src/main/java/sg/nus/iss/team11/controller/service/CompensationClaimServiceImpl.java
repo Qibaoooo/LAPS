@@ -1,11 +1,13 @@
 package sg.nus.iss.team11.controller.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.repository.CompensationClaimRepository;
 
 @Service
@@ -47,6 +49,22 @@ public class CompensationClaimServiceImpl implements CompensationClaimService {
 	@Override
 	public List<CompensationClaim> findCompensationClaimsByUserId(Integer userId) {
 		return claimRepo.findCompensationClaimsByUserId(userId);
+	}
+	
+	@Override
+	public List<CompensationClaim> filterForYear(List<CompensationClaim> claims, List<Integer> years) {
+		claims.removeIf(c->{
+			return !years.contains(c.getOverTimeDate().getYear());
+		});
+		return claims;
+	}
+	
+	@Override
+	public List<CompensationClaim> onlyBeforeToday(List<CompensationClaim> claims) {
+		claims.removeIf(c->{
+			return c.getOverTimeDate().isAfter(LocalDate.now());
+		});
+		return claims;
 	}
 	
 }

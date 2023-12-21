@@ -1,5 +1,7 @@
 package sg.nus.iss.team11.controller.service;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,22 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	@Override
 	public List<LeaveApplication> findLeaveApplicationsApprovedByType(LeaveApplicationTypeEnum type){
 		return leaveRepo.findLeaveApplicationsApprovedByType(type);
+	}
+	
+	@Override
+	public List<LeaveApplication> filterForYear(List<LeaveApplication> leaves, List<Integer> years) {
+		leaves.removeIf(l->{
+			return !years.contains(l.getFromDate().getYear());
+		});
+		return leaves;
+	}
+	
+	@Override
+	public List<LeaveApplication> onlyBeforeToday(List<LeaveApplication> leaves) {
+		leaves.removeIf(l->{
+			return l.getFromDate().isAfter(LocalDate.now());
+		});
+		return leaves;
 	}
 
 }
