@@ -5,8 +5,10 @@ import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { createNewClaim } from "./utils/api/apiStaff";
 import MyAlert from "./components/myAlert";
+import { useNavigate } from "react-router-dom";
 
 function StaffClaimNew() {
+  const navigate = useNavigate();
   const [claimDate, setClaimDate] = useState();
   const [claimTime, setClaimTime] = useState();
   const [description, setDescription] = useState();
@@ -105,7 +107,7 @@ function StaffClaimNew() {
         variant="info"
         msg1="Result:"
         msg2={alertMsg}
-        handleCLose={() => setShowAlert(false)}
+        handleCLose={() => navigate("/staff/claim/list")}
       ></MyAlert>
     </LoginCheckWrapper>
   );

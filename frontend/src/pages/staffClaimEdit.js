@@ -4,10 +4,12 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { editClaim, setClaimDataOnLoad } from "./utils/api/apiStaff";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import MyAlert from "./components/myAlert";
 
 function StaffClaimEdit() {
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
@@ -21,7 +23,7 @@ function StaffClaimEdit() {
   const formRef = useRef();
 
   const loadData = () => {
-    setClaimDataOnLoad(id, formRef , setClaim);
+    setClaimDataOnLoad(id, formRef, setClaim);
   };
 
   const onFormSubmit = (event) => {
@@ -114,7 +116,7 @@ function StaffClaimEdit() {
         variant="info"
         msg1="Result:"
         msg2={alertMsg}
-        handleCLose={() => setShowAlert(false)}
+        handleCLose={() => navigate("/staff/claim/list")}
       ></MyAlert>
     </LoginCheckWrapper>
   );

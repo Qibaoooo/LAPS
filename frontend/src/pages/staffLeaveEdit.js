@@ -4,10 +4,11 @@ import { setLeaveDataOnLoad, editLeave } from "./utils/api/apiStaff";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import MyAlert from "./components/myAlert";
 
 function StaffLeaveEdit() {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
@@ -30,7 +31,7 @@ function StaffLeaveEdit() {
   const formRef = useRef();
 
   const loadData = () => {
-    setLeaveDataOnLoad(id, formRef); 
+    setLeaveDataOnLoad(id, formRef);
   };
 
   const onFormSubmit = (event) => {
@@ -41,11 +42,13 @@ function StaffLeaveEdit() {
       setValidated(true);
     } else {
       if (fromDate > toDate) {
-        setAlertMsg("The start date must be before the end date. Please try again.");
+        setAlertMsg(
+          "The start date must be before the end date. Please try again."
+        );
         setShowAlert(true);
         return; // Stop the form submission
       }
-      editLeave({ 
+      editLeave({
         fromDate: formRef.current.querySelector("#formFromDate").value,
         toDate: formRef.current.querySelector("#formToDate").value,
         type: formRef.current.querySelector("#formType").value,
@@ -80,7 +83,12 @@ function StaffLeaveEdit() {
       <MyNavBar />
       <PageTitle title="Edit Leave Application"></PageTitle>
 
-      <Form noValidate validated={validated} onSubmit={onFormSubmit} ref={formRef}>
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={onFormSubmit}
+        ref={formRef}
+      >
         <Col md="6" className="mx-auto">
           <Row className="mx-5" style={{ textAlign: "left" }}>
             <Form.Group as={Col} controlId="formFromDate">
@@ -94,7 +102,7 @@ function StaffLeaveEdit() {
               />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formToDate" >
+            <Form.Group as={Col} controlId="formToDate">
               <Form.Label>Date To</Form.Label>
               <Form.Control
                 required
@@ -136,7 +144,13 @@ function StaffLeaveEdit() {
 
         <Button type="submit">Submit</Button>
       </Form>
-      <MyAlert showAlert={showAlert} variant="info" msg1="Result:" msg2={alertMsg} handleCLose={() => setShowAlert(false)}></MyAlert>
+      <MyAlert
+        showAlert={showAlert}
+        variant="info"
+        msg1="Result:"
+        msg2={alertMsg}
+        handleCLose={() => navigate("/staff/leave/list")}
+      ></MyAlert>
     </LoginCheckWrapper>
   );
 }
