@@ -2,6 +2,7 @@ package sg.nus.iss.team11.controller.service;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,11 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 			return l.getFromDate().isAfter(LocalDate.now());
 		});
 		return leaves;
+	@Override
+	public List<LeaveApplication> findLeaveApplicationByYearMonth(Integer year, Integer month){
+		LocalDate firststartdate = LocalDate.of(year, month, 1);
+		LocalDate lastenddate = firststartdate.withDayOfMonth(firststartdate.lengthOfMonth());
+		return leaveRepo.findLeaveApplicationByYearMonth(year, month, firststartdate, lastenddate);
 	}
 
 }

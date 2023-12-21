@@ -4,15 +4,17 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.nus.iss.team11.controller.service.HolidayService;
@@ -77,6 +79,26 @@ public class APICommonController {
 		userJson.put("username", user.getUsername().toUpperCase());
 
 		return new ResponseEntity<>(userJson.toString(), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "leaves")
+	public ResponseEntity<String> getLeaveApplicationForYearMonth(Authentication authentication,Principal principal, @RequestParam int year, @RequestParam int month){
+		JSONArray leaveList = new JSONArray();
+		List<LeaveApplication> leaveapplications = leaveApplicationService.findLeaveApplicationByYearMonth(year, month);
+		leaveapplications.forEach((l) -> {
+			JSONObject leave = new JSONObject();
+			leave.put("name", l.getUser().getUsername());
+			leave.put("id", l.getId());
+			leave.put("comment", l.getComment());
+			leave.put("description", l.getDescription());
+			leave.put("fromDate", l.getFromDate());
+			leave.put("toDate", l.getToDate());
+			leave.put("status", l.getStatus().toString());
+			leave.put("type", l.getType());
+
+			leaveList.put(leave);
+			});
+		return new ResponseEntity<String>(leaveList.toString(),HttpStatus.OK);
 	}
 	
 	private int[] findUsedDays(List<LeaveApplication> applications, LAPSUser user) {
