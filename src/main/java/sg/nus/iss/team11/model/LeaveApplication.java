@@ -175,8 +175,8 @@ public class LeaveApplication {
 		json.put("username", this.getUser().getUsername());
 		json.put("fromDate", this.getFromDate().toString());
 		json.put("toDate", this.getToDate().toString());
-		json.put("description", this.getDescription());
-		json.put("comment", this.getComment());
+		json.put("description", this.getDescription() != null ? this.getDescription() : "-");
+		json.put("comment", this.getComment() != null ? this.getComment() : "-");
 		json.put("status", this.getStatus());
 		return json;
 	}

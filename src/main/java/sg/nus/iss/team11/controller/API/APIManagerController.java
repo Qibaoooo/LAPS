@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,7 +299,7 @@ public class APIManagerController {
 		});
 
 		if (leaves.isEmpty()) {
-			return new ResponseEntity<String>("empty", HttpStatus.OK);
+			return new ResponseEntity<String>("no such leave applications found within this period", HttpStatus.BAD_REQUEST);
 		}
 
 		JSONArray result = new JSONArray();
