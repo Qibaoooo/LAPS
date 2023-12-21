@@ -85,7 +85,7 @@ function ManagerLeaveList() {
                 <p style={{ marginTop: "100px" }}>No pending leave applications for approval.</p>
             )}
             {leaveList.map((userLeaveArray, index) => (
-                <MyTable>
+                <MyTable foldable={true}>
                     <thead>
                         <tr>
                             <td colSpan={8} style={{ fontSize: '16px' }}>
@@ -144,7 +144,6 @@ function ManagerLeaveList() {
                             </tr>
                         ))}
                     </tbody>
-                    <div style={{ marginTop: "20px" }}></div>
                 </MyTable>
             ))}
             <ConfirmLeaveModal

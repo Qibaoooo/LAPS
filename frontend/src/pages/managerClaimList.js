@@ -131,7 +131,6 @@ function ManagerClaimList() {
               ))}
             </tbody>
           </MyTable>
-          <div style={{ marginTop: "20px" }}></div>
         </div>
       ))}
       <ConfirmClaimModal

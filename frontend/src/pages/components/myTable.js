@@ -75,10 +75,11 @@ function MyTable({ children, foldable = false }) {
           overflowY: `${tableOverflow}`,
         }}
       >
-        <Table className="opacity-75" style={{ marginBottom: "0px" }}>
+        <Table className="opacity-75">
           {children}
         </Table>
       </div>
+      <div style={{ marginTop: "20px" }}></div>
     </Col>
   );
 }

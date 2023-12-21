@@ -32,7 +32,7 @@ function ManagerLeaveList() {
             <PageTitle title="Subordinates Leave Application History"></PageTitle>
 
             {leaveList.map((userLeaveArray, index) => (
-                <MyTable>
+                <MyTable foldable={true}>
                     <thead>
                         <tr>
                             <td colSpan={8} style={{ fontSize: '16px' }}>
@@ -72,7 +72,6 @@ function ManagerLeaveList() {
                             </tr>
                         ))}
                     </tbody>
-                    <div style={{ marginTop: "20px" }}></div>
                 </MyTable>
             ))}
         </LoginCheckWrapper>

@@ -33,7 +33,7 @@ function ManagerClaimHistory() {
       <MyNavBar />
       <PageTitle title="Subordinates OT Claim History"></PageTitle>
       {claimList.map((userClaimArray, index) => (
-        <MyTable key={index}>
+        <MyTable key={index} foldable={true}>
           <thead>
             <tr>
               <td colSpan={8}>
@@ -63,7 +63,6 @@ function ManagerClaimHistory() {
               </tr>
             ))}
           </tbody>
-          <div style={{ marginTop: "20px" }}></div>
         </MyTable>
       ))}
     </LoginCheckWrapper>
