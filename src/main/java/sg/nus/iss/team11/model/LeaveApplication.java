@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -159,10 +160,25 @@ public class LeaveApplication {
 		int period = (int) ChronoUnit.DAYS.between(this.getFromDate(), this.getToDate());
         return period + 1;
 	}
-	
-	
+
 	public boolean isOverlapping(LeaveApplication la) {
 	    return fromDate.isBefore(la.getToDate()) && la.getFromDate().isBefore(toDate) || (fromDate.isEqual(la.getFromDate()) || toDate.isEqual(la.getToDate()));
+	}
+	
+	public boolean isOverlapping(LocalDate targetFromDate, LocalDate targetToDate) {
+	    return (fromDate.isBefore(targetToDate) && targetFromDate.isBefore(toDate)) || (fromDate.isEqual(targetFromDate) || toDate.isEqual(targetToDate));
+	}
+
+	public JSONObject toJsonObject() {
+		JSONObject json = new JSONObject();
+		json.put("id", this.getId());
+		json.put("username", this.getUser().getUsername());
+		json.put("fromDate", this.getFromDate().toString());
+		json.put("toDate", this.getToDate().toString());
+		json.put("description", this.getDescription());
+		json.put("comment", this.getComment());
+		json.put("status", this.getStatus());
+		return json;
 	}
 
 

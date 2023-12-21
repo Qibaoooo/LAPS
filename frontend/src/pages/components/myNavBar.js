@@ -124,6 +124,7 @@ function MyNavBar(props) {
               Process Compensation Claim
             </NavDropdown.Item>
             <NavDropdown.Item href="/manager/claim/history">Compensation Claim History</NavDropdown.Item>
+            <NavDropdown.Item href="/manager/reporting">Reporting</NavDropdown.Item>
           </NavDropdown>
         )}
         {showaAdminMenu && (

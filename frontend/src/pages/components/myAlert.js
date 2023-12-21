@@ -1,7 +1,14 @@
 import React from "react";
 import { Alert, Container, Button } from "react-bootstrap";
 
-function MyAlert({ variant, msg1, msg2, showAlert, handleCLose }) {
+function MyAlert({
+  variant,
+  msg1,
+  msg2,
+  showAlert,
+  handleCLose,
+  showReturnTo = true,
+}) {
   return (
     <div>
       <Container className="col-md-4 mt-5">
@@ -9,12 +16,11 @@ function MyAlert({ variant, msg1, msg2, showAlert, handleCLose }) {
           <p>{msg1}</p>
           <p>{msg2}</p>
           <div className="">
-            <Button
-              onClick={handleCLose}
-              variant={`outline-${variant}`}
-            >
-              Return to List Page
-            </Button>
+            {showReturnTo && (
+              <Button onClick={handleCLose} variant={`outline-${variant}`}>
+                Return to List Page
+              </Button>
+            )}
           </div>
         </Alert>
       </Container>
