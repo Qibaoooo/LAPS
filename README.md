@@ -11,11 +11,7 @@
     - `Run as -> Spring Boot App`
 
 - ### FRONTEND
-  - We proudly support two frontends - **Spring Boot MVC** and **ReactJS**
-  - For Spring Boot MVC:
-    - It starts together with backend services. Visit [localhost:8080/v1/login](localhost:8080/v1/login)
- after the backend is booted to use it.
-  - For ReactJS:
+  - Start ReactJS:
     - `cd /frontend`
     - `npm install`
     - `npm run start`
