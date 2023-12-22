@@ -9,9 +9,11 @@ import MyTable from "./components/myTable";
 import getMovementRegister from "./utils/api/apiCommon";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import Modal from 'react-bootstrap/Modal';
 
 function CommonLeaveList() {
     const [leaveList, setLeaveList] = useState([]);
+    const [events, setEvents] = useState([]);
     const [view,setView] = useState("Calendar");
 
     const currentDate = new Date();
@@ -31,8 +33,15 @@ function CommonLeaveList() {
         .then((response) => response.data)
         .then((list) => {
             setLeaveList(list);
+            setEvents(transformLeaveListToEvents(list));
         });
     }
+    };
+
+    const leaveColours = {
+        "AnnualLeave": "blue",
+        "MedicalLeave": "green",
+        "CompensationLeave": "red"
     };
 
     const handleDatesSet = (dateInfo) => {
@@ -45,7 +54,43 @@ function CommonLeaveList() {
         setMonth(activeMonth); // Set the active month
         setYear(activeYear); // Set the active year
     };
-  
+
+    const transformLeaveListToEvents = (list) => {
+        return list.map((leave) => {
+          const endDate = new Date(leave.toDate);
+          endDate.setDate(endDate.getDate() + 1);
+          return {
+            id: leave.id, 
+            title: leave.name + " on " + leave.type, 
+            start: leave.fromDate,
+            end: endDate.toISOString().split('T')[0], 
+            backgroundColor: leaveColours[leave.type] || 'grey',
+            borderColor: leaveColours[leave.type] || 'grey',
+            extendedProps: {
+              name: leave.name,
+              description: leave.description,
+              comments: leave.comment
+            }
+          };
+        });
+      };
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalEvent, setModalEvent] = useState(null);
+
+    const handleEventClick = (clickInfo) => {
+        setModalEvent({
+            title: clickInfo.event.title,
+            name: clickInfo.event.extendedProps.name,
+            description: clickInfo.event.extendedProps.description,
+            comments: clickInfo.event.extendedProps.comments,
+        });
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => setShowModal(false);
+
+
 
     return (
     <LoginCheckWrapper
@@ -87,9 +132,26 @@ function CommonLeaveList() {
             aspectRatio={1}
             datesSet={handleDatesSet}
             initialDate={currentDate}
-            fixedWeekCount={4}
+            eventClick={handleEventClick}
+            events= {events}
             />)
         }
+
+    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+            <Modal.Title>{modalEvent?.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Name: {modalEvent?.name}</p>
+            <p>Description: {modalEvent?.description}</p>
+            <p>Comments: {modalEvent?.comments}</p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Close
+            </Button>
+        </Modal.Footer>
+    </Modal>
         
     </LoginCheckWrapper>
   );
