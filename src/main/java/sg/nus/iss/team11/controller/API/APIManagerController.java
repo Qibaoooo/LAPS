@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
 import sg.nus.iss.team11.controller.API.payload.GetManagerClaimsRequest;
+import sg.nus.iss.team11.controller.API.payload.LeaveReportingRequest;
 import sg.nus.iss.team11.controller.API.payload.ProcessLeaveAndClaimRequest;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
 import sg.nus.iss.team11.controller.service.HolidayService;
@@ -288,4 +288,27 @@ public class APIManagerController {
 		userService.incrementCompensationLeaveBy((time == CompensationClaimTimeEnum.WHOLEDAY) ? 1 : 0.5,
 				user.getUserId());
 	}
+
+	@GetMapping(value = "/report")
+	public ResponseEntity<String> getReport(LeaveReportingRequest request) {
+		List<LeaveApplication> leaves = leaveApplicationService.findAllLeaveApplications();
+
+		leaves.removeIf(l -> {
+			Boolean isOverlapping = l.isOverlapping(LocalDate.parse(request.getFromDate()), LocalDate.parse(request.getToDate()));
+			return !isOverlapping;
+		});
+
+		if (leaves.isEmpty()) {
+			return new ResponseEntity<String>("no such leave applications found within this period", HttpStatus.BAD_REQUEST);
+		}
+
+		JSONArray result = new JSONArray();
+
+		for (LeaveApplication l : leaves) {
+			result.put(l.toJsonObject());
+		}
+
+		return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
+	}
+
 }

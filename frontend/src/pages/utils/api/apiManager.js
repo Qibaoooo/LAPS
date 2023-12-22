@@ -24,9 +24,13 @@ let approveLeave = (data) => {
 };
 
 let getEntitlementLeft = (id) => {
-  return axios.post("http://localhost:8080/api/manager/leave/checkEntitle?id="+id,null,{
-    headers: getJsonHeadersWithJWT(),
-  });
+  return axios.post(
+    "http://localhost:8080/api/manager/leave/checkEntitle?id=" + id,
+    null,
+    {
+      headers: getJsonHeadersWithJWT(),
+    }
+  );
 };
 
 let rejectLeave = (data) => {
@@ -41,8 +45,8 @@ COMPENSATION CLAIM
 let getClaimList = () => {
   const data = {
     pendingClaimsOnly: true,
-    managerId: getUserinfoFromLocal().id
-  }
+    managerId: getUserinfoFromLocal().id,
+  };
   return axios.get("http://localhost:8080/api/manager/claims", {
     params: data,
     headers: getJsonHeadersWithJWT(),
@@ -52,8 +56,8 @@ let getClaimList = () => {
 let getClaimHistory = () => {
   const data = {
     pendingClaimsOnly: false,
-    managerId: getUserinfoFromLocal().id
-  }
+    managerId: getUserinfoFromLocal().id,
+  };
   return axios.get("http://localhost:8080/api/manager/claims", {
     params: data,
     headers: getJsonHeadersWithJWT(),
@@ -61,14 +65,14 @@ let getClaimHistory = () => {
 };
 
 let approveClaim = (claim, comment) => {
-  let data = buildClaimData(claim, comment, "APPROVED")
+  let data = buildClaimData(claim, comment, "APPROVED");
   return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
 };
 
 let rejectClaim = (claim, comment) => {
-  let data = buildClaimData(claim, comment, "REJECTED")
+  let data = buildClaimData(claim, comment, "REJECTED");
   return axios.put("http://localhost:8080/api/manager/claims", data, {
     headers: getJsonHeadersWithJWT(),
   });
@@ -83,8 +87,23 @@ let buildClaimData = (claim, comment, status) => {
     userid: claim.userid,
     comment: comment,
     status: status,
-  }
-}
+  };
+};
+
+/**
+ * Reporting
+ */
+let getLeaveReport = (fromDate, toDate, leaveType) => {
+  const data = {
+    fromDate: fromDate,
+    toDate: toDate,
+    leaveType: leaveType,
+  };
+  return axios.get("http://localhost:8080/api/manager/report",{
+    params: data,
+    headers: getJsonHeadersWithJWT(),
+  });
+};
 
 export {
   getLeaveList,
@@ -95,5 +114,6 @@ export {
   getClaimHistory,
   approveLeave,
   rejectLeave,
-  getEntitlementLeft
+  getEntitlementLeft,
+  getLeaveReport,
 };
