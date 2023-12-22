@@ -25,4 +25,6 @@ public interface LeaveApplicationService {
 	List<LeaveApplication> filterForYear(List<LeaveApplication> leaves, List<Integer> years);
 
 	List<LeaveApplication> onlyBeforeToday(List<LeaveApplication> leaves);
+	
+	List<LeaveApplication> findLeaveApplicationByYearMonth(Integer year, Integer month);
 }

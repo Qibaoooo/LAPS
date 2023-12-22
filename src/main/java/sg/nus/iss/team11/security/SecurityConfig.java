@@ -24,6 +24,7 @@ public class SecurityConfig {
 			"/v1/login",
 			"/v1/login/**",
 			// public REST API URLs:
+			"/api/common/leaves",
 			"/style.css",
 			"/api/auth/login", 
 			"/about",
@@ -50,6 +51,10 @@ public class SecurityConfig {
 			"/api/manager/**",
 	};
 
+	private static String[] reactCommonURLs = {
+			"/api/common/leaves",
+	};
+	
 	private static String[] reactAdminURLs = {
 			"/api/admin/**",
 	};
