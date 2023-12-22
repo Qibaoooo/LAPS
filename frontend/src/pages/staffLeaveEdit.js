@@ -6,25 +6,40 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import PageTitle from "./components/pageTitle";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import MyAlert from "./components/myAlert";
+import { checkIfWeekend } from "./utils/dateUtil";
 
 function StaffLeaveEdit() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
   // Assuming the leave application has fields like fromDate, toDate, type, and description
   const [fromDate, setFromDate] = useState();
   const [toDate, setToDate] = useState();
-  const [leaveType, setLeaveType] = useState();
   const [description, setDescription] = useState();
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState();
+  const [showWeekendAlert, setShowWeekendAlert] = useState(false);
 
-  const onInputFromDate = ({ target: { value } }) => setFromDate(value);
-  const onInputToDate = ({ target: { value } }) => setToDate(value);
-  const onInputType = ({ target: { value } }) => setLeaveType(value);
   const onInputDescription = ({ target: { value } }) => setDescription(value);
+  const onInputFromDate = ({ target: { value } }) => {
+    if (checkIfWeekend(value)) {
+      setShowWeekendAlert(true);
+    } else {
+      setFromDate(value);
+      setShowWeekendAlert(false);
+    }
+  };
+
+  const onInputToDate = ({ target: { value } }) => {
+    if (checkIfWeekend(value)) {
+      setShowWeekendAlert(true);
+    } else {
+      setToDate(value);
+      setShowWeekendAlert(false);
+    }
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -92,7 +107,7 @@ function StaffLeaveEdit() {
         <Col md="6" className="mx-auto">
           <Row className="mx-5" style={{ textAlign: "left" }}>
             <Form.Group as={Col} controlId="formFromDate">
-              <Form.Label>Date From</Form.Label>
+              <Form.Label>Start Date</Form.Label>
               <Form.Control
                 required
                 type="date"
@@ -103,7 +118,7 @@ function StaffLeaveEdit() {
             </Form.Group>
 
             <Form.Group as={Col} controlId="formToDate">
-              <Form.Label>Date To</Form.Label>
+              <Form.Label>End Date</Form.Label>
               <Form.Control
                 required
                 type="date"
@@ -118,7 +133,7 @@ function StaffLeaveEdit() {
           <Row className="mx-5" style={{ textAlign: "left" }}>
             <Form.Group as={Col} controlId="formType">
               <Form.Label>Leave Type</Form.Label>
-              <Form.Select required onChange={onInputType}>
+              <Form.Select required>
                 <option value="AnnualLeave">Annual</option>
                 <option value="MedicalLeave">Medical</option>
                 <option value="CompensationLeave">Compensation</option>
@@ -150,6 +165,14 @@ function StaffLeaveEdit() {
         msg1="Result:"
         msg2={alertMsg}
         handleCLose={() => navigate("/staff/leave/list")}
+      ></MyAlert>
+      <MyAlert
+        showAlert={showWeekendAlert}
+        variant="warning"
+        msg1="Invalid date"
+        msg2="FromDate/ToDate cannot be a weekend day."
+        handleCLose={() => {}}
+        showReturnTo={false}
       ></MyAlert>
     </LoginCheckWrapper>
   );

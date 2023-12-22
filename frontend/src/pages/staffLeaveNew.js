@@ -5,6 +5,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 import { createLeave } from "./utils/api/apiStaff";
 import MyAlert from "./components/myAlert";
+import { checkIfWeekend } from "./utils/dateUtil";
 
 function StaffLeaveNew() {
   const currentDate = new Date().toISOString().split("T")[0];
@@ -40,14 +41,6 @@ function StaffLeaveNew() {
 
   const loadData = () => {
     setLeaveType("MedicalLeave");
-  };
-
-  const checkIfWeekend = (d) => {
-    let date = new Date(d);
-    if (date.getDay() == 6 || date.getDay() == 0) {
-      return true;
-    }
-    return false;
   };
 
   const onFormSubmit = (event) => {
