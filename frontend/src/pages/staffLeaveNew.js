@@ -106,7 +106,7 @@ function StaffLeaveNew() {
                 placeholder="date"
                 value = {fromDate}
                 onChange = {onInputFromDate}
-              />{" "}
+              />
             </Form.Group>
 
             <Form.Group as={Col} controlId="toDate">
@@ -117,7 +117,7 @@ function StaffLeaveNew() {
                 placeholder="date"
                 value = {toDate}
                 onChange = {onInputToDate}
-              />{" "}
+              />
             </Form.Group>
           </Row>
 

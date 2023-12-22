@@ -135,16 +135,19 @@ public class LapsApplication {
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for rest", ApplicationStatusEnum.APPROVED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().plusDays(30), LocalDate.now().plusDays(34)));
 
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave for rest", ApplicationStatusEnum.APPLIED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().plusDays(40), LocalDate.now().plusDays(44)));
+			
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.REJECTED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(60),
 					LocalDate.now().minusDays(59)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(58),
-					LocalDate.now().minusDays(57)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(30),
-					LocalDate.now().minusDays(29)));
-			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.APPLIED,
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.REJECTED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(28),
+					LocalDate.now().minusDays(27)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 2 month back", ApplicationStatusEnum.UPDATED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(60),
+					LocalDate.now().minusDays(59)));
+			leaveRepo.save(new LeaveApplication(tin, "annual leave from 1 month back", ApplicationStatusEnum.UPDATED,
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now().minusDays(28),
 					LocalDate.now().minusDays(27)));
 
