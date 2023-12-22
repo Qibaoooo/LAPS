@@ -126,10 +126,8 @@ public class LapsApplication {
 					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for tin", ApplicationStatusEnum.APPLIED,
 					LeaveApplicationTypeEnum.CompensationLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
-			leaveRepo.save(new LeaveApplication(esther, "annual leave for esther", ApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
-			leaveRepo.save(new LeaveApplication(cherwah, "annual leave for cherwah", ApplicationStatusEnum.APPLIED,
-					LeaveApplicationTypeEnum.MedicalLeave, LocalDate.now(), LocalDate.now().plusDays(3)));
+			leaveRepo.save(new LeaveApplication(tin, "super long annual leave", ApplicationStatusEnum.APPLIED,
+					LeaveApplicationTypeEnum.AnnualLeave, LocalDate.now(), LocalDate.now().plusDays(30)));
 
 			// tin used 3 days next year
 			leaveRepo.save(new LeaveApplication(tin, "annual leave for rest", ApplicationStatusEnum.APPROVED,

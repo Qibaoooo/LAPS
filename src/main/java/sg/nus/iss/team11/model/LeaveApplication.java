@@ -178,6 +178,7 @@ public class LeaveApplication {
 		json.put("description", this.getDescription() != null ? this.getDescription() : "-");
 		json.put("comment", this.getComment() != null ? this.getComment() : "-");
 		json.put("status", this.getStatus());
+		json.put("type", this.getType().toString());
 		return json;
 	}
 

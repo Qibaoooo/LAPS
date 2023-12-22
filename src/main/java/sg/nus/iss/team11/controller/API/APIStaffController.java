@@ -79,16 +79,7 @@ public class APIStaffController {
 		JSONArray leaveList = new JSONArray();
 
 		leaveApplicationService.findLeaveApplicationsByUserId(user.getUserId()).forEach((l) -> {
-			JSONObject leave = new JSONObject();
-			leave.put("id", l.getId());
-			leave.put("comment", l.getComment());
-			leave.put("description", l.getDescription());
-			leave.put("fromDate", l.getFromDate());
-			leave.put("toDate", l.getToDate());
-			leave.put("status", l.getStatus().toString());
-			leave.put("type", l.getType());
-
-			leaveList.put(leave);
+			leaveList.put(l.toJsonObject());
 		});
 
 		return new ResponseEntity<>(leaveList.toString(), HttpStatus.OK);

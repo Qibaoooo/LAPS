@@ -148,6 +148,9 @@ public class APIManagerController {
 		String type = appli.getType().toString();
 		LeaveApplicationTypeEnum enumType = LeaveApplicationTypeEnum.valueOf(type);
 		List<LeaveApplication> typeAppli = leaveApplicationService.findLeaveApplicationsApprovedByType(enumType);
+		
+		leaveApplicationService.filterForYear(typeAppli, Arrays.asList(appli.getFromDate().getYear()));
+		
 		double entitle = 0, used = 0;
 		switch (type) {
 		case "MedicalLeave":
