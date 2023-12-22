@@ -71,7 +71,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 		leaves.removeIf(l->{
 			return l.getFromDate().isAfter(LocalDate.now());
 		});
-		return leaves;
+		return leaves;}
 	@Override
 	public List<LeaveApplication> findLeaveApplicationByYearMonth(Integer year, Integer month){
 		LocalDate firststartdate = LocalDate.of(year, month, 1);

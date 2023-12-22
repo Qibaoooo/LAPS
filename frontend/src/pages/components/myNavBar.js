@@ -137,6 +137,11 @@ function MyNavBar(props) {
             <NavDropdown.Item href="/admin/role/new">Create New Role</NavDropdown.Item>
           </NavDropdown>
         )}
+        {!showLogin && (
+                    <Nav.Link className="mx-3" href="/movementregister">
+                        Movement Register
+                    </Nav.Link>
+                )}
       </Container>
       <Container
         className="justify-content-end mx-3"
