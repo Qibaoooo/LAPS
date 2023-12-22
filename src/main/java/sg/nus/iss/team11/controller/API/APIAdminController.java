@@ -2,6 +2,7 @@ package sg.nus.iss.team11.controller.API;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.json.JSONArray;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import sg.nus.iss.team11.controller.API.payload.EditRole;
 import sg.nus.iss.team11.controller.API.payload.NewEmployee;
@@ -72,7 +74,7 @@ public class APIAdminController {
 			ep.put("name", e.getUsername());
 			ep.put("managerId", e.getManagerId());
 			ep.put("role", e.getRole().getName());
-			ep.put("type", e.getType());
+			ep.put("type", Objects.toString(e.getType(), "-"));
 			ep.put("annualLeaveEntitlement", e.getAnnualLeaveEntitlement());
 			ep.put("medicalLeaveEntitlement", e.getMedicalLeaveEntitlement());
 			ep.put("compensationLeaveEntitlement", e.getCompensationLeaveEntitlement());
@@ -100,30 +102,44 @@ public class APIAdminController {
 	}
 
 	@PostMapping(value = "/employee/new")
+	@Transactional
 	public ResponseEntity<String> createNewEmployee(@RequestBody NewEmployee newCreateEmployee) {
 		LAPSUser nuser = new LAPSUser();
 		nuser.setUsername(newCreateEmployee.getUsername());
 		nuser.setPassword(encoder.encode(newCreateEmployee.getPassword()));
-		nuser.setManagerId(userservice.findUserByUsername(newCreateEmployee.getManagerName()).getUserId());
 		nuser.setRole(roleservice.findRoleByRoleName(newCreateEmployee.getRoleName()));
-		nuser.setType(newCreateEmployee.getType());
-		nuser.setAnnualLeaveEntitlement(newCreateEmployee.getAnnualLeaveEntitlement());
-		nuser.setMedicalLeaveEntitlement(newCreateEmployee.getMedicalLeaveEntitlement());
-		nuser.setCompensationLeaveEntitlement(newCreateEmployee.getCompensationLeaveEntitlement());
+		
 		LAPSUser created = userservice.createUser(nuser);
-		if (newCreateEmployee.getRoleName().equalsIgnoreCase("manager")) {
-			created.setManagerId(created.getUserId());
-			userservice.updateUser(created);
-		}
-		if (newCreateEmployee.getRoleName().equalsIgnoreCase("administrator")) {
+
+
+		if (newCreateEmployee.getRoleName().equalsIgnoreCase("admin")) {
 			created.setType(null);
 			created.setManagerId(0);
 			created.setAnnualLeaveEntitlement(0);
 			created.setMedicalLeaveEntitlement(0);
 			created.setCompensationLeaveEntitlement(0);
+
 			userservice.updateUser(created);
+			return new ResponseEntity<String>("admin user created:" + created.getUserId(), HttpStatus.OK);
 		}
 
+		nuser.setType(newCreateEmployee.getType());
+		created.setAnnualLeaveEntitlement(newCreateEmployee.getAnnualLeaveEntitlement());
+		created.setMedicalLeaveEntitlement(newCreateEmployee.getMedicalLeaveEntitlement());
+		created.setCompensationLeaveEntitlement(newCreateEmployee.getCompensationLeaveEntitlement());
+
+		if (newCreateEmployee.getRoleName().equalsIgnoreCase("manager")) {
+			created.setManagerId(created.getUserId());
+		} else {
+			try {
+				nuser.setManagerId(userservice.findUserByUsername(newCreateEmployee.getManagerName()).getUserId());
+			} catch (Exception e) {
+				return new ResponseEntity<String>("user creation failed. Can't find manager "
+						+ newCreateEmployee.getManagerName() + "| Error:" + e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}
+
+		userservice.updateUser(created);
 		return new ResponseEntity<String>("user created:" + created.getUserId(), HttpStatus.OK);
 	}
 
@@ -158,13 +174,13 @@ public class APIAdminController {
 
 		eUser.setUsername(editEmployee.getUsername());
 		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
-		
+
 		if (editEmployee.getManagerName() != null && !editEmployee.getManagerName().equals("")) {
 			eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
 		} else {
 			eUser.setManagerId(0);
 		}
-		
+
 		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
 		eUser.setType(editEmployee.getType());
 		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
@@ -219,7 +235,7 @@ public class APIAdminController {
 
 	@PutMapping(value = "/role/edit")
 	public ResponseEntity<String> editRole(Principal principal, @RequestBody EditRole editrole) {
-		Role roles=new Role();
+		Role roles = new Role();
 		roles.setRoleId(roleservice.findRoleByRoleName(editrole.getName()).getRoleId());
 		roles.setName(editrole.getName());
 		roles.setDescription(editrole.getDescription());

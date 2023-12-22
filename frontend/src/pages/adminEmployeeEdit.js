@@ -94,7 +94,7 @@ function AdminEmployeeEdit() {
                                 required
                                 type="text"
                                 placeholder="user name"
-                            />{" "}
+                            />
                         </Form.Group>
                         <Form.Group as={Col} controlId="formPassword">
                             <Form.Label>Password</Form.Label>
@@ -102,7 +102,7 @@ function AdminEmployeeEdit() {
                                 required
                                 type="password"
                                 placeholder="password"
-                            />{" "}
+                            />
                         </Form.Group>
                     </Row>
                     {roleName !== "Manager" && roleName !== "Admin" && (
@@ -169,6 +169,8 @@ function AdminEmployeeEdit() {
                             <Form.Control
                                 required
                                 type="number"
+                                min={"0"}
+                                max={"365"}
                                 placeholder="Annual Leave Entitlement"
                             ></Form.Control>
                         </Form.Group>
@@ -180,8 +182,10 @@ function AdminEmployeeEdit() {
                             <Form.Control
                                 required
                                 type="number"
+                                min={"0"}
+                                max={"365"}
                                 placeholder="Medical Leave Entitlement"
-                            />{" "}
+                            />
                         </Form.Group>
                     </Row>
                     <br></br>
@@ -191,8 +195,10 @@ function AdminEmployeeEdit() {
                             <Form.Control
                                 required
                                 type="number"
+                                min={"0"}
+                                max={"365"}
                                 placeholder="Compensation Leave Entitlement"
-                            />{" "}
+                            />
                         </Form.Group>
                     </Row>
                 </Col>
