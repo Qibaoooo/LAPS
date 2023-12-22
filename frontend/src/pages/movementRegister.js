@@ -99,7 +99,7 @@ function CommonLeaveList() {
     >
         <MyNavBar />
         <PageTitle title="Staff Leave Application List"></PageTitle>
-        <Button onClick={() => setView(view === "List" ? "Calendar" : "List")}>Toggle View</Button>
+        <Button style={{marginBottom:"50px"}} onClick={() => setView(view === "List" ? "Calendar" : "List")}>Toggle View</Button>
         {view === "List" ? 
         (<MyTable>
         <thead>
