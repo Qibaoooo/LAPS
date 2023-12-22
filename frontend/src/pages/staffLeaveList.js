@@ -49,7 +49,7 @@ function StaffLeaveList() {
           {leaveList.map((value, index, array) => (
             <LeaveApplication 
             leaveapplication = {value} 
-            index = {index} 
+            index = {value.id} 
             key = {value.id}
             onDelete={() => handleDelete(value.id)}/>
           ))}

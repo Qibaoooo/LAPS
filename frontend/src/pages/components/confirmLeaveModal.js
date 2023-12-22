@@ -78,10 +78,13 @@ function ConfirmLeaveModal({
               </FloatingLabel>
             </Stack>
             <Stack style={{ textAlign: "end" }}>
-              <span style={{ textAlign: "left" }}>Action:</span>
+              <span style={{ textAlign: "end" }}>Action:</span>
               <h5 style={{}}>{action}</h5>
-              <span style={{ textAlign: "left" }}>Entitlement Left:</span>
-              <h5 style={{}}>{entitlementList.left}</h5>
+              {/**
+               * Hide this first becoz bug.
+               */}
+              {/* <span style={{ textAlign: "left" }}>Entitlement Left:</span>
+              <h5 style={{}}>{entitlementList.left}</h5> */}
             </Stack>
           </Stack>
           {showCommentAlert && (
