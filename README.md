@@ -1,4 +1,4 @@
-# Team 11 Java Course Project
+# Team 11 - Leave Application Processing System
 
 ## Set-up
 
@@ -15,3 +15,4 @@
     - `cd /frontend`
     - `npm install`
     - `npm run start`
+    - visite `localhost:3000`
