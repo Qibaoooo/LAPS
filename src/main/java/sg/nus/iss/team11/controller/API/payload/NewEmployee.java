@@ -3,9 +3,9 @@ package sg.nus.iss.team11.controller.API.payload;
 import sg.nus.iss.team11.model.EmployeeTypeEnum;
 
 public class NewEmployee {
-	private String username;
-	private String password;
-	private String managerName;
+	private String username = "";
+	private String password = "";
+	private String managerName = "";
 	private String roleName;
 	private EmployeeTypeEnum type;
 	private int annualLeaveEntitlement;

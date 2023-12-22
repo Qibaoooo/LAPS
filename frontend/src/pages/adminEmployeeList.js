@@ -59,17 +59,17 @@ function AdminEmployeeList() {
               <tr key={index}>
                 <td>{value.id}</td>
                 <td>{value.name}</td>
-                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.managerId}</td>
+                <td>{(value.role === 'Admin') ? (<i>-</i>) : value.managerId}</td>
                 <td>{value.role}</td>
-                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.type}</td>
-                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.annualLeaveEntitlement}</td>
-                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.medicalLeaveEntitlement}</td>
-                <td>{(value.role === 'Administrator') ? (<i>-</i>) : value.compensationLeaveEntitlement}</td>
+                <td>{(value.role === 'Admin') ? (<i>-</i>) : value.type}</td>
+                <td>{(value.role === 'Admin') ? (<i>-</i>) : value.annualLeaveEntitlement}</td>
+                <td>{(value.role === 'Admin') ? (<i>-</i>) : value.medicalLeaveEntitlement}</td>
+                <td>{(value.role === 'Admin') ? (<i>-</i>) : value.compensationLeaveEntitlement}</td>
                 <td>
                   <Button 
                     variant="warning"
                     size="sm"
-                    style={{ width: '40%', marginRight:'5px'}}
+                    style={{ marginRight:'5px'}}
                     onClick={() => {
                       window.location.href =
                         "/admin/employee/edit/?id=" + value.id;
@@ -81,7 +81,6 @@ function AdminEmployeeList() {
                     <Button 
                       variant="danger"
                       size="sm"
-                      style={{ width: '40%' }}
                       onClick={(e) => {
                         e.preventDefault();
                         setChosenEmployee(value);
