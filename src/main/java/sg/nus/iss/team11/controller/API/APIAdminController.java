@@ -123,7 +123,7 @@ public class APIAdminController {
 			return new ResponseEntity<String>("admin user created:" + created.getUserId(), HttpStatus.OK);
 		}
 
-		nuser.setType(newCreateEmployee.getType());
+		created.setType(newCreateEmployee.getType());
 		created.setAnnualLeaveEntitlement(newCreateEmployee.getAnnualLeaveEntitlement());
 		created.setMedicalLeaveEntitlement(newCreateEmployee.getMedicalLeaveEntitlement());
 		created.setCompensationLeaveEntitlement(newCreateEmployee.getCompensationLeaveEntitlement());
@@ -132,7 +132,7 @@ public class APIAdminController {
 			created.setManagerId(created.getUserId());
 		} else {
 			try {
-				nuser.setManagerId(userservice.findUserByUsername(newCreateEmployee.getManagerName()).getUserId());
+				created.setManagerId(userservice.findUserByUsername(newCreateEmployee.getManagerName()).getUserId());
 			} catch (Exception e) {
 				return new ResponseEntity<String>("user creation failed. Can't find manager "
 						+ newCreateEmployee.getManagerName() + "| Error:" + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -182,14 +182,27 @@ public class APIAdminController {
 
 		eUser.setUsername(editEmployee.getUsername());
 		eUser.setPassword(encoder.encode(editEmployee.getPassword()));
-
-		if (editEmployee.getManagerName() != null && !editEmployee.getManagerName().equals("")) {
-			eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
-		} else {
+		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
+		if (editEmployee.getRoleName().equalsIgnoreCase("admin")) {
+			eUser.setType(null);
 			eUser.setManagerId(0);
+			eUser.setAnnualLeaveEntitlement(0);
+			eUser.setMedicalLeaveEntitlement(0);
+			eUser.setCompensationLeaveEntitlement(0);
+
+			userservice.updateUser(eUser);
+			return new ResponseEntity<String>("admin user edited:" + eUser.getUserId(), HttpStatus.OK);
 		}
 
-		eUser.setRole(roleservice.findRoleByRoleName(editEmployee.getRoleName()));
+		if (editEmployee.getRoleName().equalsIgnoreCase("manager")) {
+			eUser.setManagerId(eUser.getUserId());
+		} else {
+			if (editEmployee.getManagerName() != null && !editEmployee.getManagerName().equals("")) {
+				eUser.setManagerId(userservice.findUserByUsername(editEmployee.getManagerName()).getUserId());
+			} else {
+				eUser.setManagerId(0);
+			}
+		}
 		eUser.setType(editEmployee.getType());
 		eUser.setAnnualLeaveEntitlement(editEmployee.getAnnualLeaveEntitlement());
 		eUser.setMedicalLeaveEntitlement(editEmployee.getMedicalLeaveEntitlement());
