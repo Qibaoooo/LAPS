@@ -94,7 +94,7 @@ public class APIManagerController {
 				continue;
 			}
 
-			userLAList = leaveApplicationService.onlyBeforeToday(userLAList);
+//			userLAList = leaveApplicationService.onlyBeforeToday(userLAList);
 
 			for (LeaveApplication l : userLAList) {
 				userLeave.put(buildLeave(l));
@@ -231,7 +231,7 @@ public class APIManagerController {
 			if (!request.getPendingClaimsOnly()) {
 				// if not getPendingClaimsOnly, it's requesting history.
 				// so we only return history, not anything in future
-				userClaimList = compensationClaimService.onlyBeforeToday(userClaimList);
+//				userClaimList = compensationClaimService.onlyBeforeToday(userClaimList);
 			} else {
 				// else, it's requesting claims to be processed.
 				// we return this and next year data

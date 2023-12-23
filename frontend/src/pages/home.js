@@ -169,14 +169,12 @@ function HomePage() {
             {roleId === "ROLE_manager" && (
               <div className="mt-3">
                 <Card.Link href="/manager/leave/list">
-                  {" "}
-                  View Suborinates Leave Applications{" "}
+                  View Suborinates Leave Applications
                 </Card.Link>
                 <br />
                 <br />
                 <Card.Link href="/manager/claim/list">
-                  {" "}
-                  View Suborinates OT Claims{" "}
+                  View Suborinates OT Claims
                 </Card.Link>
               </div>
             )}
@@ -184,6 +182,7 @@ function HomePage() {
               <div className="mt-3">
                 <Card.Link href="/admin/role"> Manage Roles </Card.Link>
                 <Card.Link href="/admin/employee"> Manage Users </Card.Link>
+                <Card.Link href="/admin/holidays"> Manage Holidays </Card.Link>
               </div>
             )}
           </Card.Body>

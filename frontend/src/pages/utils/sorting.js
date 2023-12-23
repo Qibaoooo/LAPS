@@ -8,4 +8,8 @@ const sortByFromDate = (a,b) => {
     return ('' + a.fromDate).localeCompare(b.fromDate);
 }
 
-export { sortByOvertimeDate, sortByFromDate } 
+const sortHolidays = (a,b) => {
+    return ('' + a[0]).localeCompare(b[0]);
+}
+
+export { sortByOvertimeDate, sortByFromDate, sortHolidays } 

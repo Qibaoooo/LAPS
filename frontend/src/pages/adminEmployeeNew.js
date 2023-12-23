@@ -16,7 +16,7 @@ function AdminEmployeeNew() {
   const [type, setEmployeeType] = useState();
   const [managerName, setManagerName] = useState();
   const [annualLeaveEntitlement, setAnnualLeaveEntitlement] = useState();
-  const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState();
+  const [medicalLeaveEntitlement, setMedicalLeaveEntitlement] = useState(60);
   const [compensationLeaveEntitlement, setCompensationLeaveEntitlement] =
     useState();
 

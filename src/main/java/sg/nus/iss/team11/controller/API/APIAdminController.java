@@ -1,6 +1,7 @@
 package sg.nus.iss.team11.controller.API;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -38,11 +41,13 @@ import sg.nus.iss.team11.controller.API.payload.EditClaimRequest;
 import sg.nus.iss.team11.controller.API.payload.EditEmployee;
 import sg.nus.iss.team11.controller.exception.RoleNotFound;
 import sg.nus.iss.team11.controller.service.CompensationClaimService;
+import sg.nus.iss.team11.controller.service.HolidayService;
 import sg.nus.iss.team11.controller.service.LeaveApplicationService;
 import sg.nus.iss.team11.controller.service.RoleService;
 import sg.nus.iss.team11.controller.service.UserService;
 import sg.nus.iss.team11.model.ApplicationStatusEnum;
 import sg.nus.iss.team11.model.CompensationClaim;
+import sg.nus.iss.team11.model.Holiday;
 import sg.nus.iss.team11.model.LAPSUser;
 import sg.nus.iss.team11.model.LeaveApplication;
 import sg.nus.iss.team11.model.Role;
@@ -63,6 +68,9 @@ public class APIAdminController {
 	LeaveApplicationService leaveapplicationservice;
 	@Autowired
 	CompensationClaimService compensationclaimservice;
+
+	@Autowired
+	HolidayService holidayService;
 
 	@GetMapping(value = "/employee")
 	public ResponseEntity<String> viewEmployeeList(Authentication authentication, Principal principal) {
@@ -244,4 +252,35 @@ public class APIAdminController {
 
 		return new ResponseEntity<String>("roles updated: " + edited.getRoleId(), HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/holidays")
+	public ResponseEntity<String> getHolidays() {
+		List<Holiday> allHolidays = holidayService.getAllHolidays();
+		
+		allHolidays.removeIf(day->{
+			return day.getDate().getYear() != LocalDate.now().getYear();
+		});
+		JSONObject res = new JSONObject();
+		
+		for (Holiday holiday : allHolidays) {
+			res.put(holiday.getDate().toString(), holiday.getDescription());
+		}
+				
+		return new ResponseEntity<String>(res.toString(), HttpStatus.OK);
+	}
+
+	@DeleteMapping(value = "/holidays")
+	public ResponseEntity<String> deleteHolidays(String day) {
+		
+		holidayService.removeHoliday(LocalDate.parse(day));
+		return new ResponseEntity<String>("", HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/holidays")
+	public ResponseEntity<String> createHolidays(String day, String desc) {
+		
+		holidayService.createHoliday(LocalDate.parse(day), desc);
+		return new ResponseEntity<String>("", HttpStatus.OK);
+	}
+
 }

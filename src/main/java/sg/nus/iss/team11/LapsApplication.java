@@ -50,7 +50,7 @@ public class LapsApplication {
 			Role staffRole = roleRepo.save(new Role("staff", "Staff", "Staff members"));
 			Role managerRole = roleRepo.save(new Role("manager", "Manager", "Manager"));
 
-			LAPSUser adminUser = userRepo.save(new LAPSUser("adminUser", encoder.encode("password"), adminRole));
+			LAPSUser adminUser = userRepo.save(new LAPSUser("jack", encoder.encode("password"), adminRole));
 			LAPSUser esther = userRepo.save(new LAPSUser("esther", encoder.encode("password"), managerRole));
 
 			// INIT LAPSUser
