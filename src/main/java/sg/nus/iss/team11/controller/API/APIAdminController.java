@@ -156,8 +156,10 @@ public class APIAdminController {
 		JSONArray bigList = new JSONArray();
 		List<Role> roles = roleservice.findAllRoles();
 		List<String> managers = userservice.findAllManagerName();
+		List<String> usernames = userservice.findAllUserName();
 		JSONArray rolesList = new JSONArray();
 		JSONArray managersList = new JSONArray();
+		JSONArray usernameList = new JSONArray();
 		for (Role r : roles) {
 			JSONObject rn = new JSONObject();
 			rn.put("roleName", r.getName());
@@ -168,8 +170,14 @@ public class APIAdminController {
 			mn.put("managerName", m);
 			managersList.put(mn);
 		}
+		for (String n : usernames) {
+			JSONObject un = new JSONObject();
+			un.put("username", n);
+			usernameList.put(un);
+		}
 		bigList.put(managersList);
 		bigList.put(rolesList);
+		bigList.put(usernameList);
 
 		return new ResponseEntity<>(bigList.toString(), HttpStatus.OK);
 	}

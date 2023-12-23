@@ -87,4 +87,9 @@ public class UserServiceImpl implements UserService {
 		user.setCompensationLeaveEntitlement(user.getCompensationLeaveEntitlement() + days);
 		userRepo.saveAndFlush(user);
 	}
+	
+	@Override
+	public List<String> findAllUserName(){
+		return userRepo.findAllUserName();
+	}
 }
