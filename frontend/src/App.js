@@ -22,6 +22,7 @@ import AdminRoleNew from "pages/adminRoleNew";
 import AdminRoleEdit from "pages/adminRoleEdit";
 import ManagerReporting from "pages/managerReporting";
 import CommonLeaveList from "pages/movementRegister";
+import AdminHolidays from "pages/adminHolidays";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/admin/role" element={<AdminRoleList/>}/>
         <Route path="/admin/role/new" element={<AdminRoleNew/>}/>
         <Route path="/admin/role/edit" element={<AdminRoleEdit/>}/>
+        <Route path="/admin/holidays" element={<AdminHolidays/>}/>
         <Route path="/movementregister" element={<CommonLeaveList/>}/>
       </Routes>
     </div>

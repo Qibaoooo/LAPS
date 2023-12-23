@@ -12,7 +12,6 @@ function LoginCheckWrapper({ children, allowRole, runAfterCheck }) {
   const handleButtonClick = () => (window.location.href = redirectURL);
 
   useEffect(() => {
-    console.log("!!!LoginCheckWrapper useEffect RUN")
     if (!getUserinfoFromLocal()) {
       setHeaderMsg("Please login first.");
       setButtonMsg("Go To Login Page");

@@ -86,6 +86,7 @@ function LoginPage() {
           msg1="Login failed, error msg:"
           msg2={alertMsg}
           handleCLose={() => setShowAlert(false)}
+          showReturnTo={false}
         ></MyAlert>
       </Form>
     </div>

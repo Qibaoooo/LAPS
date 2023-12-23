@@ -108,6 +108,7 @@ function AdminRoleList() {
       msg2={deleteRespMsg}
       showAlert={showDeleteNsg}
       handleCLose={()=>{setShowDeleteMsg(false)}}
+      showReturnTo={false}
       ></MyAlert>
     </LoginCheckWrapper>
   );
