@@ -3,7 +3,7 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import MyNavBar from "./components/myNavBar";
 import PageTitle from "./components/pageTitle";
 import { getHolidays, deleteHoliday, addHoliday } from "./utils/api/apiAdmin";
-import { Col, Table } from "react-bootstrap";
+import { Button, Col, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { sortHolidays } from "./utils/sorting";
 import MyAlert from "./components/myAlert";
@@ -42,17 +42,18 @@ function AdminHolidays() {
                   <td>{value[0]}</td>
                   <td>{value[1]}</td>
                   <td>
-                    <a
-                      href=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        deleteHoliday(value[0]).then(() => {
-                          window.location.reload();
-                        });
-                      }}
-                    >
-                      remove
-                    </a>
+                    <Button 
+                    variant="danger"
+                    size="sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      deleteHoliday(value[0]).then(() => {
+                        window.location.reload();
+                      });
+                    }}
+                  >
+                    Remove
+                  </Button>
                   </td>
                 </tr>
               );
@@ -77,23 +78,24 @@ function AdminHolidays() {
                 />
               </td>
               <td>
-                <a
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log(desc);
-                    if (newDay && desc !== "") {
-                      addHoliday(newDay,desc).then(() => {
-                        window.location.reload();
-                      });
-                      setShowAlert(false);
-                    } else {
-                      setShowAlert(true);
-                    }
-                  }}
-                >
-                  add
-                </a>{" "}
+                <Button 
+                    variant="success"
+                    size="sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log(desc);
+                      if (newDay && desc !== "") {
+                        addHoliday(newDay,desc).then(() => {
+                          window.location.reload();
+                        });
+                        setShowAlert(false);
+                      } else {
+                        setShowAlert(true);
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
               </td>
             </tr>
           </tbody>

@@ -82,7 +82,7 @@ function CreateUpdateAndCancelButtons({leaveapplication, onCancel, onDelete }){
                 {isCancelled ? (null) : (
                         <Button
                         style={{marginRight: '10px'}}
-                        variant="secondary"
+                        variant="info"
                         size="sm"
                         onClick={() => {
                         window.location.href =

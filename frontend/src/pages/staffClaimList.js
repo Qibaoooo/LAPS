@@ -60,7 +60,7 @@ function StaffClaimList() {
                 <td>
                   {["APPROVED"].includes(claim.status) && (
                     <Button
-                      variant="secondary"
+                      variant="danger"
                       size="sm"
                       onClick={(e) => {
                         e.preventDefault();
@@ -74,7 +74,7 @@ function StaffClaimList() {
                   {["APPLIED", "UPDATED"].includes(claim.status) && (
                       <Button
                         style={{marginRight:"10px"}}
-                        variant="secondary"
+                        variant="info"
                         size="sm"
                         onClick={() => {
                           window.location.href =
