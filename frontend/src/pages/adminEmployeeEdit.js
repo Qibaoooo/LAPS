@@ -36,11 +36,20 @@ function AdminEmployeeEdit() {
       event.stopPropagation();
       setValidated(true);
     } else {
-      let managerName;
+      let managerName, type, annual, medical, compensation;
       try {
         managerName = formRef.current.querySelector("#formManager").value;
       } catch (error) {
         console.log("No managerName set.");
+      }
+      try {
+        type = formRef.current.querySelector("#formType").value;
+        annual = formRef.current.querySelector("#formAnnual").value;
+        medical = formRef.current.querySelector("#formMedical").value;
+        compensation = formRef.current.querySelector("#formCompensation").value;
+      }
+      catch (error) {
+        console.log("admin user");
       }
 
       editEmployeeInfo({
@@ -48,13 +57,10 @@ function AdminEmployeeEdit() {
         password: formRef.current.querySelector("#formPassword").value,
         managerName: managerName,
         roleName: formRef.current.querySelector("#formRole").value,
-        type: formRef.current.querySelector("#formType").value,
-        annualLeaveEntitlement:
-          formRef.current.querySelector("#formAnnual").value,
-        medicalLeaveEntitlement:
-          formRef.current.querySelector("#formMedical").value,
-        compensationLeaveEntitlement:
-          formRef.current.querySelector("#formCompensation").value,
+        type: type,
+        annualLeaveEntitlement:annual,
+        medicalLeaveEntitlement:medical,
+        compensationLeaveEntitlement: compensation,
         id: id,
       })
         .then((response) => {
@@ -80,10 +86,10 @@ function AdminEmployeeEdit() {
         setBigList(list);
       })
       .then(() => {
-          // pre-fill all available fields
-          setEditDataOnLoad(id, formRef).then((r) => {
-            setRoleName(formRef.current.querySelector("#formRole").value);
-          });
+        // pre-fill all available fields
+        setEditDataOnLoad(id, formRef).then((r) => {
+          setRoleName(formRef.current.querySelector("#formRole").value);
+        });
       });
 
   };
@@ -146,58 +152,62 @@ function AdminEmployeeEdit() {
               </Form.Select>
             </Form.Group>
           </Row>
-          <br></br>
-          <Row className="mx-5" style={{ textAlign: "left" }}>
-            <Form.Group as={Col} controlId="formType">
-              <Form.Label>Type</Form.Label>
-              <Form.Select required className="form-select">
-                <option value="" style={{ display: "none" }}>
-                  Select a type
-                </option>
-                <option value="Administrative">Administrative</option>
-                <option value="Professional">Professional</option>
-              </Form.Select>
-            </Form.Group>
-          </Row>
-          <br></br>
-          <Row className="mx-5" style={{ textAlign: "left" }}>
-            <Form.Group as={Col} controlId="formAnnual">
-              <Form.Label>Annual Leave Entitlement</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                min={"0"}
-                max={"365"}
-                placeholder="Annual Leave Entitlement"
-              ></Form.Control>
-            </Form.Group>
-          </Row>
-          <br></br>
-          <Row className="mx-5" style={{ textAlign: "left" }}>
-            <Form.Group as={Col} controlId="formMedical">
-              <Form.Label>Medical Leave Entitlement</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                min={"0"}
-                max={"365"}
-                placeholder="Medical Leave Entitlement"
-              />
-            </Form.Group>
-          </Row>
-          <br></br>
-          <Row className="mx-5" style={{ textAlign: "left" }}>
-            <Form.Group as={Col} controlId="formCompensation">
-              <Form.Label>Compensation Leave Entitlement</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                min={"0"}
-                max={"365"}
-                placeholder="Compensation Leave Entitlement"
-              />
-            </Form.Group>
-          </Row>
+          {roleName !== "Admin" && (
+            <div>
+              <br></br>
+              <Row className="mx-5" style={{ textAlign: "left" }}>
+                <Form.Group as={Col} controlId="formType">
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select required className="form-select">
+                    <option value="" style={{ display: "none" }}>
+                      Select a type
+                    </option>
+                    <option value="Administrative">Administrative</option>
+                    <option value="Professional">Professional</option>
+                  </Form.Select>
+                </Form.Group>
+              </Row>
+              <br></br>
+              <Row className="mx-5" style={{ textAlign: "left" }}>
+                <Form.Group as={Col} controlId="formAnnual">
+                  <Form.Label>Annual Leave Entitlement</Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    min={"0"}
+                    max={"365"}
+                    placeholder="Annual Leave Entitlement"
+                  ></Form.Control>
+                </Form.Group>
+              </Row>
+              <br></br>
+              <Row className="mx-5" style={{ textAlign: "left" }}>
+                <Form.Group as={Col} controlId="formMedical">
+                  <Form.Label>Medical Leave Entitlement</Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    min={"0"}
+                    max={"365"}
+                    placeholder="Medical Leave Entitlement"
+                  />
+                </Form.Group>
+              </Row>
+              <br></br>
+              <Row className="mx-5" style={{ textAlign: "left" }}>
+                <Form.Group as={Col} controlId="formCompensation">
+                  <Form.Label>Compensation Leave Entitlement</Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    min={"0"}
+                    max={"365"}
+                    placeholder="Compensation Leave Entitlement"
+                  />
+                </Form.Group>
+              </Row>
+            </div>
+          )}
         </Col>
         <br></br>
         <Button type="submit">Submit</Button>

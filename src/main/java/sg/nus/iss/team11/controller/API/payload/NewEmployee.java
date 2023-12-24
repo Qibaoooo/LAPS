@@ -7,10 +7,10 @@ public class NewEmployee {
 	private String password = "";
 	private String managerName = "";
 	private String roleName;
-	private EmployeeTypeEnum type;
-	private int annualLeaveEntitlement;
-	private int medicalLeaveEntitlement;
-	private int compensationLeaveEntitlement;
+	private EmployeeTypeEnum type = null;
+	private int annualLeaveEntitlement = 0;
+	private int medicalLeaveEntitlement = 0;
+	private int compensationLeaveEntitlement = 0;
 	public NewEmployee(String username, String password, String managerName, EmployeeTypeEnum type, String roleName, int annualLeaveEntitlement,
 			int medicalLeaveEntitlement, int compensationLeaveEntitlement) {
 		super();
