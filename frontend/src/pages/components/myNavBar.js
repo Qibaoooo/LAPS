@@ -167,12 +167,17 @@ function MyNavBar(props) {
           </Button>
         </OverlayTrigger>
         <h6 className="mx-3" href="">
-          Hello, {user}
+          Hello, {user}!
         </h6>
         {!showLogin && (
-          <h6 onClick={handleLogout}>
-            <a href="">logout</a>
-          </h6>
+            <Button
+                  variant="danger"
+                  size="sm"
+                  style={{ textAlign:"center"}}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
         )}
       </Container>
     </Navbar>

@@ -4,7 +4,7 @@ import LoginCheckWrapper from "./components/loginCheckWrapper";
 import { getUserDetails } from "./utils/api/apiUserDetails";
 import { getUserinfoFromLocal } from "./utils/userinfo";
 import MyTable from "./components/myTable";
-import { Card, Col, Table } from "react-bootstrap";
+import { Button, Card, Col, Table } from "react-bootstrap";
 import PageTitle from "./components/pageTitle";
 
 function HomePage() {
@@ -101,9 +101,14 @@ function HomePage() {
                     <tr>
                       <td colSpan="4">
                         <p>Showing {showYear} Year Data</p>
-                        <a href="" onClick={handleClickToggle}>
-                          toggle
-                        </a>
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          style={{ width: '20%' }}
+                          onClick={handleClickToggle}
+                        >
+                          Toggle
+                        </Button>
                       </td>
                     </tr>
                     <tr>
@@ -162,27 +167,172 @@ function HomePage() {
             )}
             {roleId === "ROLE_staff" && (
               <div className="mt-3">
-                <Card.Link href="/staff/leave/new"> New Leave </Card.Link>
-                <Card.Link href="/staff/claim/new"> New Claim </Card.Link>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '15%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                      "/staff/leave/new";
+                  }}
+                >
+                  New Leave
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '15%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                      "/staff/leave/list";
+                  }}
+                >
+                  View Leave
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '15%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                      "/staff/leave/new";
+                  }}
+                >
+                  New Claim
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '15%' }}
+                  onClick={() => {
+                    window.location.href =
+                      "/staff/claim/list";
+                  }}
+                >
+                  View Claim
+                </Button>
               </div>
             )}
             {roleId === "ROLE_manager" && (
               <div className="mt-3">
-                <Card.Link href="/manager/leave/list">
-                  View Suborinates Leave Applications
-                </Card.Link>
-                <br />
-                <br />
-                <Card.Link href="/manager/claim/list">
-                  View Suborinates OT Claims
-                </Card.Link>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '40%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/manager/leave/list";
+                  }}
+                >
+                  View Suborinates' Leave Applications
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '40%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/manager/claim/list";
+                  }}
+                >
+                  View Suborinates' OT Claims
+                </Button>
+                <br/><br/>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '40%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/manager/leave/history";
+                  }}
+                >
+                  View Suborinates' Leave History
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '40%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/manager/claim/history";
+                  }}
+                >
+                  View Suborinates' Claim History
+                </Button>
+                <br/><br/>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '40%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/manager/reporting";
+                  }}
+                >
+                  Generate Reports
+                </Button>
               </div>
             )}
             {roleId === "ROLE_admin" && (
               <div className="mt-3">
-                <Card.Link href="/admin/role"> Manage Roles </Card.Link>
-                <Card.Link href="/admin/employee"> Manage Users </Card.Link>
-                <Card.Link href="/admin/holidays"> Manage Holidays </Card.Link>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '20%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/admin/employee";
+                  }}
+                >
+                  Manage Users
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '20%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/admin/role";
+                  }}
+                >
+                  View Users
+                </Button>
+                <br/><br/>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '20%', marginRight: '50px' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/admin/role";
+                  }}
+                >
+                  Manage Roles
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '20%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/admin/role/list";
+                  }}
+                >
+                  View Roles
+                </Button>
+                <br/><br/>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  style={{ width: '20%' }}
+                  onClick={() => {
+                    window.location.href =
+                    "/admin/holidays";
+                  }}
+                >
+                  Manage Holidays
+                </Button>
               </div>
             )}
           </Card.Body>
