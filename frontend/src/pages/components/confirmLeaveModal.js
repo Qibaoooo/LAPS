@@ -83,7 +83,7 @@ function ConfirmLeaveModal({
               {/**
                * Hide this first becoz bug.
                */}
-              <span style={{ textAlign: "end" }}>Entitlement Left:</span>
+              <span style={{ textAlign: "end" }}>Entitlement after this:</span>
               <h5 style={{}}>{entitlementList.left}</h5>
             </Stack>
           </Stack>
