@@ -15,4 +15,4 @@
     - `cd /frontend`
     - `npm install`
     - `npm run start`
-    - visite `localhost:3000`
+    - visit `localhost:3000`
